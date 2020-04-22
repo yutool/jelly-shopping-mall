@@ -3,23 +3,23 @@ import * as auth from '@/common/utils/auth';
 
 // 创建实例
 const instance = axios.create({
-  baseURL: '/api', // url = base url + request url
+  baseURL: '/',
   headers: { 'Content-Type': 'application/json' },
   timeout: 30000,
 });
 
 // 拦截请求
-instance.interceptors.request.use(
-  (config: any) => {
-    const token = auth.getToken();
-    if (token) { // 如果本地存在token，请求时带上
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  }, (error: any) => {
-    return Promise.reject(error);
-  }
-);
+// instance.interceptors.request.use(
+//   (config: any) => {
+//     const token = auth.getToken();
+//     if (token) { // 如果本地存在token，请求时带上
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   }, (error: any) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 // 拦截相应
 const isRefreshing = false;

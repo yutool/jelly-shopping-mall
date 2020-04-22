@@ -1,0 +1,15 @@
+// 购物车 tab样式 
+.cart-el-tab-pane {
+  .el-tabs__nav-wrap::after {
+    height: 0px;  // 去除下划线
+  }
+  .el-tabs__item {
+    font-size: 20px;
+  }
+}
+// 订单 tab 样式
+.order-el-tab-pane {
+  .el-tabs__item {
+    text-align: left !important;
+  }
+}

@@ -29,6 +29,7 @@
         <mysql.version>8.0.18</mysql.version>
         <druid.version>1.1.10</druid.version>
         <mybatis-version>2.1.1</mybatis-version>
+        <mybatis-plus-version>3.2.0</mybatis-plus-version>
         <pagehelper.version>1.2.5</pagehelper.version>
         <hutool-all.version>5.1.0</hutool-all.version>
         <fastjson.version>1.2.62</fastjson.version>
@@ -60,7 +61,12 @@
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis.version}</version>
+                <version>${mybatis-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-version}</version>
             </dependency>
             <!-- pagehelper -->
             <dependency>
@@ -80,24 +86,13 @@
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
             </dependency>
-            <!-- mysql -->
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.version}</version>
-            </dependency>
             <!-- fastjson -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
-            <!-- 热部署-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-devtools</artifactId>
-                <optional>true</optional>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

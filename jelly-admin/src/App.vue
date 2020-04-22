@@ -1,28 +1,32 @@
 <template>
   <div id="app">
-    <router-view/>
+    <Navbar />
+    <el-row class="m-0 mt-5">
+      <el-col :md="5" :sm="6">
+        <Sidebar />
+      </el-col>
+      <el-col :md="19" :sm="18">
+        <router-view/>
+      </el-col>
+    </el-row>
   </div>
 </template>
+
+<script>
+import Navbar from '@/components/Navbar'
+import Sidebar from '@/components/Sidebar'
+export default {
+  components: {
+    Navbar, Sidebar
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>

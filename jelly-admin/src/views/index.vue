@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <div class="container">
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et autem nulla vero voluptatum aperiam harum nam temporibus itaque error ea, dicta perferendis blanditiis beatae ratione maiores corporis, aspernatur, tempore sed?
-    </div>
+  <div class="container">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus ipsam aperiam beatae doloribus accusantium illum neque soluta, perferendis est consequuntur voluptate temporibus distinctio harum reprehenderit adipisci praesentium quod, fugiat animi.
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Sidebar from '@/components/Sidebar.vue';
 
-@Component
+@Component({
+  components: {
+    Sidebar
+  }
+})
 export default class Market extends Vue {
 }
 </script>
 
 <style scoped lang="scss">
-
 </style>
