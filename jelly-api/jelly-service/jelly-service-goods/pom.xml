@@ -23,6 +23,13 @@
             <groupId>com.ankoye.jelly</groupId>
             <artifactId>jelly-common-base</artifactId>
             <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ankoye.jelly</groupId>
+            <artifactId>jelly-common-util</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- 数据库部分 -->
@@ -43,6 +50,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
         </dependency>
 
     </dependencies>

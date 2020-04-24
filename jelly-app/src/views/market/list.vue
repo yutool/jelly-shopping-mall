@@ -12,10 +12,11 @@
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut minus consectetur quas, molestias animi eos nesciunt libero id necessitatibus sunt a quibusdam ad sit molestiae. Harum odio magni aut tenetur.
       </div>
     </div>
+    <!-- 商品列表 -->
     <div class="container">
       <el-row :gutter="20">
-        <el-col :md="6" v-for="i in 4" :key="i">
-          <goods-card />
+        <el-col :md="6" v-for="spu in spuList" :key="spu.id">
+          <goods-card :spu="spu" />
         </el-col>
       </el-row>
     </div>
@@ -25,6 +26,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import GoodsCard from './components/GoodsCard.vue'
+import { getSpuList } from '@/api/spu';
 
 @Component({
   components: {
@@ -32,6 +34,15 @@ import GoodsCard from './components/GoodsCard.vue'
   }
 })
 export default class GoodsList extends Vue {
+  private spuList = {}
+  
+  public mounted() {
+    getSpuList().then((res: any) => {
+      const { data } = res
+      this.spuList = data.list
+      console.log(this.spuList)
+    })
+  }
 }
 </script>
 

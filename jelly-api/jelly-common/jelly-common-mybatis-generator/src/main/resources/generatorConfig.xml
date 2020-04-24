@@ -62,8 +62,8 @@
 
 
         <!-- 要生成哪些表 -->
-        <table tableName="tb_category" domainObjectName="Category" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+<!--        <table tableName="tb_category" domainObjectName="Category" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
         <table tableName="tb_sku" domainObjectName="Sku" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table tableName="tb_spu" domainObjectName="Spu" enableCountByExample="false" enableUpdateByExample="false"

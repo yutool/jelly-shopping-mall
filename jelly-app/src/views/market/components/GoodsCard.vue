@@ -1,26 +1,27 @@
 <template>
-  <router-link to="detail/1" class="card text-center">
+  <router-link :to="'detail/'+spu.id" class="card text-center">
     <div class="goods-image">
-      <img src="http://img.alicdn.com/bao/uploaded/i7/TB1ENgLE3aTBuNjSszf7eRgfpXa_034047.jpg" alt="">
+      <img :src="spu.picture" alt="">
     </div>
     <div class="goods-price">
-      ￥699.00
+      ￥<span>{{ spu.price }}</span>
     </div>
     <div class="goods-title-spu">
-      xiaomi、小米 Redmi
+      {{ spu.title }}
     </div>
     <div class="goods-status">
-      <span>该月成交5.0万笔</span>
-      <span>7000+评论</span>
+      <span>该月成交{{ spu.saleNum }}万笔</span>
+      <span>{{ spu.commentNum }} 评论</span>
     </div>
   </router-link>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
 export default class GoodsCard extends Vue {
+  @Prop() private spu: any
 }
 </script>
 

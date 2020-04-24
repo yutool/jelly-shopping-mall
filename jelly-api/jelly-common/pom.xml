@@ -14,6 +14,8 @@
     <modules>
         <module>jelly-common-mybatis-generator</module>
         <module>jelly-common-base</module>
+        <module>jelly-common-uril</module>
+        <module>jelly-common-util</module>
     </modules>
 
 

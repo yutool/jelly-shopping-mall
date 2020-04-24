@@ -54,50 +54,51 @@
       </div>
     </div>
     <!-- 商品列表 -->
-    <el-table :data="tableData" class="w-100 mb-3">
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" inline class="demo-table-expand">
-            <el-form-item label="商品名称">
-              <span>{{ props.row.name }}</span>
-            </el-form-item>
-            <el-form-item label="所属店铺">
-              <span>{{ props.row.shop }}</span>
-            </el-form-item>
-            <el-form-item label="商品 ID">
-              <span>{{ props.row.id }}</span>
-            </el-form-item>
-            <el-form-item label="店铺 ID">
-              <span>{{ props.row.shopId }}</span>
-            </el-form-item>
-            <el-form-item label="商品分类">
-              <span>{{ props.row.category }}</span>
-            </el-form-item>
-            <el-form-item label="店铺地址">
-              <span>{{ props.row.address }}</span>
-            </el-form-item>
-            <el-form-item label="商品描述">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="商品 ID"
-        prop="id">
-      </el-table-column>
-      <el-table-column
-        label="商品名称"
-        prop="name">
-      </el-table-column>
-      <el-table-column
-        label="描述"
-        prop="desc">
-      </el-table-column>
-    </el-table>
+    <div class="table-responsive-lg">
+      <table class="table text-center">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">商品编号</th>
+            <th scope="col">封面</th>
+            <th scope="col">商品名称</th>
+            <th scope="col">商品详情</th>
+            <th scope="col">商品描述</th>
+            <th scope="col">SKU库存</th>
+            <th scope="col">销量</th>
+            <th scope="col">审核状态</th>
+            <th scope="col">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in spuList" :key="index">
+            <th scope="row">{{ index+1 }}</th>
+            <td>{{ item.id }}</td>
+            <td><img :src="item.picture" alt="" width="20"></td>
+            <td>{{ item.name }}</td>
+            <td><a href="#"><i class="el-icon-edit-outline"></i></a></td>
+            <td><a href="#"><i class="el-icon-edit-outline"></i></a></td>
+            <td><a href="#"><i class="el-icon-edit-outline"></i></a></td>
+            <td>{{ item.saleNum }}</td>
+            <td>{{ spuStatus[item.status] }}</td>
+            <td>
+              <a href="#">查看</a><a href="#">编辑</a> <br/>
+              <a href="#">日志</a><a href="#">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <!-- 分页 -->
-    <div class="text-center">
-      <el-pagination :page-size="20" :pager-count="11" layout="prev, pager, next" :total="1000">
+    <div class="block text-center">
+      <el-pagination
+        @current-change="skipPage"
+        @size-change="handleSizeChange"
+        :current-page="pageInfo.pageNum"
+        :page-sizes="[10, 30, 50]"
+        :page-size="pageInfo.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="pageInfo.total">
       </el-pagination>
     </div>
   </div>
@@ -105,42 +106,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { getSpuList } from '@/api/spu';
 
 @Component
 export default class GoodsList extends Vue {
-  private tableData = [{
-          id: '12987122',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987123',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987125',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }, {
-          id: '12987126',
-          name: '好滋好味鸡蛋仔',
-          category: '江浙小吃、小吃零食',
-          desc: '荷兰优质淡奶，奶香浓而不腻',
-          address: '上海市普陀区真北路',
-          shop: '王小虎夫妻店',
-          shopId: '10333'
-        }]
+  private spuStatus = ['审核通过', '审核中', '审核失败']
+  private pageInfo: any = { size: 2 }  // 初始化页面大小
+  private spuList: any = {}
+  
+  // test -------------------
   private restaurants = []
   private state2 = ''
   private querySearch(queryString: any, cb: any) {
@@ -156,6 +130,23 @@ export default class GoodsList extends Vue {
   }
   private handleSelect(item: any) {
     console.log(item);
+  }
+  // -------------------test
+  
+  // 切换页面
+  private skipPage(page: any, size = this.pageInfo.size) {
+    getSpuList(page, size).then((res: any) => {
+      const { data } = res
+      this.pageInfo = data
+      this.spuList = data.list
+    })
+  }
+  private handleSizeChange(size: any) {
+    this.skipPage(this.pageInfo.pageNum, size)
+  }
+  
+  private mounted() {
+    this.skipPage(0)
   }
 }
 </script>
@@ -181,5 +172,10 @@ export default class GoodsList extends Vue {
   margin-right: 0;
   margin-bottom: 0;
   width: 50%;
+}
+.table-responsive-lg {
+  td {
+    min-width: 100px;
+  }
 }
 </style>

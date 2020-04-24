@@ -1,15 +1,22 @@
 package com.ankoye.jelly.goods.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
+@TableName("tb_spu")
 public class Spu implements Serializable {
     private String id;
 
     private String name;
 
-    private String caption;
+    private String title;
 
     private Integer merchantId;
+
+    private String brand;
 
     private Integer category1Id;
 
@@ -21,20 +28,22 @@ public class Spu implements Serializable {
 
     private String price;
 
-    private String specs;
-
     private String details;
 
-    private String specification;
+    private String specs;
+
+    private String serve;
+
+    private String skuTemplate;
 
     private Integer saleNum;
 
     private Integer commentNum;
 
-    private Byte order;
+    private Integer seq;
 
-    private Byte isMarketable;
+    private Boolean isMarketable;
 
-    private Byte status;
+    private Integer status;
 
 }

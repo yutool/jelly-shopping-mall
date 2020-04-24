@@ -46,7 +46,7 @@
     </div>
     <!-- 下一步 -->
     <div class="category-next text-center">
-      <el-button  @click="prevStep">上一步，填写商品属性</el-button>
+      <el-button  @click="prevStep">上一步，选择商品分类</el-button>
       <el-button type="primary" @click="nextStep">下一步，填写商品属性</el-button>
     </div>
   </div>

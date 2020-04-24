@@ -5,10 +5,13 @@
       <div class="step-title">
         <i class="el-icon-edit-outline"></i> 商品属性
       </div>
+      <!-- 选择属性 -->
       <el-form ref="form" label-width="90px">
         <el-form-item v-for="(value, name) in skuTemplate" :key="name"  :label="name" >
           <el-checkbox-group v-model="skuArr[name]" >
-            <el-checkbox v-for="item in value" :key="item" @change="generateSku" :label="item"></el-checkbox>
+            <el-checkbox v-for="(item, index) in value" :key="item" @change="generateSku" :label="item">
+              {{item}} <a href="javascript:;" @click="delAttrItem(name, index)">删除</a>
+            </el-checkbox>
           </el-checkbox-group>
           <input type="text" /> 
           <el-button @click="addAttrItem(name, $event)">添加属性</el-button>
@@ -19,23 +22,35 @@
           <el-button @click="addAttr">添加属性分类</el-button>
         </el-form-item>
       </el-form>
-      <el-table :data="skuData" style="width: 100%">
-        <!-- 表头 -->
-        <el-table-column :label="'商品名称'" :prop="'商品名称'">
-        </el-table-column>
-        <el-table-column v-for="(value, name) in skuTemplate" :key="name"
-          :label="name" :prop="name">
-        </el-table-column>
-        <!-- 内容在 :data自动遍历 -->
-        <!-- 折叠内容 -->
-        <el-table-column type="expand">
-          <el-form v-for="(item,index) in skuData" :key="index" label-position="left" inline class="demo-table-expand">
-            <el-form-item  v-for="(value,name) in item" :label="name" :key="name">
-              <span>{{ value }}</span>
-            </el-form-item>
-          </el-form>
-        </el-table-column>
-      </el-table>
+      <!-- 显示属性 -->
+      <table class="table">
+        <thead>
+          <tr> 
+            <th scope="col">#</th>
+            <th v-for="(value, name) in skuTemplate" :key="name">{{name}}</th>
+            <th scope="col">单价</th> <th scope="col">商品库存</th>
+            <th scope="col">库存预警值</th> <th scope="col">图片</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in skuData" :key="index">
+            <th scope="col">{{ index+1 }}</th>
+            <td v-for="val in item['sku']" :key="val"> {{val}} </td>
+            <td>
+              <input type="text" v-model="item['price']" style="width: 60px">
+            </td>
+            <td>
+              <input type="text" v-model="item['num']" style="width: 60px">
+            </td>
+            <td>
+              <input type="text" v-model="item['alertNum']" style="width: 60px">
+            </td>
+            <td>
+              <el-button type="primary">添加图片</el-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <!-- 商品规格 -->
     <div>
@@ -79,8 +94,8 @@
     </div>
     <!-- 下一步 -->
     <div class="category-next text-center">
-      <el-button  @click="prevStep">上一步，填写商品属性</el-button>
-      <el-button type="primary"  @click="nextStep">下一步，完成商品添加</el-button>
+      <el-button  @click="prevStep">上一步，填写商品信息</el-button>
+      <el-button type="primary"  @click="nextStep">提交审核</el-button>
     </div>
   </div>
 </template>
@@ -94,17 +109,12 @@ export default class AddGoodsSku extends Vue {
   // sku部分
   private skuTemplate: any = {} // sku模板
   private skuArr: any = {}      // 被选中的sku
-  private skuData = [{          // 全排生成
-    商品名称: 'fs',
-    套餐类型: 'as',
-    存储类型: 'as',
-    机身颜色: 'as',
-    网络类型: 'as',
-    other: 'fds'
-  }]
+  private skuData: any = []     // 选择属性组合生成的数据
+  private sku: any = {         // sku表格模板
+    price: '', num: '', alertNum: '', image: 'http://img12.360buyimg.com/n1/s450x450_jfs/t1/45124/2/5820/397999/5d36c0cdEda359655/61f65ac6aae3146b.jpg' 
+  }
   // 规格数据
   private spuSpecs: any = {}
-
   // ------ 添加属性 ------
   private addAttr(e: any) {
     const inputValue = $(e.currentTarget).prev().val()
@@ -116,6 +126,7 @@ export default class AddGoodsSku extends Vue {
   }
   private delAttr(name: any) {
     Vue.delete(this.skuTemplate, name)
+    Vue.delete(this.skuArr, name)
   }
   private addAttrItem(name: string, e: any) {
     const inputValue = $(e.currentTarget).prev().val()
@@ -124,31 +135,38 @@ export default class AddGoodsSku extends Vue {
     }
     this.skuTemplate[name].push(inputValue)
   }
+  private delAttrItem(name: string, index: number) {
+    this.skuTemplate[name].splice(index, 1)
+  }
+  
   private generateSku() {
     const flagArr: any = []
     const resultArr: any = []
-    this.dfs(flagArr, resultArr)
-    console.log('-----------------')
+    this.skuData.length = 0
+    this.generateDfs(flagArr, resultArr)
   }
-  private dfs(flagArr: any, resultArr: any) {
-    if (resultArr.length === Object.keys(this.skuArr).length) {
-      console.log(resultArr)
+  private generateDfs(flagArr: any, resultArr: any) {
+    const keys = Object.keys(this.skuArr)
+    if (resultArr.length === keys.length) {
+      const skuItem: any = {
+        sku: resultArr.slice(0), price: '', num: '', alertNum: '', image: '' 
+      }
+      this.skuData.push(skuItem)
     }
-    for (const key of Object.keys(this.skuArr)) {
-      if (flagArr.indexOf(key) === -1 && // 可以不存在且key只能顺序添加
-      flagArr.length === Object.keys(this.skuArr).indexOf(key)) {
+    for (const key of keys) {
+      // key不存在且key只能顺序添加
+      if (flagArr.indexOf(key) === -1 && flagArr.length === keys.indexOf(key)) {
         flagArr.push(key)
         for (const item of this.skuArr[key]) { // 一行
           resultArr.push(item)
-          this.dfs(flagArr, resultArr)
+          this.generateDfs(flagArr, resultArr)
           resultArr.pop()
         }
         flagArr.pop(key)
       }
     }
   }
-  
-  
+
   // ------ 操作规格 ------
   private addSpecs(e: any) {
     // 获取当前按钮的前一个兄弟节点
@@ -178,7 +196,7 @@ export default class AddGoodsSku extends Vue {
     this.$emit('prevStep')
   }
   private nextStep() {
-    this.$emit('nextStep', this.skuTemplate, this.spuSpecs)
+    this.$emit('nextStep', this.skuTemplate, this.skuData, this.spuSpecs)
   }
   
   // ------ 初始化 ------

@@ -1,12 +1,19 @@
 package com.ankoye.jelly.goods.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
+@TableName("tb_sku")
 public class Sku implements Serializable {
     private String id;
 
     private String spuId;
+
+    private String sku;
 
     private Long price;
 
@@ -19,8 +26,6 @@ public class Sku implements Serializable {
     private String image;
 
     private Integer saleNum;
-
-    private String specs;
 
     private Date createTime;
 
