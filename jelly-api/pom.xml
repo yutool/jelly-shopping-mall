@@ -33,6 +33,7 @@
         <pagehelper.version>1.2.5</pagehelper.version>
         <hutool-all.version>5.1.0</hutool-all.version>
         <fastjson.version>1.2.62</fastjson.version>
+        <guava.version>20.0</guava.version>
     </properties>
 
     <dependencyManagement>
@@ -92,7 +93,12 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
-
+            <!-- Guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

@@ -140,17 +140,21 @@ export default class AddGoodsSku extends Vue {
   }
   
   private generateSku() {
-    const flagArr: any = []
-    const resultArr: any = []
+    const flagArr: any = []   // 临时栈，存放属性名
+    const resultArr: any = [] // 属性值数组
     this.skuData.length = 0
     this.generateDfs(flagArr, resultArr)
   }
   private generateDfs(flagArr: any, resultArr: any) {
     const keys = Object.keys(this.skuArr)
     if (resultArr.length === keys.length) {
-      const skuItem: any = {
-        sku: resultArr.slice(0), price: '', num: '', alertNum: '', image: '' 
+      const skuItem: any = { sku: {}, price: '', num: '', alertNum: '', image: '' }
+      const skuJson: any = {}
+      // sku数组转成Json对象
+      for (let i = 0; i < keys.length; i++) {
+        skuJson[keys[i]] = resultArr[i]
       }
+      skuItem.sku = skuJson
       this.skuData.push(skuItem)
     }
     for (const key of keys) {

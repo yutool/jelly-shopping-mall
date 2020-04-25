@@ -37,7 +37,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="服务保证">
-              <el-checkbox-group v-model="spu.serve">
+              <el-checkbox-group v-model="serve">
                 <el-checkbox label="七天无理由" name="七天无理由"></el-checkbox>
                 <el-checkbox label="快速退货" name="快速退货"></el-checkbox>
                 <el-checkbox label="免费包邮" name="免费包邮"></el-checkbox>
@@ -58,11 +58,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import AddCategory from './components/AddCategory.vue';
-import AddGoodsDetail from './components/AddGoodsDetail.vue';
-import AddGoodsSku from './components/AddGoodsSku.vue';
-import { addGoods } from '@/api/spu';
+import { Component, Vue } from 'vue-property-decorator'
+import AddCategory from './components/AddCategory.vue'
+import AddGoodsDetail from './components/AddGoodsDetail.vue'
+import AddGoodsSku from './components/AddGoodsSku.vue'
+import { addGoods } from '@/api/spu'
+import { copyObj } from '@/common/utils/ObjectUtil'
 
 @Component({
   components: {
@@ -73,6 +74,7 @@ export default class AddGoods extends Vue {
   private step = 1            // 当前步骤
   private category = {}       // 当前选择的目录
   private spuTemplate = null  // 当前目录的模板
+  private serve = []          // 选择的服务
   private spu = {             // 提交到后台的商品信息
     name: '',
     title: '',
@@ -82,7 +84,7 @@ export default class AddGoods extends Vue {
     category3Id: '',
     picture: '',
     detail: {},
-    serve: [],
+    serve: '',
     skuTemplate: {},
     specs: {},
   }
@@ -104,7 +106,8 @@ export default class AddGoods extends Vue {
   private nextOf2(spuDetail: any) {
     this.spu.picture = 'http://img12.360buyimg.com/n1/s450x450_jfs/t1/45124/2/5820/397999/5d36c0cdEda359655/61f65ac6aae3146b.jpg'
     this.spu.detail = JSON.stringify(spuDetail)
-    console.log('addDetail信息', spuDetail)
+    this.spu.serve = this.serve + ''
+    console.log('addDetail信息', spuDetail, this.spu.serve)
     this.step = 3
     window.scroll(0, 0)
   }
@@ -112,16 +115,16 @@ export default class AddGoods extends Vue {
     this.step = 2
   }
   private nextOf3(skuTemplate: any, skuList: any, spuSpecs: any) {
+    console.log('addGoodsSKu信息：', skuTemplate, skuList, skuList)
     // 添加商品，数据库保存为JSON格式，这里要序列化
     this.spu.skuTemplate = JSON.stringify(skuTemplate)
     this.spu.specs = JSON.stringify(spuSpecs)
-    // 这里将sku数组转成字符串
-    this.skuList.length = 0
-    for (const item of skuList) {
-      const sku = JSON.parse(JSON.stringify(item))
-      sku.sku = item.sku + ''
-      this.skuList.push(sku)
+    // 将sku保存为JSON格式
+    this.skuList = copyObj(skuList)
+    for (const sku of this.skuList) {
+      sku.sku = JSON.stringify(sku.sku)
     }
+    // 添加到数据库
     addGoods({spu: this.spu, sku: this.skuList}).then((res: any) => {
       this.$log.info('添加商品res', res)
       this.$message({type: 'success', message: '添加商品成功'})

@@ -1,5 +1,5 @@
 const getters = {
-  loginDialog: (state: any) => state.app.loginDialog,
+  userId: (state: any) => state.account.user.id
 }
 
 export default getters;

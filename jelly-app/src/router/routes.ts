@@ -11,18 +11,21 @@ const routes = [
     ]
   },
   {
-    path: '/cart/:id',
+    path: '/cart',
     component: () => import('@/views/cart/index.vue'),
     children: [
       { path: '/', redirect: 'list' },
-      { path: 'list', component: () => import('@/views/cart/list.vue') },
+      { path: 'list/:id', component: () => import('@/views/cart/list.vue') },
     ]
   },
   {
-    path: '/order/:id',
+    path: '/order',
     component: () => import('@/views/order/index.vue'),
     children: [
       { path: '/', redirect: 'list' },
+      { path: 'cart', component: () => import('@/views/order/cart.vue') },
+      { path: 'buy', name: 'buy' , component: () => import('@/views/order/buy.vue') },
+      { path: 'pay', name: 'pay', component: () => import('@/views/order/pay.vue') },
       { path: 'list', component: () => import('@/views/order/list.vue') },
     ]
   },

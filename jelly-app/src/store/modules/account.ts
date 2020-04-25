@@ -1,5 +1,7 @@
 const state = {
-  user: '',
+  user: {
+    id: '0'
+  }
 };
 
 const mutations = {
