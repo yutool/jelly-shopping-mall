@@ -27,16 +27,18 @@
               <el-checkbox v-model="checkObj.check[cart.id]" @change="handlerChange"></el-checkbox>
             </th>
             <td> 
-              <img :src="cart.sku.image" width="30px"> 
+              <img :src="cart.image" width="30px"> 
               {{ cart.name }}
+              {{ cart.sku }}
             </td>
             <td>
-              {{ cart.sku.price }}
+              {{ cart.original }}
+              {{ cart.price }}
             </td>
             <td>
               <el-input-number size="mini" v-model="cart.num"></el-input-number>
             </td>
-            <td>{{ cart.num * cart.sku.price }}</td>
+            <td>{{ cart.num * cart.price }}</td>
             <td>
               <el-link type="danger">删除</el-link> <br/>
               <el-link type="primary">移入收藏夹</el-link>
@@ -69,7 +71,6 @@ import { getCartList } from '@/api/cart'
 @Component
 export default class Cart extends Vue {
   @Getter('userId') private userId!: string
-  private pageInfo = { size: 10 }
   private cartList: any = []
   private all = false
   private checkObj: any = {
@@ -78,21 +79,13 @@ export default class Cart extends Vue {
     money: 0    // 总价格
   }
   
-  private skipPage(page: number, size = this.pageInfo.size) {
-    getCartList(this.userId, page, size).then((res: any) => {
-      const { data } = res
-      this.pageInfo = data
-      this.cartList = data.list
-      this.$log.info('查询购物车', res)
-    })
-  }
-  
   // 处理按钮改变
   private handlerChange() {
     this.checkObj.num = 0
     this.checkObj.money = 0
+    // 如果被选中，对于id的值为true
     for (const id of Object.keys(this.checkObj.check)) {
-      if (this.checkObj.check[id] === true) { // 被选中
+      if (this.checkObj.check[id] === true) {
         this.checkObj.num++;
         // 计算这件商品的总价
         for (const cart of this.cartList) {
@@ -120,13 +113,39 @@ export default class Cart extends Vue {
     this.handlerChange()
   }
   
+  // 付款
   private buy() {
-    const order: any = []
+    const orderItem: any = []
     const checkedKey = Object.keys(this.checkObj.check)
+    let money = 0
+    // 整理orderItem
     for (const cart of this.cartList) {
       if (checkedKey.indexOf(cart.id + '') !== -1) {
-        order.push(cart)
+        const item: any = {
+          skuId: cart.id,
+          merchantId: 0,
+          name: cart.name,
+          image: cart.image,
+          sku: cart.sku,
+          price: cart.price,
+          num: cart.num,
+          money: cart.price * cart.num,
+          payMoney: cart.price * cart.num
+        }
+        money += item.payMoney
+        orderItem.push(item)
       }
+    }
+    // 整理order
+    const order: any = {
+      userId: this.userId,
+      money,
+      payMoney: money,
+      weight: 0,    // 重量
+      postFee: 0,  // 运费
+      addressId: null,
+      remark: '',
+      orderItem
     }
     this.$router.push({
       name: 'buy', 
@@ -135,7 +154,13 @@ export default class Cart extends Vue {
   }
   
   private mounted() {
-    this.skipPage(0)
+    getCartList(this.userId).then((res: any) => {
+      this.cartList = res.data
+      for (const cart of this.cartList) {
+        cart.sku = JSON.parse(cart.sku)
+      }
+      this.$log.info('查询购物车', this.cartList)
+    })
   }
 }
 </script>

@@ -2,7 +2,8 @@ package com.ankoye.jelly.order.service;
 
 import com.ankoye.jelly.order.domian.Cart;
 import com.ankoye.jelly.order.model.CartDto;
-import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 public interface CartService {
 
@@ -14,5 +15,5 @@ public interface CartService {
     /**
      * 获取购物车商品
      */
-    PageInfo<CartDto> getCartList(String id, Integer page, Integer size);
+    List<CartDto> getCartList(String id);
 }

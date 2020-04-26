@@ -4,10 +4,11 @@ import com.ankoye.jelly.base.result.Result;
 import com.ankoye.jelly.order.domian.Cart;
 import com.ankoye.jelly.order.model.CartDto;
 import com.ankoye.jelly.order.service.CartService;
-import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @CrossOrigin
@@ -25,10 +26,9 @@ public class CartController {
         return Result.success();
     }
 
-    @GetMapping("/{id}/{page}/{size}")
-    public Result<PageInfo<CartDto>> getCartList(
-            @PathVariable String id, @PathVariable Integer page, @PathVariable Integer size) {
-        PageInfo<CartDto> carts = cartService.getCartList(id, page, size);
-        return new Result<PageInfo<CartDto>>().success(carts);
+    @GetMapping("/{id}")
+    public Result<List<CartDto>> getCartList(@PathVariable String id) {
+        List<CartDto> carts = cartService.getCartList(id);
+        return new Result<List<CartDto>>().success(carts);
     }
 }

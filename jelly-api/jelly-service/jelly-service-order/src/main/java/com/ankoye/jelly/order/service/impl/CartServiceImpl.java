@@ -1,14 +1,13 @@
 package com.ankoye.jelly.order.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.ankoye.jelly.goods.domain.Sku;
 import com.ankoye.jelly.goods.service.SkuService;
 import com.ankoye.jelly.order.dao.CartMapper;
 import com.ankoye.jelly.order.domian.Cart;
 import com.ankoye.jelly.order.model.CartDto;
 import com.ankoye.jelly.order.service.CartService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -42,17 +41,19 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public PageInfo<CartDto> getCartList(String id, Integer page, Integer size) {
-        PageHelper.startPage(page, size);
+    public List<CartDto> getCartList(String id) {
         List<Cart> carts = cartMapper.selectList(new QueryWrapper<Cart>().eq("user_id", id));
         List<CartDto> result = new ArrayList<>();
         CartDto cartDto = null;
         for (Cart cart : carts) {   // 查询sku详情信息
             cartDto = new CartDto().convertFor(cart);
-            cartDto.setSku(skuService.getSkuById(cart.getSkuId()));
+            Sku sku = skuService.getSkuById(cart.getSkuId());
+            cartDto.setSku(sku.getSku());
+            cartDto.setPrice(sku.getPrice());
+            cartDto.setDiscount(sku.getDiscount());
             result.add(cartDto);
         }
 
-        return new PageInfo<>(result);
+        return result;
     }
 }

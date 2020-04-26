@@ -13,7 +13,7 @@ public class Order implements Serializable {
     @TableId
     private String id;
 
-    private String orderSn;
+    // private String orderSn;
 
     private Long userId;
 
@@ -31,6 +31,8 @@ public class Order implements Serializable {
 
     private Long postFee;
 
-    private Byte status;
+    private String remark;
+
+    private Integer status;
 
 }

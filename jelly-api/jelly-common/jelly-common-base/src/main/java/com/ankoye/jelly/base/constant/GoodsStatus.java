@@ -2,9 +2,18 @@ package com.ankoye.jelly.base.constant;
 
 
 public class GoodsStatus {
-    public static final Integer SUCCESS = 0;    // 审核成功
-    public static final Integer AUDIT = 1;      // 审核中
-    public static final Integer FAILED = 2;     // 审核失败
+    /**
+     * 审核成功
+     */
+    public static final Integer SUCCESS = 0;
+    /**
+     * 审核中
+     */
+    public static final Integer AUDIT = 1;
+    /**
+     * 审核失败
+     */
+    public static final Integer FAILED = 2;
 
 //    SUCCESS(0, "审核成功"),
 //    AUDIT(1, "审核中"),

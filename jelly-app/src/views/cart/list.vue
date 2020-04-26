@@ -50,7 +50,7 @@ export default class CartList extends Vue {
   }
   
   private skipPage(page: number, size = this.pageInfo.size) {
-    getCartList(this.userId, page, size).then((res: any) => {
+    getCartList(this.userId).then((res: any) => {
       const { data } = res
       this.pageInfo = data
       this.cartList = data.list

@@ -25,7 +25,7 @@ const routes = [
       { path: '/', redirect: 'list' },
       { path: 'cart', component: () => import('@/views/order/cart.vue') },
       { path: 'buy', name: 'buy' , component: () => import('@/views/order/buy.vue') },
-      { path: 'pay', name: 'pay', component: () => import('@/views/order/pay.vue') },
+      { path: 'pay/:id', name: 'pay', component: () => import('@/views/order/pay.vue') },
       { path: 'list', component: () => import('@/views/order/list.vue') },
     ]
   },

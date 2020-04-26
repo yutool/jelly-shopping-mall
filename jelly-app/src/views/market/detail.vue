@@ -47,16 +47,18 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 import { getGoods } from '@/api/spu'
 import { addCart } from '@/api/cart'
 import { copyObj } from '@/common/utils/ObjectUtil'
 
 @Component
 export default class GoodsDetail extends Vue {
+  @Getter('userId') private userId: any
   private spu: any = {}
   private skuList: any = []
   private checkList: any = {}  // 选中的属性
-  private checkSku = {
+  private checkSku: any = {
     id: '',
     image: '',
     price: '',  // 显示的价格
@@ -106,14 +108,15 @@ export default class GoodsDetail extends Vue {
       this.$message({ type: 'info', message: '暂无该商品' })
       return
     }
-    const cart = {
+    const cartItem = {
       skuId: this.checkSku.id,
-      userId: '0',  // 待修改
+      userId: this.userId,
       name: this.spu.title,
-      price: this.checkSku.price,
+      image: this.checkSku.image,
+      original: this.checkSku.price,  // 原价
       num: this.checkSku.num
-    };
-    addCart(cart).then((res: any) => {
+    }
+    addCart(cartItem).then((res: any) => {
       this.$message({ type: 'success', message: '加入购物车成功' })
       this.$log.info('加购', res)
     })
@@ -125,17 +128,29 @@ export default class GoodsDetail extends Vue {
       this.$message({ type: 'info', message: '暂无该商品' })
       return
     }
-    const order: any = []
-    const orderItem = {
-      id: this.checkSku.id,
+    // 整理orderItem
+    const item: any = {
+      skuId: this.checkSku.id,
+      merchantId: 0,
       name: this.spu.title,
       image: this.checkSku.image,
       sku: this.checkList,
       price: this.checkSku.price,
-      num: this.checkSku.num
+      num: this.checkSku.num,
+      money: this.checkSku.price * this.checkSku.num,
+      payMoney: this.checkSku.price * this.checkSku.num
     }
-    order.push(orderItem)
-    console.log(order)
+    const order: any = {
+      userId: this.userId,
+      money: item.price * item.num,
+      payMoney: item.price * item.num,
+      weight: 0,    // 重量
+      postFee: 0,  // 运费
+      addressId: null,
+      remark: '',
+      orderItem: [item]
+    }
+    
     this.$router.push({
       name: 'buy', 
       params: { order }

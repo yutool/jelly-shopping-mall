@@ -1,6 +1,5 @@
 package com.ankoye.jelly.order.model;
 
-import com.ankoye.jelly.goods.domain.Sku;
 import com.ankoye.jelly.order.domian.Cart;
 import com.google.common.base.Converter;
 import lombok.Data;
@@ -11,15 +10,23 @@ public class CartDto {
 
     private Long id;
 
-    private Sku sku;
+    private String skuId;
 
     private String userId;
 
     private String name;
 
-    private Long price;
+    private String image;
+
+    private Long original;
 
     private Integer num;
+
+    private String sku;     // JSON db
+
+    private Long price;     // 现价 db
+
+    private float discount; // 折扣 - db
 
     public Cart convertToCart() {
         CartDtoConvert cartDtoConvert = new CartDtoConvert();
@@ -37,7 +44,6 @@ public class CartDto {
         protected Cart doForward(CartDto cartDto) {
             Cart cart = new Cart();
             BeanUtils.copyProperties(cartDto, cart);
-            cart.setSkuId(cartDto.getSku().getId());
             return cart;
         }
 
