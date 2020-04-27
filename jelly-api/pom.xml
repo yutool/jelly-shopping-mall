@@ -31,6 +31,7 @@
         <mybatis-version>2.1.1</mybatis-version>
         <mybatis-plus-version>3.2.0</mybatis-plus-version>
         <pagehelper.version>1.2.5</pagehelper.version>
+        <rocketmq.version>2.1.0</rocketmq.version>
         <hutool-all.version>5.1.0</hutool-all.version>
         <fastjson.version>1.2.62</fastjson.version>
         <guava.version>20.0</guava.version>
@@ -74,6 +75,12 @@
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pagehelper.version}</version>
+            </dependency>
+            <!-- rocketmq -->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq.version}</version>
             </dependency>
             <!-- lombok -->
             <dependency>

@@ -76,8 +76,10 @@ export default class Buy extends Vue {
     for (const item of order.orderItem) {
       item.sku = JSON.stringify(item.sku)
     }
+    // 创建订单
     createOrder(order).then((res: any) => {
       this.$log.info('创建订单', res)
+      // 创建订单成功，申请微信支付
       this.$router.push(`pay/${res.data}`)
     })
   }

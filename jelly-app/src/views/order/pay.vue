@@ -19,29 +19,48 @@
         <li>它支付渠道正在调试中，敬请期待。</li>
       </ul>
     </div>
+    <div v-if="wxCodeUrl != ''">
+      <vue-qrious :value="wxCodeUrl" padding="10" size="200" />
+    </div>
+    <el-button @click="weixinPay">点击获取微信二维码</el-button>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-// import QRCode from 'qrcodejs2'
+import { getOrder, weixinPay } from '@/api/order'
+import VueQrious from 'vue-qrious'
 
-@Component
-export default class Pay extends Vue {
-  private orderId!: string
-  
-  // private qrcode() {
-  //   let qrcode = new QRCode('qrcode', {
-  //     width: 200, // 设置宽度，单位像素
-  //     height: 200, // 设置高度，单位像素
-  //     text: 'https://www.baidu.com'   // 设置二维码内容或跳转地址
-  //   })
-  // }
-  
-  private mounted() {
-    this.orderId = this.$route.params.id
-    console.log(this.orderId)
+@Component({
+  components: {
+    VueQrious
   }
+})
+export default class Pay extends Vue {
+  private wxCodeUrl = ''
+  private order = {
+    id: '',
+    name: '可口可乐',
+    money: 0
+  }
+  private weixinPay() {
+    weixinPay(this.order).then((res: any) => {
+      console.log(this.wxCodeUrl)
+      this.$log.info('申请支付', res.data.code_url)
+      this.wxCodeUrl = res.data.code_url
+      console.log(this.wxCodeUrl)
+    })
+  }
+ 
+  private mounted() {
+    getOrder(this.$route.params.id).then((res: any) => {
+      this.$log.info('pay查询订单', res)
+      const { data } = res
+      this.order.id = data.id
+      this.order.money = data.payMoney
+    })
+  }
+  
 }
 </script>
 

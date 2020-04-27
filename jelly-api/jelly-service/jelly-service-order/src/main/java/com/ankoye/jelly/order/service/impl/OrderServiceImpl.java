@@ -23,9 +23,14 @@ public class OrderServiceImpl implements OrderService {
     private OrderItemMapper orderItemMapper;
 
     @Override
+    public Order getOrderById(String id) {
+        return orderMapper.selectById(id);
+    }
+
+    @Override
     @Transactional
     public String createOrder(OrderDto orderDto) {
-        // 处理订单，还需要删除库存，放哪实现？
+        // 处理订单，需要删除库存？还是支付完成扣？
         String orderId = IdUtils.getOrderId();
         Order order = orderDto.convertToOrder();
         order.setId(orderId);
@@ -39,7 +44,8 @@ public class OrderServiceImpl implements OrderService {
             item.setOrderId(orderId);
             orderItemMapper.insert(item);
         }
-        
+
+        /* 发送延迟消息，半个小时，如发现未支付，则取消这个订单 */
         return orderId;
     }
 }

@@ -1,6 +1,7 @@
 package com.ankoye.jelly.order.controller;
 
 import com.ankoye.jelly.base.result.Result;
+import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.model.OrderDto;
 import com.ankoye.jelly.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,12 @@ import javax.annotation.Resource;
 public class OrderController {
     @Resource
     private OrderService orderService;
+
+    @GetMapping("/{id}")
+    public Result<Order> getOrder(@PathVariable String id) {
+        Order order = orderService.getOrderById(id);
+        return new Result<Order>().success(order);
+    }
 
     @PostMapping("/create")
     public Result<String> createOrder(@RequestBody OrderDto orderDto) {
