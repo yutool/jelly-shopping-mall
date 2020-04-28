@@ -30,4 +30,6 @@ public class Sku implements Serializable {
     private Date createTime;
 
     private Date updateTime;
+
+    private Integer freezeNum;
 }

@@ -40,9 +40,10 @@ export default class Pay extends Vue {
   private wxCodeUrl = ''
   private order = {
     id: '',
-    name: '可口可乐',
+    name: '',
     money: 0
   }
+  
   private weixinPay() {
     weixinPay(this.order).then((res: any) => {
       console.log(this.wxCodeUrl)
@@ -51,14 +52,32 @@ export default class Pay extends Vue {
       console.log(this.wxCodeUrl)
     })
   }
+  
+  private checkPayStatus() {  // 检查订单状态
+    const timer = setInterval(() => {
+      getOrder(this.$route.params.id).then((res: any) => {
+        if (res.data.status === 3) {        // 3表示付款成功-待发货
+          this.$log.info('订单状态：', '支付成功')
+          window.clearInterval(timer)
+          this.$router.push({name: 'pay_success', params: { order: res.data }})
+        } else if(res.data.status === 2) {  // 2表示支付失败了
+          this.$log.info('订单状态：', '支付失败')
+          window.clearInterval(timer)
+          this.$router.push({name: 'pay_fail', params: { order: res.data }})
+        }
+      })
+    }, 2000)
+  }
  
   private mounted() {
     getOrder(this.$route.params.id).then((res: any) => {
       this.$log.info('pay查询订单', res)
       const { data } = res
       this.order.id = data.id
+      this.order.name = '果冻订单:' + data.id
       this.order.money = data.payMoney
     })
+    this.checkPayStatus()
   }
   
 }

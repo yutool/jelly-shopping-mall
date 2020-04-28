@@ -8,6 +8,7 @@ import com.github.wxpay.sdk.WXPayUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletInputStream;
@@ -24,10 +25,11 @@ import java.util.Map;
  * 暂时先放在Order服务，未来抽取成一个微服务
  */
 public class WXPayController {
+    @Value("${pay-wx-notify-topic}")
+    private String payNotifyTopic;
 
     @Autowired
     private WXPayService wxPayService;
-
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
 
@@ -57,7 +59,7 @@ public class WXPayController {
             String resultXml = new String(baos.toByteArray(), StandardCharsets.UTF_8);
             Map<String, String> resultMap = WXPayUtil.xmlToMap(resultXml);
             // 发送MQ，处理订单状态
-            rocketMQTemplate.convertAndSend("wx-pay-notify", JSON.toJSONString(resultMap));
+            rocketMQTemplate.convertAndSend(payNotifyTopic, JSON.toJSONString(resultMap));
         } catch (Exception e) {
             e.printStackTrace();
         }

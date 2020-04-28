@@ -18,4 +18,19 @@ public class SkuServiceImpl implements SkuService {
     public Sku getSkuById(String id) {
         return skuMapper.selectById(id);
     }
+
+    @Override
+    public int decreaseScore(String id, Integer num) {
+        return skuMapper.decreaseScore(id, num);
+    }
+
+    @Override
+    public int freezeScore(String id, Integer num) {
+        return skuMapper.freezeScore(id, num);
+    }
+
+    @Override
+    public int unfreezeScore(String id, Integer num) {
+        return skuMapper.unfreezeScore(id, num);
+    }
 }

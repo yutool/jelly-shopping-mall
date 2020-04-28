@@ -23,7 +23,11 @@ public class Order implements Serializable {
 
     private Date createTime;
 
+    private Date updateTime;
+
     private Date payTime;
+
+    private String transactionId;
 
     private Integer addressId;
 
