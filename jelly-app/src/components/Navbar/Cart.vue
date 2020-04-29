@@ -1,7 +1,7 @@
 <template>
   <el-dropdown>
     <div class="el-dropdown-link" style="">
-      <router-link to="/order/cart" class="nav-router-link">
+      <router-link to="/order/cart/1" class="nav-router-link">
         购物车
       </router-link>
     </div>
