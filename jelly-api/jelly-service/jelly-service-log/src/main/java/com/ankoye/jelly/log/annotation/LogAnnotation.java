@@ -1,7 +1,7 @@
-package com.ankoye.jelly.util.annotation;
+package com.ankoye.jelly.log.annotation;
 
 
-import com.ankoye.jelly.util.constant.LogType;
+import com.ankoye.jelly.log.constant.LogType;
 
 import java.lang.annotation.*;
 

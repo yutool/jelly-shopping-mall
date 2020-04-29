@@ -1,6 +1,7 @@
 package com.ankoye.jelly.order.controller;
 
 import com.ankoye.jelly.base.result.Result;
+import com.ankoye.jelly.log.annotation.LogAnnotation;
 import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.model.OrderDto;
 import com.ankoye.jelly.order.service.OrderService;
@@ -33,7 +34,7 @@ public class OrderController {
         return new Result<Order>().success(order);
     }
 
-    //@LogAnnotation(module = "订单模块", operation = "创建订单")
+    @LogAnnotation(module = "订单模块", operation = "创建订单")
     @PostMapping("/create")
     public Result<String> createOrder(@RequestBody OrderDto orderDto) throws Exception {
         // 创建订单

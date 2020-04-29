@@ -1,3 +1,2 @@
-declare namespace VueQrious{
-  
+declare module 'vue-qrious'{
 }

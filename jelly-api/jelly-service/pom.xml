@@ -14,6 +14,7 @@
     <modules>
         <module>jelly-service-goods</module>
         <module>jelly-service-order</module>
+        <module>jelly-service-log</module>
     </modules>
 
     <dependencies>

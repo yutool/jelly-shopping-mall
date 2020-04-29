@@ -1,4 +1,4 @@
-package com.ankoye.jelly.util.model;
+package com.ankoye.jelly.log.model;
 
 import java.util.Date;
 

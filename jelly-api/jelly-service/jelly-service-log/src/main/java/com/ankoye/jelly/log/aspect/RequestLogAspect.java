@@ -1,9 +1,9 @@
-package com.ankoye.jelly.util.aspect;
+package com.ankoye.jelly.log.aspect;
 
 import com.ankoye.jelly.util.IpUtils;
-import com.ankoye.jelly.util.annotation.LogAnnotation;
-import com.ankoye.jelly.util.constant.LogType;
-import com.ankoye.jelly.util.model.Log;
+import com.ankoye.jelly.log.annotation.LogAnnotation;
+import com.ankoye.jelly.log.constant.LogType;
+import com.ankoye.jelly.log.model.Log;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -26,12 +26,13 @@ public class RequestLogAspect {
 
     Logger log = LoggerFactory.getLogger(RequestLogAspect.class);
 
-    @Pointcut("@annotation(com.ankoye.jelly.util.annotation.LogAnnotation)")
+    @Pointcut("@annotation(com.ankoye.jelly.log.annotation.LogAnnotation)")
     public void logPointCut() {
     }
 
     @Around("logPointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
+        System.out.println("aaa");
         long beginTime = System.currentTimeMillis();
         // 获取注解
         MethodSignature signature = (MethodSignature) point.getSignature();

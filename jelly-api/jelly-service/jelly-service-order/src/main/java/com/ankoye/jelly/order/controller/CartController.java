@@ -1,6 +1,7 @@
 package com.ankoye.jelly.order.controller;
 
 import com.ankoye.jelly.base.result.Result;
+import com.ankoye.jelly.log.annotation.LogAnnotation;
 import com.ankoye.jelly.order.domian.Cart;
 import com.ankoye.jelly.order.model.CartDto;
 import com.ankoye.jelly.order.service.CartService;
@@ -20,6 +21,7 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
+    @LogAnnotation(module = "购物车", operation = "添加购物车")
     @PostMapping
     public Result addCart(@RequestBody Cart cart) {
         cartService.addCart(cart);

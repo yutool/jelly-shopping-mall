@@ -15,6 +15,12 @@
         <!-- 导入本地依赖 -->
         <dependency>
             <groupId>com.ankoye.jelly</groupId>
+            <artifactId>jelly-service-log</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ankoye.jelly</groupId>
             <artifactId>jelly-service-pay-api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
@@ -80,6 +86,7 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
+
 
     </dependencies>
 

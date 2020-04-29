@@ -60,7 +60,7 @@ export default class Pay extends Vue {
           this.$log.info('订单状态：', '支付成功')
           window.clearInterval(timer)
           this.$router.push({name: 'pay_success', params: { order: res.data }})
-        } else if(res.data.status === 2) {  // 2表示支付失败了
+        } else if (res.data.status === 2) {  // 2表示支付失败了
           this.$log.info('订单状态：', '支付失败')
           window.clearInterval(timer)
           this.$router.push({name: 'pay_fail', params: { order: res.data }})
