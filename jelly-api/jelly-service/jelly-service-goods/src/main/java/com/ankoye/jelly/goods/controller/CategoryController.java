@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/category")
+@RequestMapping("/v1/category")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
@@ -19,18 +19,18 @@ public class CategoryController {
     @GetMapping("/root")
     public Result getRootCategory() {
         Map<String, List<Category>> categoryMap = categoryService.getRootCategory();
-        return new Result<>().success(categoryMap);
+        return Result.success(categoryMap);
     }
 
     @GetMapping("/second/{id}")
     public Result getSecondCategory(@PathVariable Integer id) {
         Map<String, List<Category>> categoryMap = categoryService.getSecondCategory(id);
-        return new Result<>().success(categoryMap);
+        return Result.success(categoryMap);
     }
 
     @GetMapping("/three/{id}")
     public Result getThreeCategory(@PathVariable Integer id) {
         List<Category> categoryMap = categoryService.getThreeCategory(id);
-        return new Result<>().success(categoryMap);
+        return Result.success(categoryMap);
     }
 }

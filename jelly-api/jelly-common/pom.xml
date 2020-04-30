@@ -15,6 +15,7 @@
         <module>jelly-common-mybatis-generator</module>
         <module>jelly-common-base</module>
         <module>jelly-common-util</module>
+        <module>jelly-common-log</module>
     </modules>
 
 

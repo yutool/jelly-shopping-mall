@@ -2,6 +2,7 @@ package com.ankoye.jelly.order.model;
 
 import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.domian.OrderItem;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Converter;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -22,8 +23,13 @@ public class OrderDto {
 
     private Long payMoney;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date updateTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date payTime;
 
     private Integer addressId;
@@ -34,7 +40,7 @@ public class OrderDto {
 
     private String remark;
 
-    private Byte status;
+    private Integer status;
 
     private List<OrderItem> orderItem;
 

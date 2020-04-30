@@ -1,7 +1,8 @@
 package com.ankoye.jelly.order.controller;
 
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.log.annotation.LogAnnotation;
+import com.ankoye.jelly.log.annotation.Logger;
+import com.ankoye.jelly.log.constant.LogType;
 import com.ankoye.jelly.order.domian.Cart;
 import com.ankoye.jelly.order.model.CartDto;
 import com.ankoye.jelly.order.service.CartService;
@@ -14,23 +15,24 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/cart")
+@RequestMapping("/v1/cart")
 @Slf4j
 public class CartController {
 
     @Autowired
     private CartService cartService;
 
-    @LogAnnotation(module = "购物车", operation = "添加购物车")
+    @Logger(module = "购物车", operation = "添加购物车")
     @PostMapping
-    public Result addCart(@RequestBody Cart cart) {
+    public Result add(@RequestBody Cart cart) {
         cartService.addCart(cart);
         return Result.success();
     }
 
+    @Logger(module = "购物车", operation = "获取购物车", exclude = {LogType.RESPONSE, LogType.REQUEST})
     @GetMapping("/{id}")
-    public Result<List<CartDto>> getCartList(@PathVariable String id) {
+    public Result findList(@PathVariable String id) {
         List<CartDto> carts = cartService.getCartList(id);
-        return new Result<List<CartDto>>().success(carts);
+        return Result.success(carts);
     }
 }

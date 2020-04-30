@@ -1,0 +1,37 @@
+spring:
+  cloud:
+    # 网关配置
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 开启从注册中心动态创建路由的功能，利用微服务名称进行路由
+      globalcors:
+        cors-configurations:
+          '[/**]':              # 匹配所有请求
+            allowedOrigins: "*" # 跨域处理 允许所有的域
+            allowedMethods:     # 支持的方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      routes:
+          # 商品微服务路由
+        - id: jelly_goods_route
+          uri: lb://jelly-goods-serve
+          predicates: # 断言
+            - Path=/api/v1/spu/**,/api/v1/category/**
+          filters:
+            - StripPrefix=1   # 去掉第一个路径(/api)
+            # 测试 令牌桶限流
+            - name: RequestRateLimiter # 请求数限流，局部过滤器，名称不能随便写
+              args:
+                key-resolver: "#{@ipKeyResolver}"   # ip
+                redis-rate-limiter.replenishRate: 10 # 每秒10个
+                redis-rate-limiter.burstCapacity: 50 # 最多50个
+        # 订单微服务路由
+        - id: jelly_order_route
+          uri: lb://jelly-order-serve
+          predicates:
+            - Path=/api/v1/cart/**,/api/v1/order/**,/api/v1/pay/**
+          filters:
+            - StripPrefix=1

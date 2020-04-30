@@ -15,6 +15,12 @@
         <!-- 导入本项目依赖 -->
         <dependency>
             <groupId>com.ankoye.jelly</groupId>
+            <artifactId>jelly-common-log</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ankoye.jelly</groupId>
             <artifactId>jelly-service-goods-api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
@@ -30,6 +36,18 @@
             <artifactId>jelly-common-util</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- spring cloud zookeeper -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
         </dependency>
 
         <!-- dubbo -->

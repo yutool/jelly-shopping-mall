@@ -12,6 +12,7 @@ import com.ankoye.jelly.order.service.OrderService;
 import com.ankoye.jelly.pay.service.WXPayService;
 import com.ankoye.jelly.util.IdUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -114,8 +116,8 @@ public class OrderServiceImpl implements OrderService {
             wxPayService.closeOrder(order.getId());
 
             // 3 - 获取订单的商品，解冻库存
-            List<OrderItem> orderItem = orderItemMapper.selectList(
-                    new QueryWrapper<OrderItem>().eq("order_id", id)
+            List<OrderItem> orderItem = orderItemMapper.selectList(new QueryWrapper<OrderItem>()
+                    .eq("order_id", id)
             );
             for (OrderItem item : orderItem) {
                 skuService.unfreezeScore(item.getSkuId(), item.getNum());
@@ -124,4 +126,34 @@ public class OrderServiceImpl implements OrderService {
         return 0;
     }
 
+    @Override
+    public List<OrderDto> getByUserId(String id) {
+        List<OrderDto> result = new ArrayList<>();
+        // 获取用户所有订单
+        List<Order> orders = orderMapper.selectList(new QueryWrapper<Order>()
+                .eq("user_id", id)
+        );
+        // 获取订单对应的商品
+        for (Order order : orders) {
+            OrderDto orderDto = new OrderDto().convertFor(order);
+            List<OrderItem> items = orderItemMapper.selectList(new QueryWrapper<OrderItem>()
+                .eq("order_id", order.getId())
+            );
+            orderDto.setOrderItem(items);
+            result.add(orderDto);
+        }
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public int deleteById(String id) {
+        // 删除订单项
+        orderItemMapper.delete(new UpdateWrapper<OrderItem>()
+            .eq("order_id", id)
+        );
+        // 删除订单
+        orderMapper.deleteById(id);
+        return 0;
+    }
 }

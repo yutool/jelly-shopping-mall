@@ -3,6 +3,8 @@ package com.ankoye.jelly.order.service;
 import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.model.OrderDto;
 
+import java.util.List;
+
 public interface OrderService {
     /**
      * 查询订单信息
@@ -29,4 +31,16 @@ public interface OrderService {
      * 超时未支付，删除订单，解冻库存
      */
     int deleteOrder(String id);
+
+    /**
+     * 获取用户所有订单
+     * @param id 用户id
+     */
+    List<OrderDto> getByUserId(String id);
+
+    /**
+     * 删除订单
+     * @param id 订单id
+     */
+    int deleteById(String id);
 }

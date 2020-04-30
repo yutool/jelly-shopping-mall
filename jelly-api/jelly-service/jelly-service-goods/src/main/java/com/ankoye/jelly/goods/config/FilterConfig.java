@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FilterConfig {
-//    @Bean
-//    public RequestFilter requestFilter() {
-//        return new RequestFilter();
-//    }
+    @Bean
+    public RequestFilter requestFilter() {
+        return new RequestFilter();
+    }
 }

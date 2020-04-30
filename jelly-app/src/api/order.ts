@@ -7,6 +7,13 @@ export function getOrder(id: string) {
   })
 }
 
+export function getUserOrder(id: string) {
+  return request({
+    url: `oApi/v1/order/user/${id}`,
+    method: 'get'
+  })
+}
+
 export function createOrder(data: any) {
   return request({
     url: 'oApi/v1/order/create',
@@ -20,5 +27,12 @@ export function weixinPay(data: any) {
     url: 'oApi/v1/pay/wx/native',
     method: 'post',
     data: JSON.stringify(data)
+  })
+}
+
+export function deleteOrder(id: string) {
+  return request({
+    url: `oApi/v1/order/${id}`,
+    method: 'delete',
   })
 }

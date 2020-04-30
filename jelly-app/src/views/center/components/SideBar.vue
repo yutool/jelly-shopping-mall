@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link to="/center/info/1">
+    <router-link :to="'/center/info/'+userId">
       <el-avatar icon="el-icon-user-solid"></el-avatar>
       username
     </router-link>
@@ -8,7 +8,7 @@
       <li>
         <div>订单中心</div>
         <ul>
-          <li> <router-link to="/center/order/1">我的订单</router-link> </li>
+          <li> <router-link :to="'/center/order/'+userId">我的订单</router-link> </li>
           <li>团购订单</li>
           <li>退款退货</li>
           <li>订单回收站</li>
@@ -38,9 +38,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 
 @Component
 export default class SideBar extends Vue {
+  @Getter('userId') private userId!: string
 }
 </script>
 

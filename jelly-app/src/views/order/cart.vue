@@ -66,7 +66,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { getCartList } from '@/api/cart'
+import { getCart } from '@/api/cart'
 
 @Component
 export default class Cart extends Vue {
@@ -152,15 +152,20 @@ export default class Cart extends Vue {
       params: { order }
     })
   }
-  
-  private mounted() {
-    getCartList(this.userId).then((res: any) => {
+  // 获取购物车
+  private getCart() {
+    const userId = this.$route.params.id
+    getCart(userId).then((res: any) => {
       this.cartList = res.data
       for (const cart of this.cartList) {
         cart.sku = JSON.parse(cart.sku)
       }
       this.$log.info('查询购物车', this.cartList)
     })
+  }
+  
+  private mounted() {
+    this.getCart()
   }
 }
 </script>

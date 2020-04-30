@@ -8,7 +8,7 @@ export function addCart(data: any) {
   })
 }
 
-export function getCartList(id: string) {
+export function getCart(id: string) {
   return request({
     url: `oApi/v1/cart/${id}`,
     method: 'get'

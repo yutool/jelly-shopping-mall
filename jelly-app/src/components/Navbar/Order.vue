@@ -1,7 +1,7 @@
 <template>
   <el-dropdown>
     <div class="el-dropdown-link" style="">
-      <router-link to="/center/order/1" class="nav-router-link">
+      <router-link :to="'/center/order/'+userId" class="nav-router-link">
         我的订单
       </router-link>
     </div>
@@ -17,10 +17,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 
 @Component
 export default class UploadDrawer extends Vue {
+  @Getter('userId') private userId!: string
 }
 </script>
 

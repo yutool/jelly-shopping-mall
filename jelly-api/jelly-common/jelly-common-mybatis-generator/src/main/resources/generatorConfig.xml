@@ -62,12 +62,12 @@
 
 
         <!-- 要生成哪些表 -->
-        <table tableName="tb_shopping_trolley" domainObjectName="ShoppingTrolley" enableCountByExample="false" enableUpdateByExample="false"
+        <table tableName="tb_user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table tableName="tb_order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table tableName="tb_order_product" domainObjectName="OrderProduct" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+<!--        <table tableName="tb_order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
+<!--        <table tableName="tb_order_product" domainObjectName="OrderProduct" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
 <!--        <table tableName="tb_category" domainObjectName="Category" enableCountByExample="false" enableUpdateByExample="false"-->
 <!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
 <!--        <table tableName="tb_category" domainObjectName="Category" enableCountByExample="false" enableUpdateByExample="false"-->

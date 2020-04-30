@@ -2,10 +2,10 @@ package com.ankoye.jelly.order.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.ankoye.jelly.base.result.Result;
+import com.ankoye.jelly.log.annotation.Logger;
 import com.ankoye.jelly.pay.model.Order;
 import com.ankoye.jelly.pay.service.WXPayService;
 import com.github.wxpay.sdk.WXPayUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,10 +17,9 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-@Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/pay/wx")
+@RequestMapping("/v1/pay/wx")
 /**
  * 暂时先放在Order服务，未来抽取成一个微服务
  */
@@ -36,21 +35,22 @@ public class WXPayController {
     /**
      * 二维码支付
      */
+    @Logger(module = "微信支付", operation = "申请支付")
     @PostMapping("/native")
-    public Result<Map> nativePay(@RequestBody Order order) {
-        Map resultMap = wxPayService.nativePay(order);
-        return new Result<Map>().success(resultMap);
+    public Result nativePay(@RequestBody Order order) {
+        Map<String, String> resultMap = wxPayService.nativePay(order);
+        return Result.success(resultMap);
     }
 
     /**
      * 支付回调
      * 需要暴露给微信服务器
      */
+    @Logger(module = "微信支付", operation = "支付回调")
     @PostMapping("/notify")
     public String payNotify(HttpServletRequest request) {
         try(ServletInputStream is = request.getInputStream();
             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            log.info("回调成功");
             byte[] buffer = new byte[1024];
             int len = 0;
             while((len = is.read(buffer)) != -1) {
@@ -74,9 +74,9 @@ public class WXPayController {
      * 调用关单或撤销接口API之前，需确认支付状态。
      */
     @GetMapping("/query/{id}")
-    public Result<Map> queryOrder(@PathVariable String id) {
-        Map resultMap = wxPayService.queryOrder(id);
-        return new Result<Map>().success(resultMap);
+    public Result queryOrder(@PathVariable String id) {
+        Map<String, String> resultMap = wxPayService.queryOrder(id);
+        return Result.success(resultMap);
     }
 
     /**
@@ -85,9 +85,9 @@ public class WXPayController {
      * 系统下单后，用户支付超时，系统退出不再受理，避免用户继续，请调用关单接口。
      */
     @GetMapping("/close/{id}")
-    public Result<Map> closeOrder(@PathVariable String id) {
-        Map resultMap = wxPayService.closeOrder(id);
-        return new Result<Map>().success(resultMap);
+    public Result closeOrder(@PathVariable String id) {
+        Map<String, String> resultMap = wxPayService.closeOrder(id);
+        return Result.success(resultMap);
     }
 
     /**

@@ -1,7 +1,7 @@
 <template>
   <el-dropdown>
     <div class="el-dropdown-link" style="">
-      <router-link to="/order/cart/1" class="nav-router-link">
+      <router-link :to="'/order/cart/'+userId" class="nav-router-link">
         购物车
       </router-link>
     </div>
@@ -15,10 +15,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
+import { Getter } from 'vuex-class'
 
 @Component
 export default class History extends Vue {
+  @Getter('userId') private userId!: string
 }
 </script>
 

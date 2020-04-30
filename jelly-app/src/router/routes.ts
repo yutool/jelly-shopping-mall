@@ -10,14 +10,6 @@ const routes = [
     ]
   },
   {
-    path: '/cart',
-    component: () => import('@/views/cart/index.vue'),
-    children: [
-      { path: '/', redirect: 'list' },
-      { path: 'list/:id', component: () => import('@/views/cart/list.vue') },
-    ]
-  },
-  {
     path: '/order',
     component: () => import('@/views/order/index.vue'),
     children: [
