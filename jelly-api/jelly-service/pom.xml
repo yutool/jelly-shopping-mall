@@ -18,6 +18,12 @@
     </modules>
 
     <dependencies>
+        <!-- 已包含spring security +  spring security oauth2 + jwt -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+
         <!-- web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

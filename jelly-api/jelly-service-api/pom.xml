@@ -18,16 +18,29 @@
     </modules>
 
     <dependencies>
+        <dependency>
+            <groupId>com.ankoye.jelly</groupId>
+            <artifactId>jelly-common-base</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--openfeign-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
         <!-- mybatis-plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
+
         <!-- pagehelper -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
