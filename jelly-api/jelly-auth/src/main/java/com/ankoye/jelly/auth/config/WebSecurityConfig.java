@@ -1,7 +1,5 @@
 package com.ankoye.jelly.auth.config;
 
-import com.ankoye.jelly.auth.service.impl.UserDetailServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,8 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserDetailServiceImpl userDetailsService;
 
     /**
      * 忽略安全拦截的URL
@@ -28,26 +24,6 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/oauth/login", "/oauth/logout",
                 "/css/**","/data/**","/fonts/**","/img/**","/js/**");
     }
-
-    /**
-     * 创建授权管理认证对象
-     */
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    /**
-     * 获取用户
-     */
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//        super.configure(auth);
-////        auth.inMemoryAuthentication()
-////                .withUser("admin").password(passwordEncoder().encode("123456")).roles("admin");
-//    }
 
     /**
      * 配置拦截
@@ -64,6 +40,15 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
+     * 创建授权管理认证对象
+     */
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    /**
      * 采用BCryptPasswordEncoder对密码进行编码
      */
     @Bean
@@ -71,7 +56,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    public static void main(String[] args) {
-        System.out.println(new BCryptPasswordEncoder().encode("123456"));
-    }
+//    public static void main(String[] args) {
+//        System.out.println(new BCryptPasswordEncoder().encode("123456"));
+//    }
 }

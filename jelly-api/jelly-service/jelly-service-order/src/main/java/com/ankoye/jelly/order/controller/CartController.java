@@ -1,8 +1,8 @@
 package com.ankoye.jelly.order.controller;
 
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.log.annotation.Logger;
-import com.ankoye.jelly.log.constant.LogType;
+import com.ankoye.jelly.web.log.annotation.Logger;
+import com.ankoye.jelly.web.log.constant.LogType;
 import com.ankoye.jelly.order.domian.Cart;
 import com.ankoye.jelly.order.model.CartDto;
 import com.ankoye.jelly.order.service.CartService;

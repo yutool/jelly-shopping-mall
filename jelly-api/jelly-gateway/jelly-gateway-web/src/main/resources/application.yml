@@ -15,6 +15,13 @@ spring:
               - PUT
               - DELETE
       routes:
+        # 认证微服务路由
+        - id: jelly_auth_route
+          uri: lb://jelly-auth
+          predicates:
+            - Path=/api/oauth/**
+          filters:
+            - StripPrefix=1
           # 商品微服务路由
         - id: jelly_goods_route
           uri: lb://jelly-goods-serve
@@ -33,5 +40,12 @@ spring:
           uri: lb://jelly-order-serve
           predicates:
             - Path=/api/v1/cart/**,/api/v1/order/**,/api/v1/pay/**
+          filters:
+            - StripPrefix=1
+        # 用户微服务路由
+        - id: jelly_user_route
+          uri: lb://jelly-user-serve
+          predicates:
+            - Path=/api/v1/user/**
           filters:
             - StripPrefix=1

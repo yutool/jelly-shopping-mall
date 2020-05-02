@@ -1,6 +1,5 @@
-package com.ankoye.jelly.auth.config;
+package com.ankoye.jelly.auth.model;
 
-import com.ankoye.jelly.auth.model.UserJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -13,6 +12,9 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * 封装Token的信息
+ */
 @Component
 public class CustomUserAuthenticationConverter extends DefaultUserAuthenticationConverter {
 
@@ -22,7 +24,7 @@ public class CustomUserAuthenticationConverter extends DefaultUserAuthentication
 
     @Override
     public Map<String, ?> convertUserAuthentication(Authentication authentication) {
-        LinkedHashMap response = new LinkedHashMap();
+        LinkedHashMap<String, Object> response = new LinkedHashMap<>();
         String name = authentication.getName();
         response.put("username", name);
 
@@ -35,8 +37,9 @@ public class CustomUserAuthenticationConverter extends DefaultUserAuthentication
             UserDetails userDetails = userDetailsService.loadUserByUsername(name);
             userJwt = (UserJwt) userDetails;
         }
-        response.put("name", userJwt.getName());
         response.put("id", userJwt.getId());
+        response.put("account", userJwt.getAccount());
+
         if (authentication.getAuthorities() != null && !authentication.getAuthorities().isEmpty()) {
             response.put("authorities", AuthorityUtils.authorityListToSet(authentication.getAuthorities()));
         }

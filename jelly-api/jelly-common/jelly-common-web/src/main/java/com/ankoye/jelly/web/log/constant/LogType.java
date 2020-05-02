@@ -1,4 +1,4 @@
-package com.ankoye.jelly.log.constant;
+package com.ankoye.jelly.web.log.constant;
 
 public enum LogType {
     /**

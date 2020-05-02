@@ -1,5 +1,6 @@
 package com.ankoye.jelly.auth.config;
 
+import com.ankoye.jelly.auth.model.CustomUserAuthenticationConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.bootstrap.encrypt.KeyProperties;
@@ -50,6 +51,7 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        // 从数据库加载
         clients.withClientDetails(clientDetails());
     }
 
@@ -88,7 +90,7 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
                         keyProperties.getKeyStore().getAlias(),                     //证书别名 jelly
                         keyProperties.getKeyStore().getPassword().toCharArray());   //证书密码 jelly.com
         converter.setKeyPair(keyPair);
-        // 配置自定义的CustomUserAuthenticationConverter
+        // 配置自定义的CustomUserAuthenticationConverter，添加token信息
         DefaultAccessTokenConverter accessTokenConverter = (DefaultAccessTokenConverter) converter.getAccessTokenConverter();
         accessTokenConverter.setUserTokenConverter(customUserAuthenticationConverter);
         return converter;

@@ -18,6 +18,12 @@
     </modules>
 
     <dependencies>
+        <!-- spring cloud zookeeper -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+        </dependency>
+
         <!-- 已包含spring security +  spring security oauth2 + jwt -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -26,14 +32,10 @@
 
         <!-- web -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>com.ankoye.jelly</groupId>
+            <artifactId>jelly-common-web</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!--监控-->

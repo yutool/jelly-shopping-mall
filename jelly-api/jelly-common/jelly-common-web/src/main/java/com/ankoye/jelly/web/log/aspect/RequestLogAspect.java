@@ -1,15 +1,15 @@
-package com.ankoye.jelly.goods.aspect;
+package com.ankoye.jelly.web.log.aspect;
 
-import com.ankoye.jelly.log.annotation.Logger;
-import com.ankoye.jelly.log.constant.LogType;
-import com.ankoye.jelly.log.domain.Log;
+import com.ankoye.jelly.web.log.annotation.Logger;
+import com.ankoye.jelly.web.log.constant.LogType;
+import com.ankoye.jelly.web.log.domain.Log;
 import com.ankoye.jelly.util.IpUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,14 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
 
-@Slf4j
 @Aspect
 @Component
 public class RequestLogAspect {
     @Autowired
     HttpServletRequest request;
 
-    @Pointcut("@annotation(com.ankoye.jelly.log.annotation.Logger)")
+    private org.slf4j.Logger log = LoggerFactory.getLogger(RequestLogAspect.class);
+
+    @Pointcut("@annotation(com.ankoye.jelly.web.log.annotation.Logger)")
     public void logPointCut() {
     }
 

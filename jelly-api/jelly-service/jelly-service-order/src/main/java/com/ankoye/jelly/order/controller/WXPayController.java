@@ -2,7 +2,7 @@ package com.ankoye.jelly.order.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.log.annotation.Logger;
+import com.ankoye.jelly.web.log.annotation.Logger;
 import com.ankoye.jelly.pay.model.Order;
 import com.ankoye.jelly.pay.service.WXPayService;
 import com.github.wxpay.sdk.WXPayUtil;

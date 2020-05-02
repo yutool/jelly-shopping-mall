@@ -1,4 +1,4 @@
-package com.ankoye.jelly.log.domain;
+package com.ankoye.jelly.web.log.domain;
 
 import java.util.Date;
 

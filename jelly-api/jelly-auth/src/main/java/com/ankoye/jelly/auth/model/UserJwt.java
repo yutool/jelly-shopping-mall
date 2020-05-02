@@ -6,8 +6,14 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 public class UserJwt extends User {
-    private String id;    //用户ID
-    private String name;  //用户名字
+    private String id;          // 用户ID
+    private String account;     // 账号
+
+    public UserJwt(String id, String account, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this(username, password, authorities);
+        this.id = id;
+        this.account = account;
+    }
 
     public UserJwt(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
@@ -21,11 +27,11 @@ public class UserJwt extends User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getAccount() {
+        return account;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAccount(String account) {
+        this.account = account;
     }
 }

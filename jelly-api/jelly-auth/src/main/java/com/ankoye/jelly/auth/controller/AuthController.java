@@ -36,7 +36,7 @@ public class AuthController {
             throw new RuntimeException("请输入密码");
         }
         // 申请令牌 authtoken
-        AuthToken authToken = authService.login(username, password, clientId, clientSecret);
+        AuthToken authToken = authService.login(username, password, clientId, clientSecret, "password");
 
         // 返回结果
         return Result.success(authToken);
