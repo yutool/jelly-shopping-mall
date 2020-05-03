@@ -13,7 +13,11 @@ import com.ankoye.jelly.pay.service.WXPayService;
 import com.ankoye.jelly.util.IdUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +31,16 @@ import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+    @Value("${order-back-check-topic}")
+    private String orderBackTopic;
+
     @Reference
     private SkuService skuService;
-    @Autowired  // Reference
+    @Reference
     private WXPayService wxPayService;
 
+    @Autowired
+    private RocketMQTemplate rocketMQTemplate;
     @Resource
     private OrderMapper orderMapper;
     @Resource
@@ -63,6 +72,16 @@ public class OrderServiceImpl implements OrderService {
             orderItemMapper.insert(item);
             // 冻结库存
             skuService.freezeScore(item.getSkuId(), item.getNum());
+        }
+
+        // 3 - 发送延迟消息，检查订单状态，发现超时未支付则取消这个订单
+        try {
+            DefaultMQProducer producer = rocketMQTemplate.getProducer();
+            Message msg = new Message(orderBackTopic, "order", orderId.getBytes());
+            msg.setDelayTimeLevel(3);  // 半小时
+            producer.send(msg);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return orderId;
     }
@@ -103,6 +122,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public int deleteOrder(String id) {
         Order order = orderMapper.selectById(id);
         if(order.getStatus().equals(OrderStatus.WAIT_PAY)) {
@@ -111,17 +131,18 @@ public class OrderServiceImpl implements OrderService {
             order.setUpdateTime(new Date());
             orderMapper.updateById(order);
 
-            // 2 - 如果交易已经开启则关闭 - lose if
-            Map<String, String> payResult = wxPayService.queryOrder(id);
-            wxPayService.closeOrder(order.getId());
-
-            // 3 - 获取订单的商品，解冻库存
+            // 2 - 获取订单的商品，解冻库存
             List<OrderItem> orderItem = orderItemMapper.selectList(new QueryWrapper<OrderItem>()
                     .eq("order_id", id)
             );
             for (OrderItem item : orderItem) {
                 skuService.unfreezeScore(item.getSkuId(), item.getNum());
             }
+            System.out.println("Ok");
+            // 3 - 如果交易已经开启则关闭 - lose if
+            Map<String, String> payResult = wxPayService.queryOrder(id);
+            wxPayService.closeOrder(order.getId());
+            System.out.println(payResult);
         }
         return 0;
     }

@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-
 @RocketMQMessageListener(
-        topic = "${pay-wx-notify-topic}",
-        consumerGroup = "pay-wx-group",
-        consumeMode = ConsumeMode.ORDERLY
+        topic = "${pay-notify-topic}",
+        selectorExpression = "wx-order",   // 微信支付普通订单
+        consumerGroup = "pay-notify-group",
+        consumeMode = ConsumeMode.CONCURRENTLY
 )
 @Component
 @Slf4j

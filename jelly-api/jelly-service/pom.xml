@@ -15,6 +15,9 @@
         <module>jelly-service-goods</module>
         <module>jelly-service-order</module>
         <module>jelly-service-user</module>
+        <module>jelly-service-seckill</module>
+        <module>jelly-service-pay</module>
+        <module>jelly-service-file</module>
     </modules>
 
     <dependencies>
@@ -22,6 +25,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+        </dependency>
+
+        <!-- dubbo -->
+        <dependency>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
         </dependency>
 
         <!-- 已包含spring security +  spring security oauth2 + jwt -->

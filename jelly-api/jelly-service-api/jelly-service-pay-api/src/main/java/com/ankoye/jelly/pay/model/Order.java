@@ -13,5 +13,7 @@ public class Order {
 
     private BigDecimal money;
 
+    private Integer type;   // 1 - 普通订单 2 - 秒杀订单
+
     // ...
 }

@@ -1,10 +1,10 @@
-package com.ankoye.jelly.order.controller;
+package com.ankoye.jelly.pay.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.web.log.annotation.Logger;
 import com.ankoye.jelly.pay.model.Order;
 import com.ankoye.jelly.pay.service.WXPayService;
+import com.ankoye.jelly.web.log.annotation.Logger;
 import com.github.wxpay.sdk.WXPayUtil;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +20,8 @@ import java.util.Map;
 @CrossOrigin
 @RestController
 @RequestMapping("/v1/pay/wx")
-/**
- * 暂时先放在Order服务，未来抽取成一个微服务
- */
 public class WXPayController {
-    @Value("${pay-wx-notify-topic}")
+    @Value("${pay-notify-topic}")
     private String payNotifyTopic;
 
     @Autowired
@@ -38,7 +35,13 @@ public class WXPayController {
     @Logger(module = "微信支付", operation = "申请支付")
     @PostMapping("/native")
     public Result nativePay(@RequestBody Order order) {
-        Map<String, String> resultMap = wxPayService.nativePay(order);
+        String attach = null;
+        if(order.getType() == 1) {          // 普通订单
+            attach = "wx-order";
+        } else if(order.getType() == 2) {   // 秒杀订单
+            attach = "wx-seckill-order";
+        }
+        Map<String, String> resultMap = wxPayService.nativePay(order, attach);
         return Result.success(resultMap);
     }
 
@@ -58,8 +61,9 @@ public class WXPayController {
             }
             String resultXml = new String(baos.toByteArray(), StandardCharsets.UTF_8);
             Map<String, String> resultMap = WXPayUtil.xmlToMap(resultXml);
+            String tag = resultMap.get("attach"); // 获取消息主题
             // 发送MQ，处理订单状态
-            rocketMQTemplate.convertAndSend(payNotifyTopic, JSON.toJSONString(resultMap));
+            rocketMQTemplate.convertAndSend(payNotifyTopic+":"+tag, JSON.toJSONString(resultMap));
         } catch (Exception e) {
             e.printStackTrace();
         }

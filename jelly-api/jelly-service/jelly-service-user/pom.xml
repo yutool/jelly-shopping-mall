@@ -28,11 +28,5 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- dubbo -->
-        <dependency>
-            <groupId>com.alibaba.boot</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-        </dependency>
-
     </dependencies>
 </project>

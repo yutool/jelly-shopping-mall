@@ -1,4 +1,4 @@
-package com.ankoye.jelly.order.config;
+package com.ankoye.jelly.pay.config;
 
 import com.github.wxpay.sdk.IWXPayDomain;
 import com.github.wxpay.sdk.WXPay;
@@ -135,7 +135,7 @@ public class WXPayAppConfig extends WXPayConfig {
             }
 
             public DomainInfo getDomain(WXPayConfig config) {
-                return new IWXPayDomain.DomainInfo(WXPayConstants.DOMAIN_API, true);
+                return new DomainInfo(WXPayConstants.DOMAIN_API, true);
             }
         };
         return iwxPayDomain;
