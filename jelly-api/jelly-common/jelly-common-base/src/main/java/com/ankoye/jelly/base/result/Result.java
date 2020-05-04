@@ -47,7 +47,7 @@ public class Result implements Serializable {
         return result;
     }
 
-    private void setResultCode(ResultCode code) {
+    public void setResultCode(ResultCode code) {
         this.code = code.code();
         this.message = code.message();
     }

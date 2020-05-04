@@ -33,4 +33,18 @@ public class SkuServiceImpl implements SkuService {
     public int unfreezeScore(String id, Integer num) {
         return skuMapper.unfreezeScore(id, num);
     }
+
+    @Override
+    //@Hmily(confirmMethod = "confirmNested", cancelMethod = "cancelNested")
+    public void abc() {
+        System.out.println("try abc");
+    }
+    public void confirmNested() {
+        System.out.println("confirmNested");
+    }
+
+    public void cancelNested() {
+        System.out.println("cancelNested");
+    }
+
 }

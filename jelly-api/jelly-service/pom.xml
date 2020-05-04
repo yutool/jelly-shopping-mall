@@ -33,12 +33,6 @@
             <artifactId>dubbo-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- 已包含spring security +  spring security oauth2 + jwt -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
-
         <!-- web -->
         <dependency>
             <groupId>com.ankoye.jelly</groupId>
@@ -60,6 +54,19 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- hmily -->
+        <dependency>
+            <groupId>org.dromara</groupId>
+            <artifactId>hmily-spring-boot-starter-dubbo</artifactId>
+            <version>2.0.6-RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>mongo-java-driver</artifactId>
+                    <groupId>org.mongodb</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- 热部署 可能导致dubbo错误，测试dubbo时选择Rerun -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -67,6 +74,5 @@
             <scope>runtime</scope>
         </dependency>
     </dependencies>
-
 
 </project>

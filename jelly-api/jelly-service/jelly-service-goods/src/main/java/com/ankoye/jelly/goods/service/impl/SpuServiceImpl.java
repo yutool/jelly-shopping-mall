@@ -1,5 +1,6 @@
 package com.ankoye.jelly.goods.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.ankoye.jelly.base.constant.GoodsStatus;
 import com.ankoye.jelly.goods.dao.SkuMapper;
 import com.ankoye.jelly.goods.dao.SpuMapper;
@@ -12,15 +13,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
-@Service
 @Slf4j
+@Service
+@Component
 public class SpuServiceImpl implements SpuService {
     @Resource
     private SpuMapper spuMapper;
@@ -69,5 +71,19 @@ public class SpuServiceImpl implements SpuService {
         Spu spu = spuMapper.selectById(id);
         List<Sku> skuList = skuMapper.selectList(new QueryWrapper<Sku>().eq("spu_id", id));
         return new Goods(spu, skuList);
+    }
+
+    @Override
+    //@Hmily(confirmMethod = "confirmNested", cancelMethod = "cancelNested")
+    public void bdc() {
+        //CastException.cast("aa");
+        System.out.println("try bdc");
+    }
+    public void confirmNested() {
+        System.out.println("confirmNested");
+    }
+
+    public void cancelNested() {
+        System.out.println("cancelNested");
     }
 }

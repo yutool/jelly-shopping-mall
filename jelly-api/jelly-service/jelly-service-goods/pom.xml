@@ -12,21 +12,6 @@
     <artifactId>jelly-service-goods</artifactId>
 
     <dependencies>
-        <!-- 公共包依赖 -->
-        <dependency>
-            <groupId>com.ankoye.jelly</groupId>
-            <artifactId>jelly-common-base</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ankoye.jelly</groupId>
-            <artifactId>jelly-common-util</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- api依赖 -->
         <dependency>
             <groupId>com.ankoye.jelly</groupId>

@@ -19,4 +19,7 @@ public interface SpuService {
      * 获取商品
      */
     Goods getGoodsById(String id);
+
+    //@Hmily
+    void bdc();
 }

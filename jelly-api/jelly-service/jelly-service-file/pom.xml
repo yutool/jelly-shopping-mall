@@ -11,13 +11,6 @@
 
     <artifactId>jelly-service-file</artifactId>
     <dependencies>
-        <!-- 公共依赖 -->
-        <dependency>
-            <groupId>com.ankoye.jelly</groupId>
-            <artifactId>jelly-common-base</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
 
         <!-- api 依赖 -->
         <dependency>

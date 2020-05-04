@@ -11,12 +11,6 @@
 
     <artifactId>jelly-service-seckill</artifactId>
     <dependencies>
-        <!-- 公共包 -->
-        <dependency>
-            <groupId>com.ankoye.jelly</groupId>
-            <artifactId>jelly-common-util</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <!-- api 依赖 -->
         <dependency>

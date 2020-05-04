@@ -3,6 +3,7 @@ package com.ankoye.jelly.order.service.impl;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ankoye.jelly.base.constant.OrderStatus;
 import com.ankoye.jelly.goods.service.SkuService;
+import com.ankoye.jelly.goods.service.SpuService;
 import com.ankoye.jelly.order.dao.OrderItemMapper;
 import com.ankoye.jelly.order.dao.OrderMapper;
 import com.ankoye.jelly.order.domian.Order;
@@ -16,6 +17,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.dromara.hmily.annotation.Hmily;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Reference
     private SkuService skuService;
+    @Reference
+    private SpuService spuService;
     @Reference
     private WXPayService wxPayService;
 
@@ -177,4 +181,19 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.deleteById(id);
         return 0;
     }
+
+    @Override
+    @Hmily(confirmMethod = "confirm", cancelMethod = "cancel")
+    public void test() {
+        skuService.abc();
+        spuService.bdc();
+    }
+
+    public void confirm() {
+        System.out.println("confirm");
+    }
+    public void cancel() {
+        System.out.println("cancel");
+    }
+
 }

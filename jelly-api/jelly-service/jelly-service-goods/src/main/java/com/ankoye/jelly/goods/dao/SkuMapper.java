@@ -12,7 +12,7 @@ public interface SkuMapper extends BaseMapper<Sku> {
      * 冻结库存
      */
     @Update("UPDATE tb_sku SET num = num-#{num}, freeze_num=freeze_num+#{num} " +
-            " WHERE id = #{id}")
+            " WHERE id = #{id} and num >= #{num}")
     int freezeScore(@Param("id") String id, @Param("num") Integer num);
 
     /**

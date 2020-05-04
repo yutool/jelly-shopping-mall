@@ -1,6 +1,7 @@
 package com.ankoye.jelly.file.util;
 
 import com.ankoye.jelly.file.model.FastDFSFile;
+import com.ankoye.jelly.web.exception.CastException;
 import lombok.extern.slf4j.Slf4j;
 import org.csource.common.NameValuePair;
 import org.csource.fastdfs.*;
@@ -21,7 +22,7 @@ public class FastDFSClient {
             String filePath = new ClassPathResource("dfs_client.conf").getFile().getAbsolutePath();
             ClientGlobal.init(filePath);
         } catch (Exception e) {
-            log.error("FastDFS Client Init Fail!",e);
+            log.error("FastDFS Client Init Fail!", e);
         }
     }
 
@@ -44,16 +45,12 @@ public class FastDFSClient {
             // 文件上传
             uploadResults = storageClient.upload_file(file.getContent(), file.getExt(), meta_list);
         } catch (Exception e) {
-            log.error("Exception when uploading the file:" + file.getName(), e);
+            CastException.cast("Exception when uploading the file:" + file.getName() + e);
         }
 
-        if (uploadResults == null && storageClient != null) {
-            log.error("upload file fail, error code:" + storageClient.getErrorCode());
+        if (uploadResults == null) {
+            CastException.cast("upload file fail, error code:" + storageClient.getErrorCode());
         }
-        // 获取组名
-        String groupName = uploadResults[0];
-        // 获取文件存储路径
-        String remoteFileName = uploadResults[1];
         return uploadResults;
     }
 
@@ -67,7 +64,7 @@ public class FastDFSClient {
             StorageClient storageClient = getTrackerClient();
             return storageClient.get_file_info(groupName, remoteFileName);
         } catch (Exception e) {
-            log.error("Exception: Get File from Fast DFS failed", e);
+            CastException.cast("Get File from Fast DFS failed");
         }
         return null;
     }
@@ -82,24 +79,26 @@ public class FastDFSClient {
 
             // 下载文件
             byte[] fileByte = storageClient.download_file(groupName, remoteFileName);
-            InputStream ins = new ByteArrayInputStream(fileByte);
-            return ins;
+            return new ByteArrayInputStream(fileByte);
         } catch (Exception e) {
-            log.error("Exception: Get File from Fast DFS failed", e);
+            CastException.cast("文件不存在");
+            return null;
         }
-        return null;
     }
 
     /**
      * 文件删除
      */
-    public static void deleteFile(String groupName, String remoteFileName)
-            throws Exception {
-        // 创建StorageClient
-        StorageClient storageClient = getTrackerClient();
+    public static void deleteFile(String groupName, String remoteFileName) {
+        try {
+            // 创建StorageClient
+            StorageClient storageClient = getTrackerClient();
 
-        // 删除文件
-        int i = storageClient.delete_file(groupName, remoteFileName);
+            // 删除文件
+            int i = storageClient.delete_file(groupName, remoteFileName);
+        } catch (Exception e) {
+            CastException.cast("文件删除失败");
+        }
     }
 
     /**
@@ -126,7 +125,7 @@ public class FastDFSClient {
     /**
      * 获取Tracker服务地址
      */
-    public static String getTrackerUrl() throws IOException {
+    public static String getTrackerUrl() {
         return "http://" + getTrackerServer().getInetSocketAddress().getHostString()
                 + ":" + ClientGlobal.getG_tracker_http_port() + "/";
     }
@@ -134,7 +133,7 @@ public class FastDFSClient {
     /**
      * 获取Storage客户端
      */
-    private static StorageClient getTrackerClient() throws IOException {
+    private static StorageClient getTrackerClient() {
         TrackerServer trackerServer = getTrackerServer();
         return new StorageClient(trackerServer, null);
     }
@@ -142,8 +141,13 @@ public class FastDFSClient {
     /**
      * 获取Tracker
      */
-    private static TrackerServer getTrackerServer() throws IOException {
+    private static TrackerServer getTrackerServer() {
         TrackerClient trackerClient = new TrackerClient();
-        return trackerClient.getConnection();
+        try {
+            return trackerClient.getConnection();
+        } catch (IOException e) {
+            CastException.cast("连接 TrackerClient 超时");
+            return null;
+        }
     }
 }

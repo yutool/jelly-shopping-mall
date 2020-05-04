@@ -23,6 +23,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.cloud.version>Hoxton.SR1</spring.cloud.version>
+        <spring.cloud.alibaba.version>2.1.0.RELEASE</spring.cloud.alibaba.version>
         <spring.boot.version>2.2.6.RELEASE</spring.boot.version>
         <dubbo-version>0.2.0</dubbo-version>
         <junit.version>4.12</junit.version>
@@ -40,6 +41,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--Spring cloud alibaba 2.1.0.RELEASE-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!--Spring cloud Hoxton.SR1-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>

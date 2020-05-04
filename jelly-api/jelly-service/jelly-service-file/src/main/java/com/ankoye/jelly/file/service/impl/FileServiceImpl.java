@@ -8,17 +8,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @Service
 @Component
 public class FileServiceImpl implements FileService {
+
     public String upload(MultipartFile file) {
         try {
-            // 判断文件是否存在
-            if (file == null){
-                throw new RuntimeException("文件不存在");
-            }
-            System.out.println();
-
             // 获取文件的完整名称
             String originalFilename = file.getOriginalFilename();
             if (StringUtils.isEmpty(originalFilename)){
@@ -45,4 +43,14 @@ public class FileServiceImpl implements FileService {
         }
         return null;
     }
+
+    public List<String> upload(MultipartFile[] files) {
+        List<String> urls = new LinkedList<>();
+        for (MultipartFile file : files) {
+            String url = upload(file);
+            urls.add(url);
+        }
+        return urls;
+    }
+
 }

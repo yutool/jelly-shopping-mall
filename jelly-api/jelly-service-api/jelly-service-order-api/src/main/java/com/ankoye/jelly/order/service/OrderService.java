@@ -2,6 +2,7 @@ package com.ankoye.jelly.order.service;
 
 import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.model.OrderDto;
+import org.dromara.hmily.annotation.Hmily;
 
 import java.util.List;
 
@@ -43,4 +44,7 @@ public interface OrderService {
      * @param id 订单id
      */
     int deleteById(String id);
+
+    @Hmily
+    void test();
 }

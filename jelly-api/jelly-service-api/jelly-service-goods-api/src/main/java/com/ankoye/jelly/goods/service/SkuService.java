@@ -1,6 +1,7 @@
 package com.ankoye.jelly.goods.service;
 
 import com.ankoye.jelly.goods.domain.Sku;
+import org.dromara.hmily.annotation.Hmily;
 
 public interface SkuService {
     /**
@@ -23,4 +24,8 @@ public interface SkuService {
      * 解冻库存
      */
     int unfreezeScore(String id, Integer num);
+
+    //@Hmily
+    void abc();
+
 }
