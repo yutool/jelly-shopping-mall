@@ -25,7 +25,7 @@ public interface SkuService {
      */
     int unfreezeScore(String id, Integer num);
 
-    //@Hmily
+    @Hmily
     void abc();
 
 }

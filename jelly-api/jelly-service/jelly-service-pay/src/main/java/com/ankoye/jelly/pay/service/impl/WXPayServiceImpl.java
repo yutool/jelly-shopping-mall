@@ -6,6 +6,7 @@ import com.ankoye.jelly.pay.model.Order;
 import com.ankoye.jelly.pay.service.WXPayService;
 import com.github.wxpay.sdk.WXPay;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hmily.annotation.Hmily;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,8 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@Component
+@Component("wxPayService")
+//@Service("wxPayService")
 public class WXPayServiceImpl implements WXPayService {
     @Autowired
     private WXPayAppConfig wxPayAppConfig;
@@ -110,5 +112,19 @@ public class WXPayServiceImpl implements WXPayService {
             log.info("错误信息:{}", return_msg);
         }
         return "a";
+    }
+
+    @Override
+    @Hmily(confirmMethod = "confirmNested", cancelMethod = "cancelNested")
+    public void wxp() {
+        System.out.println("try wxp");
+        //CastException.cast("aa");
+    }
+    public void confirmNested() {
+        System.out.println("wxp confirmNested");
+    }
+
+    public void cancelNested() {
+        System.out.println("wxp cancelNested");
     }
 }

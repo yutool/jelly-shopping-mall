@@ -1,0 +1,15 @@
+org:
+  dromara:
+    hmily:
+      serializer: kryo
+      recoverDelayTime: 128
+      retryMax: 30
+      scheduledDelay: 128
+      scheduledThreadMax:  10
+      repositorySupport: db
+      started: false
+      hmilyDbConfig:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url:  jdbc:mysql://jelly.com:3306/hmily?useUnicode=true&characterEncoding=utf8
+        username: jelly
+        password: jelly.com

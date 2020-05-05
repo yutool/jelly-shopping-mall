@@ -4,12 +4,14 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.ankoye.jelly.goods.dao.SkuMapper;
 import com.ankoye.jelly.goods.domain.Sku;
 import com.ankoye.jelly.goods.service.SkuService;
+import org.dromara.hmily.annotation.Hmily;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 @Service
 @Component
+//@Service("skuService")
 public class SkuServiceImpl implements SkuService {
     @Resource
     private SkuMapper skuMapper;
@@ -35,16 +37,18 @@ public class SkuServiceImpl implements SkuService {
     }
 
     @Override
-    //@Hmily(confirmMethod = "confirmNested", cancelMethod = "cancelNested")
+    @Hmily(confirmMethod = "confirmNested", cancelMethod = "cancelNested")
     public void abc() {
         System.out.println("try abc");
+        //CastException.cast("a");
     }
+
     public void confirmNested() {
-        System.out.println("confirmNested");
+        System.out.println("abc confirmNested");
     }
 
     public void cancelNested() {
-        System.out.println("cancelNested");
+        System.out.println("abc cancelNested");
     }
 
 }

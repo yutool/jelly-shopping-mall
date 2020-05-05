@@ -1,6 +1,5 @@
 package com.ankoye.jelly.order.service.impl;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.ankoye.jelly.base.constant.OrderStatus;
 import com.ankoye.jelly.goods.service.SkuService;
 import com.ankoye.jelly.goods.service.SpuService;
@@ -12,6 +11,7 @@ import com.ankoye.jelly.order.model.OrderDto;
 import com.ankoye.jelly.order.service.OrderService;
 import com.ankoye.jelly.pay.service.WXPayService;
 import com.ankoye.jelly.util.IdUtils;
+import com.ankoye.jelly.web.exception.CastException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -35,20 +35,19 @@ import java.util.Map;
 public class OrderServiceImpl implements OrderService {
     @Value("${order-back-check-topic}")
     private String orderBackTopic;
-
-    @Reference
-    private SkuService skuService;
-    @Reference
-    private SpuService spuService;
-    @Reference
-    private WXPayService wxPayService;
-
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
     @Resource
     private OrderMapper orderMapper;
     @Resource
     private OrderItemMapper orderItemMapper;
+    /// Dubbo Reference
+    @Resource
+    private SkuService skuService;
+    @Resource
+    private SpuService spuService;
+    @Resource
+    private WXPayService wxPayService;
 
     @Override
     public Order getOrderById(String id) {
@@ -186,14 +185,18 @@ public class OrderServiceImpl implements OrderService {
     @Hmily(confirmMethod = "confirm", cancelMethod = "cancel")
     public void test() {
         skuService.abc();
-        spuService.bdc();
+        //CastException.cast("a");
+        wxPayService.wxp();
+        CastException.cast("a");
+        //spuService.bdc();
     }
 
     public void confirm() {
-        System.out.println("confirm");
+        System.out.println("=========进行订单confirm操作完成================");
     }
+
     public void cancel() {
-        System.out.println("cancel");
+        System.out.println("=========进行订单cancel操作完成================");
     }
 
 }

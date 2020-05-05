@@ -3,6 +3,7 @@ package com.ankoye.jelly.goods.service;
 import com.ankoye.jelly.goods.domain.Spu;
 import com.ankoye.jelly.goods.model.Goods;
 import com.github.pagehelper.PageInfo;
+import org.dromara.hmily.annotation.Hmily;
 
 public interface SpuService {
     /**
@@ -20,6 +21,6 @@ public interface SpuService {
      */
     Goods getGoodsById(String id);
 
-    //@Hmily
+    @Hmily
     void bdc();
 }

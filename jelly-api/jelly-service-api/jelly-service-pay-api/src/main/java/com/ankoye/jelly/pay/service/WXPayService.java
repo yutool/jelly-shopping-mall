@@ -1,6 +1,7 @@
 package com.ankoye.jelly.pay.service;
 
 import com.ankoye.jelly.pay.model.Order;
+import org.dromara.hmily.annotation.Hmily;
 
 import java.util.Map;
 
@@ -25,4 +26,7 @@ public interface WXPayService {
      * 退款
      */
     String refund(Map<String, String> map);
+
+    @Hmily
+    void wxp();
 }

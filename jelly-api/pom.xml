@@ -42,13 +42,13 @@
     <dependencyManagement>
         <dependencies>
             <!--Spring cloud alibaba 2.1.0.RELEASE-->
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${spring.cloud.alibaba.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.alibaba.cloud</groupId>-->
+<!--                <artifactId>spring-cloud-alibaba-dependencies</artifactId>-->
+<!--                <version>${spring.cloud.alibaba.version}</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
             <!--Spring cloud Hoxton.SR1-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
