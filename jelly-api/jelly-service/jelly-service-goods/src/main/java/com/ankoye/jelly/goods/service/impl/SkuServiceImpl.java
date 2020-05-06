@@ -8,6 +8,7 @@ import org.dromara.hmily.annotation.Hmily;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 @Component
@@ -34,6 +35,11 @@ public class SkuServiceImpl implements SkuService {
     @Override
     public int unfreezeScore(String id, Integer num) {
         return skuMapper.unfreezeScore(id, num);
+    }
+
+    @Override
+    public List<Sku> findList() {
+        return null;
     }
 
     @Override

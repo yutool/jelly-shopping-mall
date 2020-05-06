@@ -3,6 +3,8 @@ package com.ankoye.jelly.goods.service;
 import com.ankoye.jelly.goods.domain.Sku;
 import org.dromara.hmily.annotation.Hmily;
 
+import java.util.List;
+
 public interface SkuService {
     /**
      * 获取 商品sku
@@ -28,4 +30,5 @@ public interface SkuService {
     @Hmily
     void abc();
 
+    List<Sku> findList();
 }

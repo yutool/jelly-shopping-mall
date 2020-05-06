@@ -9,38 +9,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jelly-service-seckill</artifactId>
+    <artifactId>jelly-service-search</artifactId>
+
     <dependencies>
-        <!-- api 依赖 -->
+        <!--  api 依赖 -->
         <dependency>
             <groupId>com.ankoye.jelly</groupId>
-            <artifactId>jelly-service-seckill-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ankoye.jelly</groupId>
-            <artifactId>jelly-service-pay-api</artifactId>
+            <artifactId>jelly-service-search-api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
-
-        <!-- 数据库依赖 -->
         <dependency>
             <groupId>com.ankoye.jelly</groupId>
-            <artifactId>jelly-common-mpdb</artifactId>
+            <artifactId>jelly-service-goods-api</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <!-- rocketmq -->
-        <dependency>
-            <groupId>org.apache.rocketmq</groupId>
-            <artifactId>rocketmq-spring-boot-starter</artifactId>
-        </dependency>
-
-        <!-- redis -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

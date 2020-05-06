@@ -12,7 +12,7 @@
     <artifactId>jelly-service-user</artifactId>
 
     <dependencies>
-        <!-- 本地依赖 -->
+        <!-- api依赖 -->
         <dependency>
             <groupId>com.ankoye.jelly</groupId>
             <artifactId>jelly-service-user-api</artifactId>

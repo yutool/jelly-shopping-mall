@@ -37,6 +37,7 @@
         <hutool-all.version>5.1.0</hutool-all.version>
         <fastjson.version>1.2.62</fastjson.version>
         <guava.version>20.0</guava.version>
+        <hmily.version>2.0.6-RELEASE</hmily.version>
     </properties>
 
     <dependencyManagement>
@@ -123,6 +124,17 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <!-- hmily -->
+            <dependency>
+                <groupId>org.dromara</groupId>
+                <artifactId>hmily-spring-boot-starter-dubbo</artifactId>
+                <version>${hmily.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara</groupId>
+                <artifactId>hmily-annotation</artifactId>
+                <version>${hmily.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
