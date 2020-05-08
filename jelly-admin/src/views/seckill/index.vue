@@ -9,8 +9,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import { State } from 'vuex-class';
 
 @Component
-export default class Goods extends Vue {
-  @State((state: any) => state.app.loading) private loading: any;
+export default class SeckillGoods extends Vue {
+  @State((state: any) => state.app.loading) private loading: any
 }
 </script>
 

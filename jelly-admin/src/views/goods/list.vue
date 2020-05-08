@@ -83,7 +83,8 @@
             <td>{{ spuStatus[item.status] }}</td>
             <td>
               <a href="#">查看</a><a href="#">编辑</a> <br/>
-              <a href="#">日志</a><a href="#">删除</a>
+              <router-link :to="'/seckill/add/'+item.id">秒杀</router-link>
+              <a href="#">删除</a>
             </td>
           </tr>
         </tbody>
@@ -141,8 +142,13 @@ export default class GoodsList extends Vue {
       this.spuList = data.list
     })
   }
+  // 切换显示条数
   private handleSizeChange(size: any) {
     this.skipPage(this.pageInfo.pageNum, size)
+  }
+  // 添加秒杀商品
+  private seckill(goods: any) {
+    this.$router.push({ name: 'addSeckill', params: {goods} })
   }
   
   private mounted() {

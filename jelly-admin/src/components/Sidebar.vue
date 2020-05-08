@@ -10,7 +10,7 @@
         <el-menu-item index="1-2" route="/goods/add">添加商品</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group title="活动商品">
-        <el-menu-item index="1-3" route="/goods/seckill_list">商品列表</el-menu-item>
+        <el-menu-item index="1-3" route="/seckill/list">秒杀列表</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
     <el-submenu index="2">
