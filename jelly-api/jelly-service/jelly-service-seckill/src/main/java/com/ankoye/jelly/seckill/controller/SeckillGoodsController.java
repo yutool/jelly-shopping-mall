@@ -4,22 +4,40 @@ import com.ankoye.jelly.base.result.Result;
 import com.ankoye.jelly.seckill.domain.SeckillGoods;
 import com.ankoye.jelly.seckill.service.SeckillGoodsService;
 import com.ankoye.jelly.util.DateUtils;
+import com.ankoye.jelly.web.log.annotation.Logger;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/seckill/goods")
+@RequestMapping("/v1/seckill/goods")
 public class SeckillGoodsController {
 
     @Autowired
     private SeckillGoodsService seckillGoodsService;
 
+    @PostMapping
+    @Logger(module = "秒杀商品", operation = "增加秒杀商品")
+    public Result add(@RequestBody SeckillGoods goods) {
+        seckillGoodsService.add(goods);
+        return Result.success();
+    }
+
+    /**
+     * 获取商家所有参加秒杀的商品
+     */
+    @GetMapping("/list/{page}/{size}")
+    public Result findGoodsPage(@PathVariable Integer page, @PathVariable Integer size) {
+        PageInfo<SeckillGoods> list = seckillGoodsService.list(page, size);
+        return Result.success(list);
+    }
+
+    /**
+     * 秒杀时间菜单
+     */
     @GetMapping("/menus")
     public Result menus() {
         List<Date> dateMenus = DateUtils.getDateMenus();
@@ -30,9 +48,9 @@ public class SeckillGoodsController {
      * 获取该时间段所有商品
      * @param time 2020050210
      */
-    @GetMapping("/list/{time}")
+    @GetMapping("/time_list/{time}")
     public Result list(@PathVariable String time){
-        List<SeckillGoods> seckillGoodsList = seckillGoodsService.list(time);
+        List<SeckillGoods> seckillGoodsList = seckillGoodsService.timeList(time);
         return Result.success(seckillGoodsList);
     }
 

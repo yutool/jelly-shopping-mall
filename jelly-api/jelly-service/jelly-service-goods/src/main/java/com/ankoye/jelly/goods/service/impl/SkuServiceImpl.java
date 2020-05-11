@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 @Component
-//@Service("skuService")
 public class SkuServiceImpl implements SkuService {
     @Resource
     private SkuMapper skuMapper;

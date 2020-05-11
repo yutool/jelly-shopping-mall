@@ -1,8 +1,8 @@
 package com.ankoye.jelly.seckill.common.task;
 
-import com.ankoye.jelly.seckill.domain.SeckillGoods;
 import com.ankoye.jelly.seckill.common.constant.RedisKey;
 import com.ankoye.jelly.seckill.dao.SeckillGoodsMapper;
+import com.ankoye.jelly.seckill.domain.SeckillGoods;
 import com.ankoye.jelly.util.DateUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,7 @@ public class SeckillGoodsPushTask {
     private RedisTemplate redisTemplate;
 
     @Scheduled(cron = "0/30 * * * * ?")
+//    @Scheduled(cron = "0 59 1,3,5,7,9,11 * * ?")
     public void  loadSeckillGoodsToRedis(){
         /**
          * 1.查询所有符合条件的秒杀商品

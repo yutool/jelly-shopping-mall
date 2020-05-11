@@ -3,7 +3,7 @@ package com.ankoye.jelly.base.constant;
 
 public class GoodsStatus {
     /**
-     * 审核成功
+     * 审核成功，上架
      */
     public static final Integer SUCCESS = 0;
     /**
@@ -14,6 +14,11 @@ public class GoodsStatus {
      * 审核失败
      */
     public static final Integer FAILED = 2;
+
+    /**
+     * 下架中
+     */
+    public static final Integer SOLD_OUT = 3;
 
 //    SUCCESS(0, "审核成功"),
 //    AUDIT(1, "审核中"),

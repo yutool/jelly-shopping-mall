@@ -2,6 +2,7 @@ package com.ankoye.jelly.seckill.domain;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -32,7 +33,7 @@ public class SeckillGoods implements Serializable {
     /**
      * 商品图片
      */
-    private String smallPic;
+    private String image;
 
     /**
      * 原价格
@@ -55,24 +56,21 @@ public class SeckillGoods implements Serializable {
     private Date createTime;
 
     /**
-     * 审核日期
-     */
-    private Date checkTime;
-
-    /**
-     * 审核状态
-     */
-    private String status;
-
-    /**
      * 开始时间
      */
+    @JsonFormat(pattern = "yy/MM/dd")
     private Date startTime;
 
     /**
      * 结束时间
      */
+    @JsonFormat(pattern = "yy/MM/dd")
     private Date endTime;
+
+    /**
+     * 秒杀时间段
+     */
+    private Integer region;
 
     /**
      * 秒杀商品数
@@ -85,8 +83,18 @@ public class SeckillGoods implements Serializable {
     private Integer stockCount;
 
     /**
-     * 描述
+     * 是否开启秒杀
      */
-    private String introduction;
+    private Boolean isMarketable;
+
+    /**
+     * 审核日期
+     */
+    private Date checkTime;
+
+    /**
+     * 审核状态
+     */
+    private Integer status;
 
 }

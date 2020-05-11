@@ -45,7 +45,7 @@ instance.interceptors.response.use((response: any) => {
 }, (error: any) => {
   // 请求被拦截被跳到这里
   Message({ type: 'error', message: `被拦截请求：${error.message}` })
-  store.dispatch('app/closeLoading', false)
+  store.dispatch('app/setLoading', false)
   return Promise.reject(error)
 })
 

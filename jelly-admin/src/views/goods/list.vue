@@ -135,7 +135,7 @@ export default class GoodsList extends Vue {
   // -------------------test
   
   // 切换页面
-  private skipPage(page: any, size = this.pageInfo.size) {
+  private skipPage(page: any, size = this.pageInfo.pageSize) {
     getSpuList(page, size).then((res: any) => {
       const { data } = res
       this.pageInfo = data
@@ -152,7 +152,7 @@ export default class GoodsList extends Vue {
   }
   
   private mounted() {
-    this.skipPage(0)
+    this.skipPage(0, this.pageInfo.size)
   }
 }
 </script>

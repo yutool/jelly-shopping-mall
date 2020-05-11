@@ -63,7 +63,9 @@ public class SpuServiceImpl implements SpuService {
     @Override
     public PageInfo<Spu> getSpuList(Integer page, Integer size) {
         PageHelper.startPage(page, size);
-        List<Spu> spuList = spuMapper.selectList(null);
+        List<Spu> spuList = spuMapper.selectList(new QueryWrapper<Spu>()
+            .eq("merchant_id", 0)
+        );
         return new PageInfo<>(spuList);
     }
 

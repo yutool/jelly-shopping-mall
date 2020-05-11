@@ -60,21 +60,24 @@
           <tr>
             <th scope="col">编号</th>
             <th scope="col">商品名称</th>
-            <th scope="col">活动状态</th>
             <th scope="col">秒杀日期</th>
             <th scope="col">秒杀时间</th>
+            <th scope="col">审核状态</th>
             <th scope="col">开启/关闭</th>
             <th scope="col">操作</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
+          <tr v-for="item in goodsList" :key="item.id">
+            <td> {{ item.id }} </td>
+            <td> {{ item.title }} </td>
+            <td> {{ item.startTime}} - {{ item.endTime }} </td>
+            <td> {{ item.region }}点 - {{ item.region+2 }}点 </td>
+            <td> 审核成功 </td>
+            <td>
+              <el-switch v-model="item.isMarketable" active-color="#13ce66" inactive-color="#ff4949">
+              </el-switch>
+            </td>
             <td>
               <a href="javascript:;">编辑</a>
               <a href="javascript:;">删除</a>
@@ -84,18 +87,30 @@
       </table>
     </div>
     <!-- 分页 -->
-    <div class="text-center">
-      <el-pagination :page-size="20" :pager-count="11" layout="prev, pager, next" :total="1000">
+    <div class="block text-center">
+      <el-pagination
+        @current-change="skipPage"
+        @size-change="handleSizeChange"
+        :current-page="pageInfo.pageNum"
+        :page-sizes="[10, 30, 50]"
+        :page-size="pageInfo.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="pageInfo.total">
       </el-pagination>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
+import { getSeckillGoods } from '@/api/seckill'
 
 @Component
 export default class SeckillList extends Vue {
+  private goodsList: any = {}
+  private pageInfo: any = { size: 2 }
+  
+  // test -----------------
   private restaurants = []
   private state2 = ''
   private querySearch(queryString: any, cb: any) {
@@ -111,6 +126,24 @@ export default class SeckillList extends Vue {
   }
   private handleSelect(item: any) {
     console.log(item);
+  }
+  // test -----------------
+  // 切换页面
+  private skipPage(page: number, size = this.pageInfo.pageSize) {
+    getSeckillGoods(page, size).then((res: any) => {
+      const { data } = res
+      this.pageInfo = data
+      this.goodsList = data.list
+      this.$log.info('获取秒杀商品', data)
+    })
+  }
+  // 切换显示条数
+  private handleSizeChange(size: any) {
+    this.skipPage(this.pageInfo.pageNum, size)
+  }
+  
+  private mounted() {
+    this.skipPage(0, this.pageInfo.size)
   }
 }
 </script>

@@ -19,6 +19,12 @@
         </dependency>
         <dependency>
             <groupId>com.ankoye.jelly</groupId>
+            <artifactId>jelly-service-goods-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ankoye.jelly</groupId>
             <artifactId>jelly-service-pay-api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
@@ -42,6 +48,5 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
         </dependency>
-
     </dependencies>
 </project>
