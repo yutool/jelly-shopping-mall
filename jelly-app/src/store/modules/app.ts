@@ -1,24 +1,18 @@
 const state = {
-  loginDialog: false,
-};
+  loading: false
+}
 
 const mutations = {
-  OPEN_LOGIN_DIALOG: (state: any) => {
-    state.loginDialog = true;
-  },
-  CLOSE_LOGIN_DIALOG: (state: any) => {
-    state.loginDialog = false;
-  },
-};
+  SET_LOADING: (state: any, loading: any) => {
+    state.loading = loading
+  }
+}
 
 const actions = {
-  openLoginDialog(ctx: any) {
-    ctx.commit('OPEN_LOGIN_DIALOG');
-  },
-  closeLoginDialog(ctx: any) {
-    ctx.commit('CLOSE_LOGIN_DIALOG');
-  },
-};
+  setLoading(ctx: any, loading: any) {
+    ctx.commit('SET_LOADING', loading)
+  }
+}
 
 export default {
   namespaced: true,

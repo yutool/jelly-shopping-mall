@@ -9,26 +9,25 @@ import java.util.List;
 
 public class DateUtils {
 
-    /***
-     * 从yyyy-MM-dd HH:mm格式转成yyyyMMddHH格式
-     * @param dateStr
-     * @return
+    private static SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat menuFormat = new SimpleDateFormat("yyyyMMddHH");
+
+    /**
+     * 获取当天时间
+     * yyyy-MM-dd
      */
-    public static String formatStr(String dateStr){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    public static String menuToDay(String menu) {
         try {
-            Date date = simpleDateFormat.parse(dateStr);
-            simpleDateFormat = new SimpleDateFormat("yyyyMMddHH");
-            return simpleDateFormat.format(date);
+            return dayFormat.format(menuFormat.parse(menu));
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    /***
+
+    /**
      * 获取指定日期的凌晨
-     * @return
      */
     public static Date toDayStartHour(Date date){
         Calendar calendar = Calendar.getInstance();
@@ -42,11 +41,8 @@ public class DateUtils {
     }
 
 
-    /***
+    /**
      * 时间增加N分钟
-     * @param date
-     * @param minutes
-     * @return
      */
     public static Date addDateMinutes(Date date,int minutes){
         Calendar calendar = Calendar.getInstance();
@@ -56,24 +52,22 @@ public class DateUtils {
         return date;
     }
 
-    /***
+    /**
      * 时间递增N小时
-     * @param hour
-     * @return
      */
     public static Date addDateHour(Date date,int hour){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.HOUR, hour);// 24小时制
+        calendar.add(Calendar.HOUR, hour); // 24小时制
         date = calendar.getTime();
         return date;
     }
 
-    /***
+    /**
      * 获取时间菜单
-     * @return
+     * yyyyMMddHH
      */
-    public static List<Date> getDateMenus(){
+    public static List<String> getDateMenus(){
 
         // 定义一个List<Date>集合，存储所有时间段
         List<Date> dates = new ArrayList<>();
@@ -88,30 +82,21 @@ public class DateUtils {
         // 判断当前时间属于哪个时间范围
         Date now = new Date();
         for (Date cdate : dates) {
-            //开始时间<=当前时间<开始时间+2小时
-            if(cdate.getTime()<=now.getTime() && now.getTime()<addDateHour(cdate,2).getTime()){
+            //开始时间 <= 当前时间 < 开始时间+2小时
+            if(cdate.getTime() <= now.getTime() && now.getTime()<addDateHour(cdate,2).getTime()){
                 now = cdate;
                 break;
             }
         }
 
-        //当前需要显示的时间菜单
-        List<Date> dateMenus = new ArrayList<Date>();
+        // 当前需要显示的时间菜单
+        List<String> dateMenus = new ArrayList<>();
         for (int i = 0; i <5 ; i++) {
-            dateMenus.add(addDateHour(now,i*2));
+            dateMenus.add(menuFormat.format(addDateHour(now,i*2)));
         }
         return dateMenus;
     }
 
-    /***
-     * 时间转成yyyyMMddHH
-     * @param date
-     * @return
-     */
-    public static String date2Str(Date date){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHH");
-        return simpleDateFormat.format(date);
-    }
 
     public static void main(String[] args) {
 
@@ -132,4 +117,6 @@ public class DateUtils {
             System.out.println(format);
         }
     }
+
+
 }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as auth from '@/common/utils/auth';
 import { Message } from 'element-ui'
+import store from '@/store'
 
 // 创建实例
 const instance = axios.create({
@@ -24,6 +25,7 @@ const instance = axios.create({
 
 // 拦截响应
 instance.interceptors.response.use((response: any) => {
+  store.dispatch('app/setLoading', true)
   // 全局统一处理 Session超时
   if (response.headers.session_time_out === 'timeout') {
     Message({ type: 'error', message: '会话超时：session_time_out' })
@@ -36,10 +38,12 @@ instance.interceptors.response.use((response: any) => {
     }
     return Promise.reject(message)
   }
+  store.dispatch('app/setLoading', false)
   return response.data
 }, (error: any) => {
   // 请求被拦截被跳到这里
   Message({ type: 'error', message: `被拦截请求：${error.message}` })
+  store.dispatch('app/setLoading', false)
   return Promise.reject(error)
 })
 

@@ -30,6 +30,14 @@ const routes = [
       { path: 'order/:id', component: () => import('@/views/center/order.vue' )},
     ]
   },
+  {
+    path: '/seckill',
+    component: () => import('@/views/seckill/index.vue'),
+    children: [
+      { path: '/', redirect: 'list' },
+      { path: 'list', component: () => import('@/views/seckill/list.vue') },
+    ]
+  },
 ];
 
 export default routes

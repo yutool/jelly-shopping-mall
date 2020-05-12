@@ -9,7 +9,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -40,7 +39,7 @@ public class SeckillGoodsController {
      */
     @GetMapping("/menus")
     public Result menus() {
-        List<Date> dateMenus = DateUtils.getDateMenus();
+        List<String> dateMenus = DateUtils.getDateMenus();
         return Result.success(dateMenus);
     }
 
