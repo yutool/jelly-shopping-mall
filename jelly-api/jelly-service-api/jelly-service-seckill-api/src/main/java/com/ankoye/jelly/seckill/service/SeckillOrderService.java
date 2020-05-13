@@ -1,13 +1,13 @@
 package com.ankoye.jelly.seckill.service;
 
-import com.ankoye.jelly.seckill.domain.SeckillOrder;
+import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.OrderQueue;
 
 public interface SeckillOrderService {
     /**
      * 开始排队
      */
-    boolean queueUp(String userId, String time, String skuId);
+    boolean queueUp(OrderQueue orderQueue);
 
     /**
      * 查询排队状态
@@ -17,5 +17,5 @@ public interface SeckillOrderService {
     /**
      * 创建订单
      */
-    void create(SeckillOrder seckillOrder);
+    String create(String userId, SeckillSku sk);
 }

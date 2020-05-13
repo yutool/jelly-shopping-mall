@@ -11,21 +11,21 @@ const instance = axios.create({
 });
 
 // 拦截请求
-// instance.interceptors.request.use(
-//   (config: any) => {
-//     const token = auth.getToken();
-//     if (token) { // 如果本地存在token，请求时带上
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   }, (error: any) => {
-//     return Promise.reject(error);
-//   }
-// );
+instance.interceptors.request.use(
+  (config: any) => {
+    store.dispatch('app/setLoading', true)
+    // const token = auth.getToken();
+    // if (token) { // 如果本地存在token，请求时带上
+    //   config.headers.Authorization = `Bearer ${token}`;
+    // }
+    return config;
+  }, (error: any) => {
+    return Promise.reject(error);
+  }
+);
 
 // 拦截响应
 instance.interceptors.response.use((response: any) => {
-  store.dispatch('app/setLoading', true)
   // 全局统一处理 Session超时
   if (response.headers.session_time_out === 'timeout') {
     Message({ type: 'error', message: '会话超时：session_time_out' })

@@ -7,21 +7,23 @@ import com.google.common.base.Converter;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class OrderDto {
+public class OrderDto implements Serializable {
 
     private String id;
 
     // private String orderSn;
 
-    private Long userId;
+    private String userId;
 
-    private Long money;
+    private BigDecimal money;
 
-    private Long payMoney;
+    private BigDecimal payMoney;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createTime;

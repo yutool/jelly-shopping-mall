@@ -1,7 +1,8 @@
 package com.ankoye.jelly.seckill.controller;
 
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.seckill.domain.SeckillGoods;
+import com.ankoye.jelly.seckill.domain.SeckillSku;
+import com.ankoye.jelly.seckill.model.SeckillGoods;
 import com.ankoye.jelly.seckill.service.SeckillGoodsService;
 import com.ankoye.jelly.util.DateUtils;
 import com.ankoye.jelly.web.log.annotation.Logger;
@@ -20,7 +21,7 @@ public class SeckillGoodsController {
 
     @PostMapping
     @Logger(module = "秒杀商品", operation = "增加秒杀商品")
-    public Result add(@RequestBody SeckillGoods goods) {
+    public Result add(@RequestBody SeckillSku goods) {
         seckillGoodsService.add(goods);
         return Result.success();
     }
@@ -30,7 +31,7 @@ public class SeckillGoodsController {
      */
     @GetMapping("/list/{page}/{size}")
     public Result findGoodsPage(@PathVariable Integer page, @PathVariable Integer size) {
-        PageInfo<SeckillGoods> list = seckillGoodsService.list(page, size);
+        PageInfo<SeckillSku> list = seckillGoodsService.list(page, size);
         return Result.success(list);
     }
 
@@ -49,8 +50,8 @@ public class SeckillGoodsController {
      */
     @GetMapping("/time_list/{time}")
     public Result list(@PathVariable String time){
-        List<SeckillGoods> seckillGoodsList = seckillGoodsService.timeList(time);
-        return Result.success(seckillGoodsList);
+        List<SeckillSku> seckillSkuList = seckillGoodsService.timeList(time);
+        return Result.success(seckillSkuList);
     }
 
     /**

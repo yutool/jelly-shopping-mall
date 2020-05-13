@@ -1,8 +1,12 @@
 package com.ankoye.jelly.seckill.common.task;
 
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.ankoye.jelly.goods.domain.Spu;
+import com.ankoye.jelly.goods.service.SpuService;
 import com.ankoye.jelly.seckill.common.constant.RedisKey;
 import com.ankoye.jelly.seckill.dao.SeckillGoodsMapper;
-import com.ankoye.jelly.seckill.domain.SeckillGoods;
+import com.ankoye.jelly.seckill.domain.SeckillSku;
+import com.ankoye.jelly.seckill.model.SeckillGoods;
 import com.ankoye.jelly.util.DateUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -12,13 +16,15 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @SuppressWarnings("all")
 @Component
 @Slf4j
 public class SeckillGoodsPushTask {
+
+    @Reference
+    private SpuService spuService;
 
     @Resource
     private SeckillGoodsMapper seckillGoodsMapper;
@@ -28,7 +34,7 @@ public class SeckillGoodsPushTask {
 
     @Scheduled(cron = "0/30 * * * * ?") // 测试
 //    @Scheduled(cron = "0 59 1,3,5,7,9,11 * * ?")
-    public void  loadSeckillGoodsToRedis(){
+    public void  loadSeckillGoodsToRedis() {
         /**
          * 1.查询所有符合条件的秒杀商品
          * 	1) 获取时间段集合并循环遍历出每一个时间段
@@ -49,7 +55,7 @@ public class SeckillGoodsPushTask {
         for (String dateMenu : dateMenus) {
             String day = DateUtils.menuToDay(dateMenu);
 
-            QueryWrapper<SeckillGoods> wrapper = new QueryWrapper<>();
+            QueryWrapper<SeckillSku> wrapper = new QueryWrapper<>();
             wrapper.eq("status", 0);
             wrapper.eq("is_marketable", 1);
             wrapper.gt("stock_count", 0);
@@ -62,15 +68,40 @@ public class SeckillGoodsPushTask {
                 wrapper.notIn("id", keys);
             }
 
-            List<SeckillGoods> seckillGoodsList = seckillGoodsMapper.selectList(wrapper);
+            List<SeckillSku> seckillSkuList = seckillGoodsMapper.selectList(wrapper);
 
-            // 添加到缓存中
-            for (SeckillGoods seckillGoods : seckillGoodsList) {
-                redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY + dateMenu).put(seckillGoods.getId(), seckillGoods);
-
-                //加载秒杀商品的库存
-                redisTemplate.opsForValue().set(RedisKey.SECKILL_GOODS_STOCK_COUNT_KEY + seckillGoods.getId(), seckillGoods.getStockCount());
+            // version 2
+            HashSet<String> spuIdList = new HashSet<>();
+            for (SeckillSku tmp : seckillSkuList) {
+                if (spuIdList.contains(tmp.getSpuId())) {
+                    continue;
+                }
+                spuIdList.add(tmp.getSpuId());
+                // 查询商品Spu，并创建秒杀商品
+                Spu spu = spuService.getSpu(tmp.getSpuId());
+                SeckillGoods seckillGoods = new SeckillGoods();
+                seckillGoods.setSpu(spu);
+                // 查找到 当前 spu 对应的秒杀商品添加到
+                for (SeckillSku seckillSku : seckillSkuList) {
+                    if (seckillSku.getSpuId().equals(spu.getId())) {
+                        // 添加秒杀商品 sku
+                        seckillGoods.getSkuList().add(seckillSku);
+                        // 将库存保存一份至redis
+                        redisTemplate.opsForValue().set(RedisKey.SECKILL_GOODS_STOCK_COUNT_KEY + seckillSku.getId(), seckillSku.getStockCount());
+                    }
+                }
+                redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY + dateMenu).put(tmp.getSpuId(), seckillGoods);
             }
+
+            // version 1
+            // 添加到缓存中 seckillGoods - sku
+//            for (SeckillSku seckillGoods : seckillSkuList) {
+//                // 将秒杀单品加入redis
+//                redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY + dateMenu).put(seckillGoods.getId(), seckillGoods);
+//
+//                //加载秒杀商品的库存
+//                redisTemplate.opsForValue().set(RedisKey.SECKILL_GOODS_STOCK_COUNT_KEY + seckillGoods.getId(), seckillGoods.getStockCount());
+//            }
         }
 
     }

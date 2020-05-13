@@ -9,7 +9,7 @@
     
     <div>
       <p>订单提交成功，请您及时付款，以便尽快为您发货~</p>
-      <small>请您在半小时之内完成支付，超级订单会自动取消，订单号:{{orderId}}</small>
+      <small>请您在半小时之内完成支付，超级订单会自动取消，订单号:{{ order.id }}</small>
     </div>
     
     <div>
@@ -20,7 +20,7 @@
       </ul>
     </div>
     <div v-if="wxCodeUrl != ''">
-      <vue-qrious :value="wxCodeUrl" padding="10" size="200" />
+      <vue-qrious :value="wxCodeUrl" :padding="10" :size="200" />
     </div>
     <el-button @click="weixinPay">点击获取微信二维码</el-button>
   </div>
@@ -28,7 +28,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { getOrder, weixinPay } from '@/api/order'
+import { getOrder } from '@/api/order'
+import { weixinPay } from '@/api/pay'
 import VueQrious from 'vue-qrious'
 
 @Component({
@@ -37,6 +38,7 @@ import VueQrious from 'vue-qrious'
   }
 })
 export default class Pay extends Vue {
+  private payTimer: any
   private wxCodeUrl = ''
   private order = {
     id: '',
@@ -44,32 +46,33 @@ export default class Pay extends Vue {
     money: 0
   }
   
+  // 申请微信支付
   private weixinPay() {
     weixinPay(this.order).then((res: any) => {
-      console.log(this.wxCodeUrl)
-      this.$log.info('申请支付', res.data.code_url)
+      this.$log.info('申请支付', res)
       this.wxCodeUrl = res.data.code_url
-      console.log(this.wxCodeUrl)
     })
   }
   
-  private checkPayStatus() {  // 检查订单状态
-    const timer = setInterval(() => {
+  // 检查订单状态
+  private checkPayStatus() {  
+    this.payTimer = setInterval(() => {
       getOrder(this.$route.params.id).then((res: any) => {
         if (res.data.status === 3) {        // 3表示付款成功-待发货
           this.$log.info('订单状态：', '支付成功')
-          window.clearInterval(timer)
+          window.clearInterval(this.payTimer)
           this.$router.push({name: 'pay_success', params: { order: res.data }})
         } else if (res.data.status === 2) {  // 2表示支付失败了
           this.$log.info('订单状态：', '支付失败')
-          window.clearInterval(timer)
+          window.clearInterval(this.payTimer)
           this.$router.push({name: 'pay_fail', params: { order: res.data }})
         }
       })
     }, 2000)
   }
- 
-  private mounted() {
+  
+  // 获取订单
+  private getOrder() {
     getOrder(this.$route.params.id).then((res: any) => {
       this.$log.info('pay查询订单', res)
       const { data } = res
@@ -77,9 +80,17 @@ export default class Pay extends Vue {
       this.order.name = '果冻订单:' + data.id
       this.order.money = data.payMoney
     })
+  }
+ 
+  private mounted() {
+    this.getOrder()
     this.checkPayStatus()
   }
-  
+  private beforeDestroy() {
+    if (this.payTimer) {
+      window.clearInterval(this.payTimer)
+    }
+  }
 }
 </script>
 

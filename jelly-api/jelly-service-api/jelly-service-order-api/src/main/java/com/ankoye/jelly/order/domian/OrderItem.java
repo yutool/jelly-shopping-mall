@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @TableName("tb_order_item")
@@ -27,10 +28,10 @@ public class OrderItem implements Serializable {
 
     private Integer num;
 
-    private Long price;
+    private BigDecimal price;
 
-    private Long money;
+    private BigDecimal money;
 
-    private Long payMoney;
+    private BigDecimal payMoney;
 
 }

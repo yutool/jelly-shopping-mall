@@ -1,12 +1,16 @@
 package com.ankoye.jelly.seckill.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
+import com.ankoye.jelly.order.domian.OrderItem;
+import com.ankoye.jelly.order.model.OrderDto;
+import com.ankoye.jelly.order.service.OrderService;
 import com.ankoye.jelly.seckill.common.constant.RedisKey;
 import com.ankoye.jelly.seckill.dao.SeckillOrderMapper;
-import com.ankoye.jelly.seckill.domain.SeckillOrder;
+import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.OrderQueue;
 import com.ankoye.jelly.seckill.service.SeckillOrderService;
-import org.apache.rocketmq.client.producer.DefaultMQProducer;
-import org.apache.rocketmq.common.message.Message;
+import com.ankoye.jelly.web.exception.CastException;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,15 +18,18 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("ALL")
 @Service
 public class SeckillOrderServiceImpl implements SeckillOrderService {
-    @Value("${create-seckill-order-topic}")
-    private String createOrderTopic;
-    @Value("${order-back-check-topic}")
-    private String checkOrderTopic;
+    @Value("${seckill-order-topic}")
+    private String orderTopic;
+
+    @Reference
+    private OrderService orderService;
 
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
@@ -37,20 +44,26 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
      * @return false 排队失败
      */
     @Override
-    public boolean queueUp(String userId, String time, String goodsId) {
+    public boolean queueUp(OrderQueue orderQueue) {
+        String userId = orderQueue.getUserId();
+        String goodsId = orderQueue.getGoodsId();
         // 1.防止用户恶意排队，不一定创建过订单
         if (!preventRepeatCommit(userId, goodsId))
-            return false; // 改成抛异常
+            CastException.cast("已经排过队");
         // 2.判断是否创建过订单
-        OrderQueue tmp = (OrderQueue) redisTemplate.boundHashOps(RedisKey.SECKILL_QUEUE_UP).get(userId + goodsId);
+        OrderQueue tmp = (OrderQueue) redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_ORDER).get(userId + goodsId);
         if(tmp != null && tmp.getStatus() == OrderQueue.CREATED)
-            return false;
+            CastException.cast("已经创建过订单");
         // 3.开始排队 - 排队中
-        OrderQueue orderQueue = new OrderQueue(userId, new Date(), time, goodsId, OrderQueue.BE_QUEUING);
-        redisTemplate.boundListOps(RedisKey.SECKILL_QUEUE_UP).leftPush(orderQueue);
-        // 4.异步处理订单，多线程 -> MQ OR 直接 MQ
+        orderQueue.setCreateTime(new Date());
+        orderQueue.setStatus(OrderQueue.BE_QUEUING);
+        // 4. 异步处理订单，多线程  version 1
+        // redisTemplate.boundListOps(RedisKey.SECKILL_QUEUE_UP).leftPush(orderQueue);
         // multiThreadingCreateOrder.createOrder();
-        rocketMQTemplate.convertAndSend(createOrderTopic, "");
+        // 4. MQ处理订单 version 2
+        // 供用户查询排队状态
+        redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_ORDER).put(userId + goodsId, orderQueue);
+        rocketMQTemplate.convertAndSend(orderTopic + ":create", JSON.toJSONString(orderQueue));
         return true;
     }
     private Boolean preventRepeatCommit(String userId, String goodsId){
@@ -67,19 +80,28 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
 
     @Override
     public OrderQueue query(String userId, String goodsId) {
-        return (OrderQueue) redisTemplate.boundHashOps(RedisKey.SECKILL_QUEUE_UP).get(userId + goodsId);
+        return (OrderQueue) redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_ORDER).get(userId + goodsId);
     }
 
     @Override
-    public void create(SeckillOrder order) {
-        seckillOrderMapper.insert(order);
-        try {
-            DefaultMQProducer producer = rocketMQTemplate.getProducer();
-            Message message = new Message(checkOrderTopic, "seckill-order", order.getId().getBytes());
-            message.setDelayTimeLevel(16);
-            producer.send(message);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public String create(String userId, SeckillSku sku) {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setUserId(userId);
+        orderDto.setMoney(sku.getCostPrice());
+        orderDto.setPayMoney(sku.getPrice());
+        // sku
+        OrderItem orderItem = new OrderItem();
+        orderItem.setSkuId(sku.getSkuId());
+        orderItem.setName(sku.getTitle());
+        orderItem.setImage(sku.getImage());
+        orderItem.setSku(sku.getSku());
+        orderItem.setNum(1);
+        orderItem.setPrice(sku.getPrice());
+        orderDto.setMoney(sku.getPrice());
+        orderItem.setPayMoney(sku.getPrice());
+        // 创建订单
+        orderDto.setOrderItem(Arrays.asList(orderItem));
+
+        return orderService.createOrder(orderDto);
     }
 }

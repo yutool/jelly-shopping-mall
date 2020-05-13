@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading.fullscreen="loading" element-loading-text="正在抢货，请稍等">
     <el-row :gutter="20">
       <!-- 照片墙 -->
       <el-col :md="12">
@@ -13,7 +13,7 @@
           {{ spu.title }}
         </div>
         <div class="goods-price">
-          <p>价格：{{ checkSku.price }} 优惠价：{{ checkSku.price }}</p>
+          <p>秒杀价格：{{ checkSku.price }} <s>原价：{{ checkSku.costPrice }}</s></p>
           <p>累计评价: {{ spu.commentNum }} 累计销售：{{ spu.saleNum }}</p>
         </div>
         <!-- SKU -->
@@ -26,13 +26,12 @@
           </el-form-item>
         </el-form>
         <div class="goods-amount">
-          <span>数量: </span>
-          <el-input-number size="mini" v-model="checkSku.num"></el-input-number>
+          <span>数量: {{ checkSku.num }} </span>
           <span>剩余库存：{{ checkSku.residue }}</span>
         </div>
         <div class="goods-buy">
+          <el-button disabled>加入购物车</el-button>
           <el-button @click="buy">立即购买</el-button>
-          <el-button @click="addCart">加入购物车</el-button>
         </div>
         <div class="extra-services">
           服务说明：<span>{{ spu.serve }}</span>
@@ -48,12 +47,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { getGoods } from '@/api/spu'
-import { addCart } from '@/api/cart'
+import { getGoods, queueUp, queryQueue } from '@/api/seckill'
+import { getOrder } from '@/api/order'
 import { copyObj } from '@/common/utils/ObjectUtil'
 
 @Component
 export default class GoodsDetail extends Vue {
+  private queueTimer: any
+  private loading = false
   @Getter('userId') private userId: any
   private spu: any = {}
   private skuList: any = []
@@ -61,9 +62,10 @@ export default class GoodsDetail extends Vue {
   private checkSku: any = {
     id: '',
     image: '',
+    costPrice: '', // 原价
     price: '',  // 显示的价格
     residue: 0, // 剩余库存个数
-    num: 1      // 选择的个数
+    num: 1      // 选择的个数，暂时只能一个
   }
  
   // 计算选中的sku
@@ -92,6 +94,7 @@ export default class GoodsDetail extends Vue {
         if (JSON.stringify(this.checkList) === JSON.stringify(item.sku)) {  // 找到选中的sku
           this.checkSku.image = item.image
           this.checkSku.price = item.price
+          this.checkSku.costPrice = item.costPrice
           this.checkSku.id = item.id
           if (this.checkSku.num > item.num) {
             this.checkSku.num = item.num
@@ -102,68 +105,53 @@ export default class GoodsDetail extends Vue {
     }
   }
   
-  // 加入购物车
-  private addCart() {
-    if ( this.checkSku.id === '') {
-      this.$message({ type: 'info', message: '暂无该商品' })
-      return
-    }
-    const cartItem = {
-      skuId: this.checkSku.id,
-      userId: this.userId,
-      name: this.spu.title,
-      image: this.checkSku.image,
-      original: this.checkSku.price,  // 原价
-      num: this.checkSku.num
-    }
-    addCart(cartItem).then((res: any) => {
-      this.$message({ type: 'success', message: '加入购物车成功' })
-      this.$log.info('加购', res)
-    })
-  }
-  
   // 购买
   private buy() {
     if ( this.checkSku.id === '') {
       this.$message({ type: 'info', message: '暂无该商品' })
       return
     }
-    // 整理orderItem
-    const item: any = {
-      skuId: this.checkSku.id,
-      merchantId: 0,
-      name: this.spu.title,
-      image: this.checkSku.image,
-      sku: this.checkList,
-      price: this.checkSku.price,
-      num: this.checkSku.num,
-      money: this.checkSku.price * this.checkSku.num,
-      payMoney: this.checkSku.price * this.checkSku.num
+    const form = {
+      userId: '0',
+      time: this.$route.params.time,
+      spuId: this.$route.params.id,
+      goodsId:  this.checkSku.id
     }
-    const order: any = {
-      userId: this.userId,
-      money: item.price * item.num,
-      payMoney: item.price * item.num,
-      weight: 0,    // 重量
-      postFee: 0,  // 运费
-      addressId: null,
-      remark: '',
-      orderItem: [item]
-    }
-    
-    this.$router.push({
-      name: 'buy', 
-      params: { order }
+    queueUp(form).then((res: any) => {
+      console.log(res)
+      if (res.code === 0) { // 排队成功
+        this.handlerQueue()
+      } else {
+        this.$message({ type: 'info', message: res.message })
+      }
     })
+  }
+  
+  // 排队成功
+  private handlerQueue() {
+    this.loading = true
+    this.queueTimer = setInterval(() => queryQueue('0', this.checkSku.id).then((res: any) => {
+      console.log(res)
+      if (res.data.status === 3) { // 创建订单成功
+        window.clearInterval(this.queueTimer)
+        // 查询订单去付款
+        this.$router.push(`/order/buy/${res.data.orderId}`)
+      } else if (res.data.status === 2) {
+        window.clearInterval(this.queueTimer)
+        this.loading = false
+        this.$message({ type: 'info', message: '哎呀，商品被抢空了' })
+      }
+    }), 1500)
   }
    
   // 初始化商品信息
   private initGoods() {
-    getGoods(this.$route.params.id).then((res: any) => {
-      const { spu, sku } = res.data
+    getGoods(this.$route.params.time, this.$route.params.id).then((res: any) => {
+      console.log(res)
+      const { spu, skuList } = res.data
       this.spu = spu
       this.spu.skuTemplate = JSON.parse(spu.skuTemplate)
-      this.skuList = sku
+      this.skuList = skuList
       for (const item of this.skuList) {
         item.sku = JSON.parse(item.sku)
       }
@@ -180,6 +168,11 @@ export default class GoodsDetail extends Vue {
   
   private mounted() {
     this.initGoods()
+  }
+  private beforeDestroy() {
+    if (this.queueTimer) {
+      window.clearInterval(this.queueTimer)
+    }
   }
 }
 </script>

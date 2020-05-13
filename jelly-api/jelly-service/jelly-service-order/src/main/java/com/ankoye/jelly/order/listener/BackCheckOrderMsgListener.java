@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 @Slf4j
 @Component
-@RocketMQMessageListener(
-        topic = "${order-back-check-topic}",
-        selectorExpression = "order",
+@RocketMQMessageListener( // 用户订单支付状态回查
+        topic = "${user-order-topic}",
+        selectorExpression = "check",
         consumerGroup = "order-check-group",
         consumeMode = ConsumeMode.CONCURRENTLY
 )

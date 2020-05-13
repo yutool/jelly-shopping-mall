@@ -23,6 +23,9 @@ public class OrderQueue implements Serializable {
     // 商品id
     private String goodsId;
 
+    // 商品spuId
+    private String spuId;
+
     // 时间段
     private String time;
 
@@ -31,12 +34,4 @@ public class OrderQueue implements Serializable {
 
     // 订单号
     private String orderId;
-
-    public OrderQueue(String userId, Date createTime, String time, String goodsId, Integer status) {
-        this.userId = userId;
-        this.createTime = createTime;
-        this.time = time;
-        this.goodsId = goodsId;
-        this.status = status;
-    }
 }

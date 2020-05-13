@@ -1,5 +1,6 @@
 package com.ankoye.jelly.order.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.ankoye.jelly.base.constant.OrderStatus;
 import com.ankoye.jelly.goods.service.SkuService;
 import com.ankoye.jelly.goods.service.SpuService;
@@ -20,7 +21,7 @@ import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.dromara.hmily.annotation.Hmily;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -32,9 +33,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Component
 public class OrderServiceImpl implements OrderService {
-    @Value("${order-back-check-topic}")
-    private String orderBackTopic;
+    @Value("${user-order-topic}")
+    private String orderTopic;
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
     @Resource
@@ -50,8 +52,14 @@ public class OrderServiceImpl implements OrderService {
     private WXPayService wxPayService;
 
     @Override
-    public Order getOrderById(String id) {
-        return orderMapper.selectById(id);
+    public OrderDto getOrderById(String id) {
+        Order order = orderMapper.selectById(id);
+        OrderDto orderDto = new OrderDto().convertFor(order);
+        List<OrderItem> orderItems = orderItemMapper.selectList(new QueryWrapper<OrderItem>()
+                .eq("order_id", id)
+        );
+        orderDto.setOrderItem(orderItems);
+        return orderDto;
     }
 
     @Override
@@ -73,15 +81,15 @@ public class OrderServiceImpl implements OrderService {
             item.setOrderId(orderId);
             // 添加订单商品
             orderItemMapper.insert(item);
-            // 冻结库存
-            skuService.freezeScore(item.getSkuId(), item.getNum());
+            // 冻结库存 - 待修改
+            //skuService.freezeScore(item.getSkuId(), item.getNum());
         }
 
         // 3 - 发送延迟消息，检查订单状态，发现超时未支付则取消这个订单
         try {
             DefaultMQProducer producer = rocketMQTemplate.getProducer();
-            Message msg = new Message(orderBackTopic, "order", orderId.getBytes());
-            msg.setDelayTimeLevel(3);  // 半小时
+            Message msg = new Message(orderTopic, "check", orderId.getBytes());
+            msg.setDelayTimeLevel(16);  // 半小时
             producer.send(msg);
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,14 +142,14 @@ public class OrderServiceImpl implements OrderService {
             order.setUpdateTime(new Date());
             orderMapper.updateById(order);
 
-            // 2 - 获取订单的商品，解冻库存
+            // 2 - 获取订单的商品，解冻库存 - 秒杀订单处理
             List<OrderItem> orderItem = orderItemMapper.selectList(new QueryWrapper<OrderItem>()
                     .eq("order_id", id)
             );
             for (OrderItem item : orderItem) {
                 skuService.unfreezeScore(item.getSkuId(), item.getNum());
             }
-            System.out.println("Ok");
+
             // 3 - 如果交易已经开启则关闭 - lose if
             Map<String, String> payResult = wxPayService.queryOrder(id);
             wxPayService.closeOrder(order.getId());

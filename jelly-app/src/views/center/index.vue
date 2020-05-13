@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading.fullscreen="loading">
     <el-row>
       <el-col :md="5" :sm="7" :xs="9">
         <side-bar class="border" />
@@ -14,6 +14,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import SideBar from './components/SideBar.vue'
+import { State } from 'vuex-class'
 
 @Component({
   components: {
@@ -21,6 +22,7 @@ import SideBar from './components/SideBar.vue'
   }
 })
 export default class Center extends Vue {
+  @State((state: any) => state.app.loading) private loading: any
 }
 </script>
 

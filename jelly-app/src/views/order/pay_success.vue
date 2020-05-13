@@ -6,8 +6,8 @@
       <p>支付金额：xxx</p>
     </div>
     <div class="text-center">
-      <el-button type="primary">查看订单</el-button>
-      <el-button>继续购物</el-button>
+      <el-button type="primary" @click="$router.push('/center/order/0')">查看订单</el-button>
+      <el-button @click="$router.push('/market/list')">继续购物</el-button>
     </div>
   </div>
 </template>

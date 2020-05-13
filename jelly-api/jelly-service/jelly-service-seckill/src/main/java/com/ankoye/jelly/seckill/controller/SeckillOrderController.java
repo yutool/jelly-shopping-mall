@@ -4,12 +4,10 @@ import com.ankoye.jelly.base.result.Result;
 import com.ankoye.jelly.seckill.model.OrderQueue;
 import com.ankoye.jelly.seckill.service.SeckillOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/seckill/order")
+@RequestMapping("/v1/seckill/order")
 public class SeckillOrderController {
 
     @Autowired
@@ -18,18 +16,18 @@ public class SeckillOrderController {
     /**
      * 排队
      */
-    @GetMapping("/queueUp")
-    public Result queueUp(String userId, String time, String goodsId) {
-        seckillOrderService.queueUp(userId, time, goodsId);
+    @PostMapping("/queueUp")
+    public Result queueUp(@RequestBody OrderQueue orderQueue) {
+        seckillOrderService.queueUp(orderQueue);
         return Result.success();
     }
 
     /**
      * 查询排队状态
      */
-    @GetMapping("/query")
-    public Result query(String username, String goodsId) {
-        OrderQueue order = seckillOrderService.query(username, goodsId);
+    @GetMapping("/queue/{userId}/{goodsId}")
+    public Result query(@PathVariable  String userId, @PathVariable String goodsId) {
+        OrderQueue order = seckillOrderService.query(userId, goodsId);
         return Result.success(order);
     }
 }

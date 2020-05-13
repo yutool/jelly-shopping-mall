@@ -21,8 +21,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/v1/pay/wx")
 public class WXPayController {
-    @Value("${pay-notify-topic}")
-    private String payNotifyTopic;
+    @Value("${user-pay-topic}")
+    private String payTopic;
 
     @Autowired
     private WXPayService wxPayService;
@@ -35,13 +35,7 @@ public class WXPayController {
     @Logger(module = "微信支付", operation = "申请支付")
     @PostMapping("/native")
     public Result nativePay(@RequestBody Order order) {
-        String attach = null;
-        if(order.getType() == 1) {          // 普通订单
-            attach = "wx-order";
-        } else if(order.getType() == 2) {   // 秒杀订单
-            attach = "wx-seckill-order";
-        }
-        Map<String, String> resultMap = wxPayService.nativePay(order, attach);
+        Map<String, String> resultMap = wxPayService.nativePay(order);
         return Result.success(resultMap);
     }
 
@@ -61,9 +55,8 @@ public class WXPayController {
             }
             String resultXml = new String(baos.toByteArray(), StandardCharsets.UTF_8);
             Map<String, String> resultMap = WXPayUtil.xmlToMap(resultXml);
-            String tag = resultMap.get("attach"); // 获取消息主题
             // 发送MQ，处理订单状态
-            rocketMQTemplate.convertAndSend(payNotifyTopic+":"+tag, JSON.toJSONString(resultMap));
+            rocketMQTemplate.convertAndSend(payTopic + ":wx-notify", JSON.toJSONString(resultMap));
         } catch (Exception e) {
             e.printStackTrace();
         }

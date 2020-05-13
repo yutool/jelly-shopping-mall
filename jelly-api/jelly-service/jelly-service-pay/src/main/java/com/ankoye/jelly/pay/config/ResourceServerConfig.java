@@ -4,7 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -16,36 +18,22 @@ import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
 @Configuration
+@EnableResourceServer
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)//激活方法
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+
     // 公钥
     private static final String PUBLIC_KEY = "public.key";
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        //所有请求必须认证通过
+        // 所有请求必须认证通过
         http.authorizeRequests()
-                .antMatchers("/v1/pay/wx/notify")
-                .permitAll()
-                .anyRequest()
-                .authenticated();    //其他地址需要认证授权
-    }
-
-    /**
-     * 定义JwtTokenStore
-     */
-    @Bean
-    public TokenStore tokenStore(JwtAccessTokenConverter jwtAccessTokenConverter) {
-        return new JwtTokenStore(jwtAccessTokenConverter);
-    }
-
-    /**
-     * 定义JJwtAccessTokenConverter
-     */
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setVerifierKey(getPubKey());
-        return converter;
+                // 下边的路径放行
+                .antMatchers("/**"). //配置地址放行
+                permitAll()
+                .anyRequest().
+                authenticated();    //其他地址需要认证授权
     }
 
     /**
@@ -61,6 +49,21 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         } catch (IOException ioe) {
             return null;
         }
+    }
+
+    /**
+     * 解析token
+     */
+    @Bean
+    public TokenStore tokenStore(JwtAccessTokenConverter jwtAccessTokenConverter) {
+        return new JwtTokenStore(jwtAccessTokenConverter);
+    }
+
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setVerifierKey(getPubKey());
+        return converter;
     }
 
 }

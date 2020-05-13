@@ -16,6 +16,7 @@ const routes = [
       { path: '/', redirect: 'center' },
       { path: 'cart/:id', component: () => import('@/views/order/cart.vue') },
       { path: 'buy', name: 'buy' , component: () => import('@/views/order/buy.vue') },
+      { path: 'buy/:id', component: () => import('@/views/order/seckill_buy.vue') },
       { path: 'pay/:id', name: 'pay', component: () => import('@/views/order/pay.vue') },
       { path: 'pay_success', name: 'pay_success', component: () => import('@/views/order/pay_success.vue') },
       { path: 'pay_fail', name: 'pay_fail', component: () => import('@/views/order/pay_fail.vue') },
@@ -36,6 +37,7 @@ const routes = [
     children: [
       { path: '/', redirect: 'list' },
       { path: 'list', component: () => import('@/views/seckill/list.vue') },
+      { path: 'detail/:time/:id', component: () => import('@/views/seckill/detail.vue') },
     ]
   },
 ];

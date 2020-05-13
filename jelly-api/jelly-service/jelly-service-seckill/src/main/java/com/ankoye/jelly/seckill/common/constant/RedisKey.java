@@ -9,4 +9,6 @@ public class RedisKey {
     public static final String SECKILL_USER_KEY = "seckill_user_";
 
     public static final String SECKILL_QUEUE_UP = "seckill_queue_up";
+
+    public static final String SECKILL_GOODS_ORDER = "seckill_goods_order";
 }

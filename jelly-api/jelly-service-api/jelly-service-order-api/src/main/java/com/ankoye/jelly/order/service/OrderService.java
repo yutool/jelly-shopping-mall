@@ -1,6 +1,5 @@
 package com.ankoye.jelly.order.service;
 
-import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.model.OrderDto;
 
 import java.util.List;
@@ -9,7 +8,7 @@ public interface OrderService {
     /**
      * 查询订单信息
      */
-    Order getOrderById(String id);
+    OrderDto getOrderById(String id);
 
     /**
      * 创建订单

@@ -6,13 +6,12 @@ import org.apache.rocketmq.spring.annotation.ConsumeMode;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
+//@Component
 @RocketMQMessageListener(
-        topic = "${order-back-check-topic}",
-        selectorExpression = "seckill-order",
+        topic = "user-order-topic",
+        selectorExpression = "seckill-check",
         consumerGroup = "order-check-group",
         consumeMode = ConsumeMode.CONCURRENTLY
 )

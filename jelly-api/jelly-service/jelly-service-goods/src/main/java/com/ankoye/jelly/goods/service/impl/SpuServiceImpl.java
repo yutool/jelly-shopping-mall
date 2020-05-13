@@ -1,5 +1,6 @@
 package com.ankoye.jelly.goods.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.ankoye.jelly.base.constant.GoodsStatus;
 import com.ankoye.jelly.goods.dao.SkuMapper;
 import com.ankoye.jelly.goods.dao.SpuMapper;
@@ -13,7 +14,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hmily.annotation.Hmily;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -21,14 +22,18 @@ import java.util.Date;
 import java.util.List;
 
 @Slf4j
-//@Service
-//@Component
-@Service("spuService")
+@Service
+@Component
 public class SpuServiceImpl implements SpuService {
     @Resource
     private SpuMapper spuMapper;
     @Resource
     private SkuMapper skuMapper;
+
+    @Override
+    public Spu getSpu(String id) {
+        return spuMapper.selectById(id);
+    }
 
     @Override
     @Transactional

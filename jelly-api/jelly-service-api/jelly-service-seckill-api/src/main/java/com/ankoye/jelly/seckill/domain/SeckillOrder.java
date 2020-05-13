@@ -17,6 +17,11 @@ public class SeckillOrder implements Serializable {
     /**
      * 秒杀商品ID
      */
+    private String goodsId;
+
+    /**
+     * 秒杀商品ID
+     */
     private String skuId;
 
     /**

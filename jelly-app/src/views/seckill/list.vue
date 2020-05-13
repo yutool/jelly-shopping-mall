@@ -29,8 +29,9 @@
       </li>
     </ul>
     <el-row :gutter="20">
-      <el-col v-for="goods in goodsList" :key="goods.id" :md="6">
-        <goods-card :goods="goods"/>
+      <el-col v-for="goods in goodsList" :key="goods.spu.id" :md="6">
+        <!-- 首页显示第一个sku -->
+        <goods-card :goods="goods" :time="menus[active]" />
       </el-col>
     </el-row>
   </div>
@@ -39,7 +40,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import GoodsCard from './components/GoodsCard.vue'
-import { getDateMenu, getGoods } from '@/api/seckill'
+import { getDateMenu, getGoodsList } from '@/api/seckill'
 
 @Component({
   components: {
@@ -75,7 +76,7 @@ export default class SeckillList extends Vue {
   
   // 获取菜单对应的秒杀商品
   private getGoods(menu: string) {
-    getGoods(menu).then((res: any) => {
+    getGoodsList(menu).then((res: any) => {
       this.goodsList = res.data
       this.$log.info('秒杀商品', res.data)
     })

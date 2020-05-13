@@ -10,7 +10,7 @@ public interface WXPayService {
     /**
      * 二维码状态
      */
-    Map<String, String> nativePay(Order order, String attach);
+    Map<String, String> nativePay(Order order);
 
     /**
      * 查询支付状态

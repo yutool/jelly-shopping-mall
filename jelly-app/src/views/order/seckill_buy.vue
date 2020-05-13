@@ -59,7 +59,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { copyObj } from '@/common/utils/ObjectUtil'
-import { createOrder } from '@/api/order'
+import { createOrder, getOrder } from '@/api/order'
 
 @Component
 export default class Buy extends Vue {
@@ -71,22 +71,19 @@ export default class Buy extends Vue {
   
   // 创建订单，在这之前需要添加收货地址
   private pay() {
-    // 需要将sku变为json
-    const order = copyObj(this.order)
-    for (const item of order.orderItem) {
-      item.sku = JSON.stringify(item.sku)
-    }
-    // 创建订单
-    createOrder(order).then((res: any) => {
-      this.$log.info('创建订单', res)
-      // 创建订单成功，申请微信支付
-      this.$router.push(`pay/${res.data}`)
+    this.$router.push(`/order/pay/${this.order.id}`)
+  }
+  
+  // 查询订单
+  private getOrder() {
+    getOrder(this.$route.params.id).then((res: any) => {
+      this.order = res.data
     })
   }
   
   private mounted() {
-    this.order = this.$route.params.order
-    this.$log.info('收到订单', this.order)
+    this.getOrder()
+    this.$log.info('订单', this.order)
   }
 }
 </script>

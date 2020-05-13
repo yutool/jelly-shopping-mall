@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@TableName("tb_seckill_goods")
-public class SeckillGoods implements Serializable {
+@TableName("tb_seckill_sku")
+public class SeckillSku implements Serializable {
     @TableId
     private String id;
 
@@ -36,6 +36,11 @@ public class SeckillGoods implements Serializable {
     private String image;
 
     /**
+     * sku
+     */
+    private String sku;
+
+    /**
      * 原价格
      */
     private BigDecimal price;
@@ -44,11 +49,6 @@ public class SeckillGoods implements Serializable {
      * 秒杀价格
      */
     private BigDecimal costPrice;
-
-    /**
-     * 商家ID
-     */
-    private String merchantId;
 
     /**
      * 添加日期

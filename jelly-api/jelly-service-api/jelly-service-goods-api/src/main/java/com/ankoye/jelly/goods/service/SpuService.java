@@ -7,6 +7,11 @@ import org.dromara.hmily.annotation.Hmily;
 
 public interface SpuService {
     /**
+     * 获取商品spu
+     */
+    Spu getSpu(String id);
+
+    /**
      * 添加商品
      */
     boolean addGoods(Goods goods);
@@ -23,4 +28,5 @@ public interface SpuService {
 
     @Hmily
     void bdc();
+
 }

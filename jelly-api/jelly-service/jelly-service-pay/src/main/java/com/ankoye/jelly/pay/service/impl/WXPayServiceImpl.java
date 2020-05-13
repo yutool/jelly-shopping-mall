@@ -26,9 +26,7 @@ public class WXPayServiceImpl implements WXPayService {
     private WXPay wxPay;
 
     @Override
-    public Map<String, String> nativePay(Order order, String attach) {
-        Map<String, String> returnMap = new HashMap<>();
-        Map<String, String> responseMap = new HashMap<>();
+    public Map<String, String> nativePay(Order order) {
         Map<String, String> requestMap = new HashMap<>();
         try {
             requestMap.put("body", order.getName());                            // 商品描述
@@ -39,7 +37,6 @@ public class WXPayServiceImpl implements WXPayService {
             requestMap.put("total_fee",String.valueOf(fen));                    // 总金额 1分
             requestMap.put("trade_type", "NATIVE");                             // 支付类型
             requestMap.put("notify_url", wxPayAppConfig.getPayNotifyUrl());     // 接收微信支付异步通知回调地址
-            requestMap.put("attach", attach);                                   // 传入的 topic
 
             Map<String, String> resultMap = wxPay.unifiedOrder(requestMap);
             log.info("生成预付款状态：{}", requestMap);

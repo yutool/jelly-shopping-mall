@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 @RocketMQMessageListener(
-        topic = "${pay-notify-topic}",
-        selectorExpression = "wx-order",   // 微信支付普通订单
+        topic = "${user-pay-topic}",
+        selectorExpression = "wx-notify",   // 微信支付普通订单
         consumerGroup = "pay-notify-group",
         consumeMode = ConsumeMode.CONCURRENTLY
 )
 @Component
 @Slf4j
-public class PayNotifyMsgListener implements RocketMQListener<String> {
+public class WxNotifyMsgListener implements RocketMQListener<String> {
 
     @Autowired
     private OrderService orderService;

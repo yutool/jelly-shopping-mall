@@ -1,7 +1,6 @@
 package com.ankoye.jelly.order.controller;
 
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.model.OrderDto;
 import com.ankoye.jelly.order.service.OrderService;
 import com.ankoye.jelly.web.log.annotation.Logger;
@@ -23,7 +22,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
-        Order order = orderService.getOrderById(id);
+        OrderDto order = orderService.getOrderById(id);
         return Result.success(order);
     }
 

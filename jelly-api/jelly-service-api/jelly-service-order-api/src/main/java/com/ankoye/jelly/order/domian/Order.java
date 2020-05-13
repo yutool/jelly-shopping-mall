@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -15,11 +16,11 @@ public class Order implements Serializable {
 
     // private String orderSn;
 
-    private Long userId;
+    private String userId;
 
-    private Long money;
+    private BigDecimal money;
 
-    private Long payMoney;
+    private BigDecimal payMoney;
 
     private Date createTime;
 

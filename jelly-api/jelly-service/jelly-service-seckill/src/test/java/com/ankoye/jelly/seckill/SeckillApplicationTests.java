@@ -1,21 +1,26 @@
 package com.ankoye.jelly.seckill;
 
-import com.ankoye.jelly.util.DateUtils;
+import com.ankoye.jelly.seckill.common.constant.RedisKey;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
-//@SpringBootTest
-//@RunWith(SpringRunner.class)
+@SpringBootTest
+@RunWith(SpringRunner.class)
 @Slf4j
 public class SeckillApplicationTests {
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Test
     public void test() {
-        List<String> dateMenus = DateUtils.getDateMenus();
-        for (String dateMenu : dateMenus) {
-            System.out.println(dateMenu);
-        }
+        System.out.println(redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY).get("1257199942"));
+
+        System.out.println(redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY+"2020051310").get("1257199942"));
     }
 }
