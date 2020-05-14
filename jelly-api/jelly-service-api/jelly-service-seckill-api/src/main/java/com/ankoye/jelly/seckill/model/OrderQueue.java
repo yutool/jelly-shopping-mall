@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class OrderQueue implements Serializable {
     public static final int BE_QUEUING = 1; // 排队中
-    public static final int BE_FAIL = 2; // 排队失败
+    public static final int BE_FAIL = 2;    // 排队失败
     public static final int CREATED = 3;    // 订单已创建
     // 用户
     private String userId;
@@ -21,7 +21,7 @@ public class OrderQueue implements Serializable {
     private Date createTime;
 
     // 商品id
-    private String goodsId;
+    private String skuId;
 
     // 商品spuId
     private String spuId;

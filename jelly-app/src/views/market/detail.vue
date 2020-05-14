@@ -50,6 +50,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { getGoods } from '@/api/spu'
 import { addCart } from '@/api/cart'
+import { prepareOrder } from '@/api/order'
 import { copyObj } from '@/common/utils/ObjectUtil'
 
 @Component
@@ -128,32 +129,11 @@ export default class GoodsDetail extends Vue {
       this.$message({ type: 'info', message: '暂无该商品' })
       return
     }
-    // 整理orderItem
-    const item: any = {
-      skuId: this.checkSku.id,
-      merchantId: 0,
-      name: this.spu.title,
-      image: this.checkSku.image,
-      sku: this.checkList,
-      price: this.checkSku.price,
-      num: this.checkSku.num,
-      money: this.checkSku.price * this.checkSku.num,
-      payMoney: this.checkSku.price * this.checkSku.num
-    }
-    const order: any = {
-      userId: this.userId,
-      money: item.price * item.num,
-      payMoney: item.price * item.num,
-      weight: 0,    // 重量
-      postFee: 0,  // 运费
-      addressId: null,
-      remark: '',
-      orderItem: [item]
-    }
-    
-    this.$router.push({
-      name: 'buy', 
-      params: { order }
+    // 获取选中的skuId
+    const orderItem: any = []
+    orderItem.push({ skuId: this.checkSku.id, num: this.checkSku.num })
+    prepareOrder({ userId: '0', orderItem }).then((res: any) => {
+      this.$router.push(`/order/buy/${res.data}`)
     })
   }
    

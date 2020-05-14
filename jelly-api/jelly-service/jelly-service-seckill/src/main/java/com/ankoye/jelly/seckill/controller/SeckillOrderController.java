@@ -26,8 +26,9 @@ public class SeckillOrderController {
      * 查询排队状态
      */
     @GetMapping("/queue/{userId}/{goodsId}")
-    public Result query(@PathVariable  String userId, @PathVariable String goodsId) {
-        OrderQueue order = seckillOrderService.query(userId, goodsId);
+    public Result queryQueue(@PathVariable  String userId, @PathVariable String goodsId) {
+        OrderQueue order = seckillOrderService.queryQueue(userId, goodsId);
         return Result.success(order);
     }
+
 }

@@ -13,6 +13,7 @@
             <th scope="col">
               <el-checkbox v-model="all" @change="checkAll">全选</el-checkbox>
             </th>
+            <th scope="col">商品</th>
             <th scope="col">商品信息</th>
             <th scope="col">单价（元）</th>
             <th scope="col">数量</th>
@@ -27,9 +28,13 @@
               <el-checkbox v-model="checkObj.check[cart.id]" @change="handlerChange"></el-checkbox>
             </th>
             <td> 
-              <img :src="cart.image" width="30px"> 
+              <img :src="cart.image" width="30px" alt="图片"> 
               {{ cart.name }}
-              {{ cart.sku }}
+            </td>
+            <td>
+              <div v-for="key in Object.keys(cart.sku)" :key="key">
+                <span>{{ key }}: {{ cart.sku[key] }} </span>
+              </div>
             </td>
             <td>
               {{ cart.original }}
@@ -67,6 +72,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { getCart } from '@/api/cart'
+import { prepareOrder } from '@/api/order'
 
 @Component
 export default class Cart extends Vue {
@@ -115,43 +121,18 @@ export default class Cart extends Vue {
   
   // 付款
   private buy() {
+    // 获取选中的skuId
     const orderItem: any = []
-    const checkedKey = Object.keys(this.checkObj.check)
-    let money = 0
-    // 整理orderItem
     for (const cart of this.cartList) {
-      if (checkedKey.indexOf(cart.id + '') !== -1) {
-        const item: any = {
-          skuId: cart.id,
-          merchantId: 0,
-          name: cart.name,
-          image: cart.image,
-          sku: cart.sku,
-          price: cart.price,
-          num: cart.num,
-          money: cart.price * cart.num,
-          payMoney: cart.price * cart.num
-        }
-        money += item.payMoney
-        orderItem.push(item)
+      if (this.checkObj.check[cart.id] === true) {
+        orderItem.push({ skuId: cart.skuId, num: cart.num })
       }
     }
-    // 整理order
-    const order: any = {
-      userId: this.userId,
-      money,
-      payMoney: money,
-      weight: 0,    // 重量
-      postFee: 0,  // 运费
-      addressId: null,
-      remark: '',
-      orderItem
-    }
-    this.$router.push({
-      name: 'buy', 
-      params: { order }
+    prepareOrder({ userId: '0', orderItem }).then((res: any) => {
+      this.$router.push(`/order/buy/${res.data}`)
     })
   }
+  
   // 获取购物车
   private getCart() {
     const userId = this.$route.params.id

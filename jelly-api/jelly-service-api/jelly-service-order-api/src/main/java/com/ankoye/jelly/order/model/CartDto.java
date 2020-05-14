@@ -5,6 +5,8 @@ import com.google.common.base.Converter;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
+import java.math.BigDecimal;
+
 @Data
 public class CartDto {
 
@@ -18,15 +20,15 @@ public class CartDto {
 
     private String image;
 
-    private Long original;
+    private BigDecimal original;    // 原价
 
     private Integer num;
 
     private String sku;     // JSON db
 
-    private Long price;     // 现价 db
+    private BigDecimal price;   // 现价 db
 
-    private float discount; // 折扣 - db
+    private float discount;     // 折扣 - db
 
     public Cart convertToCart() {
         CartDtoConvert cartDtoConvert = new CartDtoConvert();

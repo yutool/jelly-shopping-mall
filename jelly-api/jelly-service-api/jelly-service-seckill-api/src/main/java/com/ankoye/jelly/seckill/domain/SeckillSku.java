@@ -1,6 +1,5 @@
 package com.ankoye.jelly.seckill.domain;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -12,18 +11,15 @@ import java.util.Date;
 @Data
 @TableName("tb_seckill_sku")
 public class SeckillSku implements Serializable {
-    @TableId
+    /**
+     * sku ID
+     */
     private String id;
 
     /**
      * spu ID
      */
     private String spuId;
-
-    /**
-     * sku ID
-     */
-    private String skuId;
 
     /**
      * 标题
@@ -80,7 +76,7 @@ public class SeckillSku implements Serializable {
     /**
      * 剩余库存数
      */
-    private Integer stockCount;
+    private Integer residue;
 
     /**
      * 是否开启秒杀

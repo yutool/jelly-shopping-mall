@@ -10,10 +10,11 @@ import org.springframework.beans.BeanUtils;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
-public class OrderDto implements Serializable {
+public class OrderModel implements Serializable {
 
     private String id;
 
@@ -38,9 +39,11 @@ public class OrderDto implements Serializable {
 
     private Integer weight;
 
-    private Long postFee;
+    private BigDecimal postFee;
 
     private String remark;
+
+    private Integer type;
 
     private Integer status;
 
@@ -51,25 +54,29 @@ public class OrderDto implements Serializable {
         return orderDtoConvert.convert(this);
     }
 
-    public OrderDto convertFor(Order order) {
+    public OrderModel convertFor(Order order) {
         OrderDtoConvert orderDtoConvert = new OrderDtoConvert();
         return orderDtoConvert.reverse().convert(order);
     }
 
-    private static class OrderDtoConvert extends Converter<OrderDto, Order> {
+    private static class OrderDtoConvert extends Converter<OrderModel, Order> {
 
         @Override
-        protected Order doForward(OrderDto orderDto) {
+        protected Order doForward(OrderModel orderModel) {
             Order order = new Order();
-            BeanUtils.copyProperties(orderDto, order);
+            BeanUtils.copyProperties(orderModel, order);
             return order;
         }
 
         @Override
-        protected OrderDto doBackward(Order order) {
-            OrderDto orderDto = new OrderDto();
-            BeanUtils.copyProperties(order, orderDto);
-            return orderDto;
+        protected OrderModel doBackward(Order order) {
+            OrderModel orderModel = new OrderModel();
+            BeanUtils.copyProperties(order, orderModel);
+            return orderModel;
         }
+    }
+
+    public OrderModel() {
+        orderItem = new LinkedList<>();
     }
 }

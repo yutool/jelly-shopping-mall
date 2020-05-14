@@ -2,13 +2,23 @@ package com.ankoye.jelly.seckill.common.constant;
 
 public class RedisKey {
 
-    public static final String SECKILL_GOODS_KEY = "seckill_goods_";
+    /**
+     * 秒杀商品
+     */
+    public static final String SECKILL_GOODS = "seckill_goods_";
 
-    public static final String SECKILL_GOODS_STOCK_COUNT_KEY = "seckill_goods_stock_count_";
+    /**
+     * 秒杀商品数量
+     */
+    public static final String SECKILL_SKU_COUNT_KEY = "seckill_sku_count_";
 
-    public static final String SECKILL_USER_KEY = "seckill_user_";
+    /**
+     * 用户排队信息
+     */
+    public static final String SECKILL_USER_QUEUE = "seckill_user_queue";
 
-    public static final String SECKILL_QUEUE_UP = "seckill_queue_up";
-
-    public static final String SECKILL_GOODS_ORDER = "seckill_goods_order";
+    /**
+     * 秒杀订单，供用户
+     */
+    public static final String PREPARE_ORDER = "prepare_order";
 }

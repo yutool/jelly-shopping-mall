@@ -33,8 +33,8 @@ public class GlobalExceptionHandler {
      * 异常日志记录
      */
     private void logErrorRequest(Exception e) {
-        log.error("报错API URL: {}", request.getRequestURL().toString());
-        log.error("异常: {}", e.getMessage());
+        log.warn("报错API URL: {}", request.getRequestURL().toString());
+        log.warn("异常: {}", e.getMessage());
     }
 
     /**

@@ -11,7 +11,7 @@
           <s> {{ sku.costPrice }} </s>
         </div>
         <div>
-          <span>已售：{{ sku.num-sku.stockCount }}</span>
+          <span>已售：{{ sku.num-sku.residue }}</span>
           <el-progress :percentage="0">
           </el-progress>
         </div>

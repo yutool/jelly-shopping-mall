@@ -14,7 +14,7 @@ public class Spu implements Serializable {
 
     private String title;
 
-    private Integer merchantId;
+    private String merchantId;
 
     private String brand;
 

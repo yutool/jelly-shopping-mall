@@ -42,7 +42,7 @@ public class SpuServiceImpl implements SpuService {
         Spu spu = goods.getSpu();
         String spuId = IdUtils.getSpuId();
         spu.setId(spuId);
-        spu.setMerchantId(0);   // 商家id
+        spu.setMerchantId("0");   // 商家id
         spu.setSaleNum(0);      // 销售量
         spu.setCommentNum(0);   // 评论数
         spu.setSeq(0);          // 排序

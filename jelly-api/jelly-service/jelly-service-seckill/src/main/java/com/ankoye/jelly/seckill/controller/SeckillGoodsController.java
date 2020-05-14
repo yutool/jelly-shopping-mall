@@ -50,8 +50,8 @@ public class SeckillGoodsController {
      */
     @GetMapping("/time_list/{time}")
     public Result list(@PathVariable String time){
-        List<SeckillSku> seckillSkuList = seckillGoodsService.timeList(time);
-        return Result.success(seckillSkuList);
+        List<SeckillGoods> goodsList = seckillGoodsService.timeList(time);
+        return Result.success(goodsList);
     }
 
     /**

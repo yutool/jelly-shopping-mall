@@ -58,14 +58,14 @@ public class SeckillGoodsPushTask {
             QueryWrapper<SeckillSku> wrapper = new QueryWrapper<>();
             wrapper.eq("status", 0);
             wrapper.eq("is_marketable", 1);
-            wrapper.gt("stock_count", 0);
+            wrapper.gt("residue", 0);
             wrapper.le("start_time", day);
             wrapper.ge("end_time", day);
             wrapper.eq("region", dateMenu.substring(8));
 
-            Set keys = redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY + dateMenu).keys(); //key field value
+            Set keys = redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS + dateMenu).keys(); //key field value
             if (keys != null && keys.size() > 0){
-                wrapper.notIn("id", keys);
+                wrapper.notIn("spu_id", keys);
             }
 
             List<SeckillSku> seckillSkuList = seckillGoodsMapper.selectList(wrapper);
@@ -82,27 +82,16 @@ public class SeckillGoodsPushTask {
                 SeckillGoods seckillGoods = new SeckillGoods();
                 seckillGoods.setSpu(spu);
                 // 查找到 当前 spu 对应的秒杀商品添加到
-                for (SeckillSku seckillSku : seckillSkuList) {
-                    if (seckillSku.getSpuId().equals(spu.getId())) {
+                for (SeckillSku sku : seckillSkuList) {
+                    if (sku.getSpuId().equals(spu.getId())) {
                         // 添加秒杀商品 sku
-                        seckillGoods.getSkuList().add(seckillSku);
+                        seckillGoods.getSkuList().add(sku);
                         // 将库存保存一份至redis
-                        redisTemplate.opsForValue().set(RedisKey.SECKILL_GOODS_STOCK_COUNT_KEY + seckillSku.getId(), seckillSku.getStockCount());
+                        redisTemplate.opsForValue().set(RedisKey.SECKILL_SKU_COUNT_KEY + sku.getId(), sku.getResidue());
                     }
                 }
-                redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY + dateMenu).put(tmp.getSpuId(), seckillGoods);
+                redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS + dateMenu).put(tmp.getSpuId(), seckillGoods);
             }
-
-            // version 1
-            // 添加到缓存中 seckillGoods - sku
-//            for (SeckillSku seckillGoods : seckillSkuList) {
-//                // 将秒杀单品加入redis
-//                redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY + dateMenu).put(seckillGoods.getId(), seckillGoods);
-//
-//                //加载秒杀商品的库存
-//                redisTemplate.opsForValue().set(RedisKey.SECKILL_GOODS_STOCK_COUNT_KEY + seckillGoods.getId(), seckillGoods.getStockCount());
-//            }
         }
-
     }
 }

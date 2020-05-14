@@ -21,7 +21,7 @@ public interface SeckillGoodsService {
     /**
      * 查询所有某时间段内所有商品
      */
-    List<SeckillSku> timeList(String time);
+    List<SeckillGoods> timeList(String time);
 
     /**
      * 查询商品详情

@@ -19,8 +19,8 @@ public class SeckillApplicationTests {
 
     @Test
     public void test() {
-        System.out.println(redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY).get("1257199942"));
+        System.out.println(redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS).get("1257199942"));
 
-        System.out.println(redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY+"2020051310").get("1257199942"));
+        System.out.println(redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS+"2020051310").get("1257199942"));
     }
 }

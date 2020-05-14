@@ -1,5 +1,6 @@
 package com.ankoye.jelly.seckill.service;
 
+import com.ankoye.jelly.order.model.OrderModel;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.OrderQueue;
 
@@ -12,10 +13,22 @@ public interface SeckillOrderService {
     /**
      * 查询排队状态
      */
-    OrderQueue query(String username, String goodsId);
+    OrderQueue queryQueue(String username, String goodsId);
 
     /**
-     * 创建订单
+     * 预创建订单
      */
-    String create(String userId, SeckillSku sk);
+    String prepare(String userId, SeckillSku sk);
+
+    /**
+     * 回滚库存，删除排队状态
+     */
+    void rollback(OrderModel orderModel);
+
+    /**
+     * 回查秒杀订单
+     * @param orderId
+     * @return
+     */
+    int checkOrder(String orderId);
 }

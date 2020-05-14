@@ -23,6 +23,6 @@ public class BackCheckOrderMsgListener implements RocketMQListener<String> {
     public void onMessage(String orderId) {
         log.info("订单支付状态回查：{}", orderId);
         // 超时未支付，删除订单
-        //seckillOrderService.deleteOrder(orderId);
+        seckillOrderService.checkOrder(orderId);
     }
 }

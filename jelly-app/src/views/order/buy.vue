@@ -7,17 +7,29 @@
       <el-step title="完成"></el-step>
     </el-steps>
     
-    <el-button type="primary" @click="addAddress">添加收货地址</el-button>
+    <el-button type="primary">添加收货地址</el-button>
     
     <div class="table-responsive-lg">
       <div class="bg-light">
         <table class="table table-borderless">
+          <thead>
+            <th>商品</th>
+            <th>商品信息</th>
+            <th>单价(元)</th>
+            <th>数量</th>
+            <th>优惠</th>
+            <th>小计(元)</th>
+          </thead>
           <tbody>
             <tr v-for="item in order.orderItem" :key="item.id">
               <td> 
-                <img :src="item.image" width="30px"> 
+                <img :src="item.image" width="30px" alt="图片"> 
                 {{ item.name }}
-                {{ item.sku }}
+              </td>
+              <td>
+                <div v-for="key in Object.keys(item.sku)" :key="key">
+                  <span>{{ key }}: {{ item.sku[key] }} </span>
+                </div>
               </td>
               <td>
                 {{ item.price }}
@@ -26,20 +38,17 @@
                 x {{ item.num }}
               </td>
               <td>
-                优惠价多少
+                无
               </td>
               <td>
-                {{ item.price }} - 优惠价
+                {{ item.price * item.num }}
               </td>
             </tr>
           </tbody>
         </table>
         <div>
           <span>备注:</span>
-          <input type="text">
-        </div>
-        <div>
-          合计：xxx
+          <input type="text" placeholder="补充填写其他信息，如有快递不到也请留言">
         </div>
       </div>
       
@@ -49,7 +58,7 @@
       <a href="#" class="float-left">返回购物车</a>
       <div v-if="JSON.stringify(order) !== '{}'" class="float-right">
         <span>共有{{ order.orderItem.length }}件商品</span>
-        <span>共计￥{{ order.money }}</span>
+        <span>共计￥{{ order.payMoney }}</span>
         <el-button type="primary" @click="pay">确认并付款</el-button>
       </div>
     </div>
@@ -59,34 +68,52 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { copyObj } from '@/common/utils/ObjectUtil'
-import { createOrder } from '@/api/order'
+import { getPrepareOrder, checkPrepareOrder, createOrder } from '@/api/order'
 
 @Component
 export default class Buy extends Vue {
-  private order: any = {}
-  
-  private addAddress() {
-    this.order.addressId = 1
+  private order: any = {} // 显示
+  private orderModel = {
+    id: '',
+    addressId: 0
   }
   
   // 创建订单，在这之前需要添加收货地址
   private pay() {
-    // 需要将sku变为json
-    const order = copyObj(this.order)
-    for (const item of order.orderItem) {
-      item.sku = JSON.stringify(item.sku)
-    }
     // 创建订单
-    createOrder(order).then((res: any) => {
+    createOrder(this.orderModel).then((res: any) => {
       this.$log.info('创建订单', res)
       // 创建订单成功，申请微信支付
-      this.$router.push(`pay/${res.data}`)
+      this.$router.push(`/order/pay/${res.data}`)
     })
   }
   
+  // 获取预订单
+  private getPrepareOrder() {
+    getPrepareOrder(this.$route.params.id).then((res: any) => {
+      if (res.data == null) {
+        this.$router.back()
+      }
+      this.order = res.data
+      for (const item of this.order.orderItem) {
+        item.sku = JSON.parse(item.sku)
+      }
+      this.orderModel.id = this.order.id
+      this.$log.info('收到订单', this.order)
+    })
+  }
+  
+  // 删除预订单
+  private checkPrepareOrder() {
+    checkPrepareOrder(this.order.id)
+  }
+  
   private mounted() {
-    this.order = this.$route.params.order
-    this.$log.info('收到订单', this.order)
+    this.getPrepareOrder()
+  }
+  private beforeDestroy() {
+    // 如果不是去付款
+    this.checkPrepareOrder()
   }
 }
 </script>

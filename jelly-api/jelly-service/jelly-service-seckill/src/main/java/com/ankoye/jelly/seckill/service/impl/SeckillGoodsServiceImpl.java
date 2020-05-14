@@ -9,16 +9,15 @@ import com.ankoye.jelly.seckill.dao.SeckillGoodsMapper;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.SeckillGoods;
 import com.ankoye.jelly.seckill.service.SeckillGoodsService;
-import com.ankoye.jelly.util.IdUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -27,8 +26,8 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
     private SkuService skuService;
     @Resource
     private SeckillGoodsMapper seckillGoodsMapper;
-    @Autowired
-    private RedisTemplate redisTemplate;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public PageInfo<SeckillSku> list(Integer page, Integer size) {
@@ -41,27 +40,43 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
     @Transactional // 全局事务
     public void add(SeckillSku goods) {
         // 查询商品信息
-        Sku sku = skuService.getSkuById(goods.getSkuId());
+        Sku sku = skuService.getSkuById(goods.getId());
         // 添加秒杀商品
-        goods.setId(IdUtils.getSpuId());
+        goods.setId(sku.getId());
         goods.setSpuId(sku.getSpuId());
+        goods.setSku(sku.getSku());
         goods.setImage(sku.getImage());
-        goods.setStockCount(goods.getNum());
+        goods.setResidue(goods.getNum());
         goods.setCreateTime(new Date());
         goods.setIsMarketable(true);
         goods.setStatus(GoodsStatus.SUCCESS);
         seckillGoodsMapper.insert(goods);
         // 冻结商品库存
-        skuService.freezeScore(goods.getSkuId(), goods.getNum());
+        skuService.freezeScore(goods.getId(), goods.getNum());
     }
 
     @Override
-    public List<SeckillSku> timeList(String time) {
-        return redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY + time).values();
+    public List<SeckillGoods> timeList(String time) {
+        List<SeckillGoods> goodsList = new LinkedList<>();
+        List<Object> list =  redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS + time).values();
+        for (Object o : list) {
+            SeckillGoods seckillGoods = (SeckillGoods) o;
+            for (SeckillSku sku : seckillGoods.getSkuList()) {
+                Integer num = Integer.valueOf((String) redisTemplate.opsForValue().get(RedisKey.SECKILL_SKU_COUNT_KEY + sku.getId()));
+                sku.setResidue(num);
+            }
+            goodsList.add(seckillGoods);
+        }
+        return goodsList;
     }
 
     @Override
     public SeckillGoods detail(String time, String spuId) {
-        return (SeckillGoods) redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS_KEY + time).get(spuId);
+        SeckillGoods seckillGoods = (SeckillGoods) redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS + time).get(spuId);
+        for (SeckillSku sku : seckillGoods.getSkuList()) {  // 获取库存
+            Integer num = Integer.valueOf((String) redisTemplate.opsForValue().get(RedisKey.SECKILL_SKU_COUNT_KEY + sku.getId()));
+            sku.setResidue(num);
+        }
+        return seckillGoods;
     }
 }

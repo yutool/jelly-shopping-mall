@@ -1,7 +1,7 @@
 package com.ankoye.jelly.order.controller;
 
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.order.model.OrderDto;
+import com.ankoye.jelly.order.model.OrderModel;
 import com.ankoye.jelly.order.service.OrderService;
 import com.ankoye.jelly.web.log.annotation.Logger;
 import com.ankoye.jelly.web.log.constant.LogType;
@@ -22,22 +22,41 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
-        OrderDto order = orderService.getOrderById(id);
+        OrderModel order = orderService.getOrderById(id);
         return Result.success(order);
+    }
+
+    @Logger(module = "订单模块", operation = "预创建订单")
+    @PostMapping("/prepare")
+    public Result prepareOrder(@RequestBody OrderModel orderModel) {
+        String orderId = orderService.prepare(orderModel);
+        return Result.success(orderId);
+    }
+
+    @DeleteMapping("/prepare/{id}")
+    public Result deletePrepareOrder(@PathVariable String id) {
+        orderService.checkPrepareOrder(id);
+        return Result.success();
+    }
+
+    @GetMapping("/prepare/{id}")
+    public Result getPrepareOrder(@PathVariable String id) {
+        OrderModel orderModel = orderService.getPrepareOrder(id);
+        return Result.success(orderModel);
     }
 
     @Logger(module = "订单模块", operation = "创建订单")
     @PostMapping("/create")
-    public Result createOrder(@RequestBody OrderDto orderDto) {
+    public Result create(@RequestBody OrderModel orderModel) {
         // 创建订单
-        String orderId = orderService.createOrder(orderDto);
+        String orderId = orderService.create(orderModel);
         return Result.success(orderId);
     }
 
     @Logger(module = "订单模块", operation = "获取用户所有订单", exclude = {LogType.RESPONSE, LogType.REQUEST})
     @GetMapping("/user/{id}")
     public Result findByUserId(@PathVariable String id) {
-        List<OrderDto> orders = orderService.getByUserId(id);
+        List<OrderModel> orders = orderService.getByUserId(id);
         return Result.success(orders);
     }
 

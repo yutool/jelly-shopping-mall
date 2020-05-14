@@ -53,9 +53,9 @@ import { copyObj } from '@/common/utils/ObjectUtil'
 
 @Component
 export default class GoodsDetail extends Vue {
+  @Getter('userId') private userId: any
   private queueTimer: any
   private loading = false
-  @Getter('userId') private userId: any
   private spu: any = {}
   private skuList: any = []
   private checkList: any = {}  // 选中的属性
@@ -75,12 +75,12 @@ export default class GoodsDetail extends Vue {
     // 计算剩余库存
     for (const sku of this.skuList) {
       const skuVals = Object.values(sku.sku)
-      this.checkSku.residue += sku.num
+      this.checkSku.residue += sku.residue
       for (const c of cKeys) {
         if (skuVals.indexOf(this.checkList[c]) !== -1) {
           continue
         }
-        this.checkSku.residue -= sku.num
+        this.checkSku.residue -= sku.residue
         break
       }
     }
@@ -92,10 +92,10 @@ export default class GoodsDetail extends Vue {
     if (cKeys.length === Object.keys(this.spu.skuTemplate).length) {
       for (const item of this.skuList) {
         if (JSON.stringify(this.checkList) === JSON.stringify(item.sku)) {  // 找到选中的sku
+          this.checkSku.id = item.id
           this.checkSku.image = item.image
           this.checkSku.price = item.price
           this.checkSku.costPrice = item.costPrice
-          this.checkSku.id = item.id
           if (this.checkSku.num > item.num) {
             this.checkSku.num = item.num
           }
@@ -111,11 +111,11 @@ export default class GoodsDetail extends Vue {
       this.$message({ type: 'info', message: '暂无该商品' })
       return
     }
-    const form = {
+    const form = {  // 排队
+      skuId:  this.checkSku.id,
       userId: '0',
       time: this.$route.params.time,
-      spuId: this.$route.params.id,
-      goodsId:  this.checkSku.id
+      spuId: this.$route.params.id
     }
     queueUp(form).then((res: any) => {
       console.log(res)
@@ -132,7 +132,7 @@ export default class GoodsDetail extends Vue {
     this.loading = true
     this.queueTimer = setInterval(() => queryQueue('0', this.checkSku.id).then((res: any) => {
       console.log(res)
-      if (res.data.status === 3) { // 创建订单成功
+      if (res.data.status === 3) { // 预创建订单成功
         window.clearInterval(this.queueTimer)
         // 查询订单去付款
         this.$router.push(`/order/buy/${res.data.orderId}`)

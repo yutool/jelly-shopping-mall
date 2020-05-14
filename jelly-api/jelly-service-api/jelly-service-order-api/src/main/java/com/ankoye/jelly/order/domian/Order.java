@@ -38,6 +38,9 @@ public class Order implements Serializable {
 
     private String remark;
 
+    // 订单类型 1 - 秒杀订单
+    private Integer type;
+
     private Integer status;
 
 }

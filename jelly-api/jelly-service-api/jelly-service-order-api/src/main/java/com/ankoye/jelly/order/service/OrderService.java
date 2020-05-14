@@ -1,6 +1,6 @@
 package com.ankoye.jelly.order.service;
 
-import com.ankoye.jelly.order.model.OrderDto;
+import com.ankoye.jelly.order.model.OrderModel;
 
 import java.util.List;
 
@@ -8,13 +8,31 @@ public interface OrderService {
     /**
      * 查询订单信息
      */
-    OrderDto getOrderById(String id);
+    OrderModel getOrderById(String id);
+
+
+    /**
+     * 预创建订单 - 临时策略
+     */
+    String prepare(OrderModel form);
+
+    /**
+     * 获取预订单
+     */
+    OrderModel getPrepareOrder(String id);
+
+    /**
+     * 检查预创建的订单
+     * 如过预订单存在，说明没创建订单
+     * @param id
+     */
+    void checkPrepareOrder(String id);
 
     /**
      * 创建订单
-     * @return 订单编号
+     * @param form 包含住址等信息
      */
-    String createOrder(OrderDto orderDto);
+    String create(OrderModel form);
 
     /**
      * 支付成功更改订单状态
@@ -27,15 +45,15 @@ public interface OrderService {
     int payFailStatus(String id);
 
     /**
-     * 超时未支付，删除订单，解冻库存
+     * 回查订单
      */
-    int deleteOrder(String id);
+    int checkOrder(String id);
 
     /**
      * 获取用户所有订单
      * @param id 用户id
      */
-    List<OrderDto> getByUserId(String id);
+    List<OrderModel> getByUserId(String id);
 
     /**
      * 删除订单
@@ -45,4 +63,5 @@ public interface OrderService {
 
     //@Hmily
     void test();
+
 }
