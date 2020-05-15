@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading.fullscreen="loading"> 
     <el-steps :space="200" :active="1" finish-status="success">
       <el-step title="购物车"></el-step>
       <el-step title="确认订单"></el-step>
@@ -70,12 +70,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Getter } from 'vuex-class'
+import { Getter, State } from 'vuex-class'
 import { getCart } from '@/api/cart'
 import { prepareOrder } from '@/api/order'
 
 @Component
 export default class Cart extends Vue {
+  @State((state: any) => state.app.loading) private loading: any
   @Getter('userId') private userId!: string
   private cartList: any = []
   private all = false

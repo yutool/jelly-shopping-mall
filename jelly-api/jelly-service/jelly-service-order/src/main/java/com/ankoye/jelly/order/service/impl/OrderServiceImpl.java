@@ -232,6 +232,7 @@ public class OrderServiceImpl implements OrderService {
         // 获取用户所有订单
         List<Order> orders = orderMapper.selectList(new QueryWrapper<Order>()
                 .eq("user_id", id)
+                .orderByDesc("create_time")
         );
         // 获取订单对应的商品
         for (Order order : orders) {

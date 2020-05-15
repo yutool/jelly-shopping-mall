@@ -3,6 +3,8 @@ import * as auth from '@/common/utils/auth';
 import { Message } from 'element-ui'
 import store from '@/store'
 
+const qs = require('qs')
+
 // 创建实例
 const instance = axios.create({
   baseURL: '/',
@@ -18,6 +20,11 @@ instance.interceptors.request.use(
     // if (token) { // 如果本地存在token，请求时带上
     //   config.headers.Authorization = `Bearer ${token}`;
     // }
+    if (config.method === 'get' || config.method === 'post') {
+      config.paramsSerializer = (params: any) => {
+        return qs.stringify(params, { arrayFormat: 'repeat' })
+      }
+    }
     return config;
   }, (error: any) => {
     return Promise.reject(error);

@@ -1,6 +1,5 @@
 package com.ankoye.jelly.seckill;
 
-import com.ankoye.jelly.seckill.common.constant.RedisKey;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +18,6 @@ public class SeckillApplicationTests {
 
     @Test
     public void test() {
-        System.out.println(redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS).get("1257199942"));
 
-        System.out.println(redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS+"2020051310").get("1257199942"));
     }
 }

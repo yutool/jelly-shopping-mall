@@ -7,6 +7,17 @@ import java.util.Map;
 
 public interface CategoryService {
     /**
+     * 获取首页菜单
+     */
+    Map<String, List<Category>> getMenu();
+
+    /**
+     * 获取推荐菜单
+     */
+    Map<Integer, List<String>> getContentMenu(List<Integer> menus);
+
+
+    /**
      * 获取根目录及以下第一级目录
      */
     Map<String, List<Category>> getRootCategory();
@@ -22,4 +33,5 @@ public interface CategoryService {
      * @return
      */
     List<Category> getThreeCategory(Integer id);
+
 }

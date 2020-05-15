@@ -19,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -29,6 +31,19 @@ public class SpuServiceImpl implements SpuService {
     private SpuMapper spuMapper;
     @Resource
     private SkuMapper skuMapper;
+
+    @Override
+    public Map<Integer, List<Spu>> getSpuByMenus(List<Integer> menus) {
+        Map<Integer, List<Spu>> result = new LinkedHashMap<>();
+        for (Integer menuId : menus) {
+            List<Spu> spus = spuMapper.selectList(new QueryWrapper<Spu>()
+                    .eq("category1_id", menuId)
+                    .last("limit 0, 20")
+            );
+            result.put(menuId, spus);
+        }
+        return result;
+    }
 
     @Override
     public Spu getSpu(String id) {

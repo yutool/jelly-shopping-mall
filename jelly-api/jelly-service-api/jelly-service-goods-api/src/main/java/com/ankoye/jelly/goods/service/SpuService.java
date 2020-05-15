@@ -5,7 +5,15 @@ import com.ankoye.jelly.goods.model.Goods;
 import com.github.pagehelper.PageInfo;
 import org.dromara.hmily.annotation.Hmily;
 
+import java.util.List;
+import java.util.Map;
+
 public interface SpuService {
+    /**
+     * 获取首页内容
+     */
+    Map<Integer, List<Spu>> getSpuByMenus(List<Integer> menus);
+
     /**
      * 获取商品spu
      */

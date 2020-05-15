@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -17,9 +19,36 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     @Override
+    public Map<String, List<Category>> getMenu() {
+        List<Category> root = categoryMapper.selectList(new QueryWrapper<Category>()
+            .eq("parent_id", 0)
+        );
+        // List<Category> all = categoryMapper.selectList(null);
+        Map<String, List<Category>> result = new HashMap<>();
+        result.put("root", root);
+        return result;
+    }
+
+    @Override
+    public Map<Integer, List<String>> getContentMenu(List<Integer> menus) {
+        Map<Integer, List<String>> result = new LinkedHashMap<>();
+        for (Integer menuId : menus) {
+            Category root = categoryMapper.selectById(menuId);
+            List<Category> second = categoryMapper.selectList(new QueryWrapper<Category>()
+                    .eq("parent_id", menuId)
+            );
+            second.add(0, root);
+            result.put(menuId, second.stream().map(Category::getName).collect(Collectors.toList()));
+        }
+        return result;
+    }
+
+    @Override
     public Map<String, List<Category>> getRootCategory() {
         // 查询根目录
-        List<Category> rootCate = categoryMapper.selectList(new QueryWrapper<Category>().eq("parent_id", 0));
+        List<Category> rootCate = categoryMapper.selectList(new QueryWrapper<Category>()
+                .eq("parent_id", 0)
+        );
         // 查询二级目录
         List<Category> secondCate = null;
         if(!rootCate.isEmpty()) {
