@@ -9,6 +9,7 @@ import com.ankoye.jelly.seckill.common.constant.RedisKey;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.OrderQueue;
 import com.ankoye.jelly.seckill.service.SeckillOrderService;
+import com.ankoye.jelly.util.DateUtils;
 import com.ankoye.jelly.util.IdUtils;
 import com.ankoye.jelly.web.exception.CastException;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -44,6 +45,10 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
      */
     @Override
     public boolean queueUp(OrderQueue orderQueue) {
+        String time = orderQueue.getTime();
+        if (!DateUtils.presentTime().equals(time)) {
+            CastException.cast("该商品暂未开始秒杀");
+        }
         String userId = orderQueue.getUserId();
         String skuId = orderQueue.getSkuId();
         // 1. 上把锁，防止恶意排队 - 不知道需不需要
@@ -72,7 +77,7 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
         // 供用户查询排队状态
         redisTemplate.boundHashOps(RedisKey.SECKILL_USER_QUEUE).put(userId + skuId, orderQueue);
         rocketMQTemplate.convertAndSend(orderTopic + ":create", JSON.toJSONString(orderQueue));
-        redisTemplate.delete(redis_key);    // 解锁
+        redisTemplate.delete(redis_key);
         return true;
     }
 
@@ -92,7 +97,8 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
         OrderModel orderModel = new OrderModel();
         orderModel.setId(orderId);
         orderModel.setUserId(userId);
-        orderModel.setType(1);      // 秒杀订单
+        // 秒杀订单
+        orderModel.setType(1);
         orderModel.setMoney(sku.getCostPrice());
         orderModel.setPayMoney(sku.getPrice());
 

@@ -1,23 +1,34 @@
 <template>
-  <div class="container" v-loading.fullscreen="loading" element-loading-text="正在抢货，请稍等">
+  <div class="container pt-3" v-loading.fullscreen="loading" element-loading-text="正在抢货，请稍等">
     <el-row :gutter="20">
       <!-- 照片墙 -->
       <el-col :md="12">
-        <div class="goods-images">
+        <div class="sku-images">
           <img :src="spu.picture" alt="">
         </div>
       </el-col>
       <!-- 选择商品 -->
       <el-col :md="12">
-        <div class="goods-title-sku">
+        <!-- 标题 -->
+        <div class="sku-title">
+          <el-tag type="danger" size="mini">秒杀</el-tag>
           {{ spu.title }}
         </div>
-        <div class="goods-price">
-          <p>秒杀价格：{{ checkSku.price }} <s>原价：{{ checkSku.costPrice }}</s></p>
-          <p>累计评价: {{ spu.commentNum }} 累计销售：{{ spu.saleNum }}</p>
+        <!-- 价格 -->
+         <div class="summary-price-wrap">
+          <div class="sku-price">
+            <span>
+              秒杀价：<span class="price">￥{{ checkSku.price }}</span>
+            </span>
+            <s>原价：￥{{ checkSku.costPrice }} </s>
+          </div>
+          <div class="sku-sales">
+            <small class="pr-3">累计评价: {{ spu.commentNum }}</small>
+            <small>累计销售：{{ spu.saleNum }}</small>
+          </div>
         </div>
         <!-- SKU -->
-         <el-form ref="form" label-width="90px">
+         <el-form ref="form" label-width="80px" label-position="left" class="sku-form">
           <el-form-item v-for="(value, name) in spu.skuTemplate" :key="name"  :label="name" >
             <el-radio-group v-model="checkList[name]" >
               <el-radio v-for="item in value" :key="item" :label="item" @change="calculate()">
@@ -25,19 +36,19 @@
             </el-radio-group>
           </el-form-item>
         </el-form>
-        <div class="goods-amount">
-          <span>数量: {{ checkSku.num }} </span>
-          <span>剩余库存：{{ checkSku.residue }}</span>
+        <!-- 立即秒杀 -->
+        <div class="sku-buy">
+          <el-button type="danger" @click="buy" plain>立即秒杀</el-button>
+          <small class="text-muted pl-3">剩余库存：{{ checkSku.residue }}</small>
         </div>
-        <div class="goods-buy">
-          <el-button disabled>加入购物车</el-button>
-          <el-button @click="buy">立即购买</el-button>
-        </div>
-        <div class="extra-services">
-          服务说明：<span>{{ spu.serve }}</span>
+        <!-- 服务 -->
+        <div class="sku-serve">
+          <span class="sku-form-lable">服务说明：</span>
+          {{ spu.serve ? spu.serve : '暂无' }}
         </div>
         <div class="extra-pay">
-          支付方式：微信
+          <span class="sku-form-lable">支付方式：</span>
+          <div class="fl list list-nomaibei"></div>
         </div>
       </el-col>
     </el-row>
@@ -178,17 +189,60 @@ export default class GoodsDetail extends Vue {
 </script>
 
 <style scoped lang="scss">
-.goods-images {
+.sku-images {
+  text-align: center;
+  padding: 10px;
   img {
     width: 90%;
   }
 }
-.specs-item-choose {
-  display: inline-block;
-  li {
-    display: inline;
-    list-style: none;
+.sku-title {
+  font: 700 16px Arial,"microsoft yahei";
+  color: #666;
+  padding-top: 10px;
+  line-height: 28px;
+  margin-bottom: 5px;
+}
+.summary-price-wrap {
+  padding: 10px;
+  background: #f3f3f3;
+  .sku-price {
+    padding-bottom: 10px;
+    .price {
+      color: #e4393c;
+      font-size: 20px;
+      font-weight: 700;
+      padding-right: 20px;
+    }
   }
+}
+.sku-form {
+  padding: 10px 0;
+  .el-form-item {
+    margin: 0;
+  }
+}
+.sku-buy {
+  padding-bottom: 10px;
+}
+.sku-serve {
+  padding-bottom: 10px;
+}
+.extra-pay  {
+  .list-nomaibei {
+    background-position: -37px -295px;
+  }
+  .list {
+    background-image: url(https://s10.mogucdn.com/p2/170122/117603130_6a8jgjh899bh5jd6hcia3ehhj0113_221x704.png);
+    background-position: -10px -290px;
+    display: inline-block;
+    width: 131px;
+    height: 25px;
+  }
+}
+.sku-form-lable {
+  font-size: 14px;
+  color: #606266;
 }
 </style>
   

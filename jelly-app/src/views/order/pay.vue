@@ -1,28 +1,51 @@
 <template>
   <div class="container">
-    <el-steps :space="200" :active="3" finish-status="success">
+    <!-- 步骤条 -->
+    <el-steps :space="150" :active="3" finish-status="success" class="pt-3 pb-2">
       <el-step title="购物车"></el-step>
       <el-step title="确认订单"></el-step>
       <el-step title="支付"></el-step>
       <el-step title="完成"></el-step>
     </el-steps>
-    
-    <div>
-      <p>订单提交成功，请您及时付款，以便尽快为您发货~</p>
-      <small>请您在半小时之内完成支付，超级订单会自动取消，订单号:{{ order.id }}</small>
+    <!-- 订单信息 -->
+    <div class="mb-3">
+      <div>订单提交成功，请您及时付款，以便尽快为您发货~</div>
+      <small>请您在半小时之内完成支付，超时订单会自动取消，订单号:{{ order.id }}</small>
     </div>
-    
-    <div>
+    <!-- 二维码 -->
+    <div class="pay-card">
+      <div class="pay-header">
+        <ul>
+          <li @click="weixinPay">微信支付</li>
+          <li>支付宝支付</li>
+        </ul>
+      </div>
+      <el-row class="pay-content">
+        <el-col :span="9">
+          <vue-qrious :value="wxCodeUrl" :padding="10" :size="200" />
+        </el-col>
+        <el-col :span="15">
+          <div>
+            <div class="pay-hint">
+              <span>请使用微信扫描二维码</span> <br/>
+              <span>已完成支付</span>
+            </div>
+            <div class="pay-helper">
+              <span>详细 <a href="#">使用帮助</a></span> <br/>
+              <span>如果支付遇到问题，可 <a href="#">联系客服</a></span>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <!-- 一些提示信息 -->
+    <div class="hint">
       <h6>重要说明</h6>
       <ul>
         <li>果冻商城支付平台目前支持微信支付方式。</li>
         <li>它支付渠道正在调试中，敬请期待。</li>
       </ul>
     </div>
-    <div v-if="wxCodeUrl != ''">
-      <vue-qrious :value="wxCodeUrl" :padding="10" :size="200" />
-    </div>
-    <el-button @click="weixinPay">点击获取微信二维码</el-button>
   </div>
 </template>
 
@@ -95,5 +118,35 @@ export default class Pay extends Vue {
 </script>
 
 <style scoped lang="scss">
-
+.pay-card {
+  border: 2px solid #f6f6f6;
+  margin-bottom: 1rem;
+  .pay-header {
+    ul {
+      margin: 0;
+      padding: 0;
+      li {
+        list-style: none;
+        display: inline-block;
+        padding: 10px 10px;
+        border: 1px solid #f6f6f6;
+        cursor: pointer;
+      }
+    }
+  }
+  .pay-content {
+    text-align: center;
+    padding: 20px;
+    background: #f9f9f9;
+    .pay-hint {
+      color: #999;
+      font: 700 20px/1.4 Microsoft YaHei;
+      padding: 30px 0;
+    }
+    .pay-helper {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+}
 </style>

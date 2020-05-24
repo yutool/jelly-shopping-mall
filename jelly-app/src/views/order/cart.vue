@@ -1,11 +1,13 @@
 <template>
-  <div class="container" v-loading.fullscreen="loading"> 
-    <el-steps :space="200" :active="1" finish-status="success">
+  <div class="container mb-5" v-loading.fullscreen="loading">
+    <!-- 步骤条 -->
+    <el-steps :space="150" :active="1" finish-status="success" class="pt-3 pb-2">
       <el-step title="购物车"></el-step>
       <el-step title="确认订单"></el-step>
       <el-step title="支付"></el-step>
       <el-step title="完成"></el-step>
     </el-steps>
+    <!-- 购物车列表 -->
     <div class="table-responsive-lg">
       <table class="table table-borderless">
         <thead class="bg-light">
@@ -33,17 +35,19 @@
             </td>
             <td>
               <div v-for="key in Object.keys(cart.sku)" :key="key">
-                <span>{{ key }}: {{ cart.sku[key] }} </span>
+                <span class="table-sku">{{ key }}: {{ cart.sku[key] }} </span>
               </div>
             </td>
             <td>
-              {{ cart.original }}
-              {{ cart.price }}
+              <div> <s class="text-muted">{{ cart.price }}</s>  </div>
+              <div> {{ cart.price }} </div>
             </td>
             <td>
-              <el-input-number size="mini" v-model="cart.num"></el-input-number>
+              <el-input-number size="mini" v-model="cart.num" @input="numInput(cart, $event)"></el-input-number>
             </td>
-            <td>{{ cart.num * cart.price }}</td>
+            <td>
+              <span class="table-price"> {{ cart.num * cart.price }} </span>
+            </td>
             <td>
               <el-link type="danger">删除</el-link> <br/>
               <el-link type="primary">移入收藏夹</el-link>
@@ -52,17 +56,20 @@
         </tbody>
       </table>
     </div>
-    <div class="border clearfix">
+    <!-- 状态栏 -->
+    <div class="cart-paybar clearfix">
       <div class="float-left">
         <el-checkbox v-model="all" @change="checkAll">全选</el-checkbox>
-        <a href="#">删除选中</a>
-        <a href="#">清空售馨商品</a>
-        <a href="#">移入收藏夹</a>
+        <ul class="paybar-list">
+          <li><a href="#">删除选中</a></li>
+          <li><a href="#">清空售馨商品</a></li>
+          <li><a href="#">移入收藏夹</a></li>
+        </ul>
       </div>
       <div class="float-right">
-        <span>总共 {{ checkObj.num }} 件商品 </span>
-        <span>共计：￥ {{ checkObj.money }} 元 </span>
-        <el-button type="primary" @click="buy">去付款</el-button>
+        总共 <span style="color: #ff5777;">{{ checkObj.num }} </span> 件商品，
+        共计:<span style="color: #ff5777; font-size: 20px">￥{{ checkObj.money }}</span> 元 
+        <el-button type="primary" @click="buy" size="small">去付款</el-button>
       </div>
     </div>
   </div>
@@ -119,6 +126,14 @@ export default class Cart extends Vue {
     }
     this.handlerChange()
   }
+  // 修改商品数量
+  private numInput(cart: any, num: number) {
+    if (num < 1) {
+      num = 1
+    }
+    cart.num = Math.floor(num)
+    return
+  }
   
   // 付款
   private buy() {
@@ -156,6 +171,29 @@ export default class Cart extends Vue {
 .table-responsive-lg {
   th:not(:first-child) {
     min-width: 150px;
+  }
+  .table-sku {
+    line-height: 20px;
+    color: #666;
+    font-size: 13px;
+  }
+  .table-price {
+    color: #ff5777;
+    font-size: 20px;
+  }
+}
+.cart-paybar {
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.1);
+  padding: 5px;
+  .paybar-list {
+    display: inline;
+    margin: 0;
+    padding: 10px;
+    li {
+      list-style: none;
+      display: inline;
+      padding-right: 5px;
+    }
   }
 }
 </style>

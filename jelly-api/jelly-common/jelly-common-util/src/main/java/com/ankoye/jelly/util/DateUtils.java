@@ -25,6 +25,13 @@ public class DateUtils {
         return null;
     }
 
+    /**
+     * 获取当前时间节点
+     */
+    public static String presentTime() {
+        Date date = new Date();
+        return menuFormat.format(date);
+    }
 
     /**
      * 获取指定日期的凌晨

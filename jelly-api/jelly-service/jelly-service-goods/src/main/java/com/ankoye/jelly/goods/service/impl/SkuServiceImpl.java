@@ -43,9 +43,10 @@ public class SkuServiceImpl implements SkuService {
 
     @Override
     @Hmily(confirmMethod = "confirmNested", cancelMethod = "cancelNested")
-    public void abc() {
+    public Sku abc() {
         System.out.println("try abc");
         //CastException.cast("a");
+        return skuMapper.selectById("5ea294f9b7405bdb68ab9c0a");
     }
 
     public void confirmNested() {

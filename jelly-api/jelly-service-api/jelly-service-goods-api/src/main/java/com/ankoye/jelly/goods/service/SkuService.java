@@ -28,7 +28,7 @@ public interface SkuService {
     int unfreezeScore(String id, Integer num);
 
     @Hmily
-    void abc();
+    Sku abc();
 
     List<Sku> findList();
 }

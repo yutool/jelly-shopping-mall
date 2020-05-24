@@ -261,11 +261,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Hmily(confirmMethod = "confirm", cancelMethod = "cancel")
     public void test() {
-        skuService.abc();
-        //CastException.cast("a");
-        wxPayService.wxp();
-        CastException.cast("a");
-        //spuService.bdc();
+        Sku sku = skuService.abc();
+        System.out.println(sku);
+        // CastException.cast("a");
+        // wxPayService.wxp();
+        // CastException.cast("a");
+        // spuService.bdc();
     }
 
     public void confirm() {
