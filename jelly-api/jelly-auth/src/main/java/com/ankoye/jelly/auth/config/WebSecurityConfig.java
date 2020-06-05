@@ -21,7 +21,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/oauth/login", "/oauth/logout",
+        web.ignoring().antMatchers("/oauth/logout",
                 "/css/**","/data/**","/fonts/**","/img/**","/js/**");
     }
 
@@ -31,12 +31,13 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .httpBasic()        //启用Http基本身份验证
+                .httpBasic()        // 启用Http基本身份验证
                 .and().authorizeRequests()
-                // 不需要认证的接口
-                .antMatchers("/auth/login").permitAll()
-                // 其他全部需要认证
-                .anyRequest().authenticated();
+                    // 不需要认证的接口
+                    .antMatchers("/oauth/login", "/oauth/current").permitAll()
+                    // 其他全部需要认证
+                    .anyRequest().authenticated()
+        ;
     }
 
     /**
@@ -55,8 +56,4 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    public static void main(String[] args) {
-//        System.out.println(new BCryptPasswordEncoder().encode("123456"));
-//    }
 }

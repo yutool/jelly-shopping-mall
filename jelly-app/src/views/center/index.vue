@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-loading.fullscreen="loading">
+  <div class="container mt-3" v-loading.fullscreen="loading">
     <el-row>
       <el-col :md="5" :sm="7" :xs="9">
         <side-bar class="border" />

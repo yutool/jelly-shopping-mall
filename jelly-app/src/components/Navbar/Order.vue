@@ -1,14 +1,11 @@
 <template>
   <el-dropdown>
     <div class="el-dropdown-link" style="">
-      <router-link :to="'/center/order/'+userId" class="nav-router-link">
-        我的订单
+      <router-link :to="'/center/'+userId" class="nav-router-link">
+        订单中心
       </router-link>
     </div>
     <el-dropdown-menu slot="dropdown">
-      <div>
-        lorem
-      </div>
       <el-dropdown-item>
         查看更多
       </el-dropdown-item>

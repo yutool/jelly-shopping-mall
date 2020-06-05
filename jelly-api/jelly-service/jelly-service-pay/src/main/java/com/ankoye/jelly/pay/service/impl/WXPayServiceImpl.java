@@ -17,7 +17,6 @@ import java.util.Map;
 @Slf4j
 @Service
 @Component("wxPayService")
-//@Service("wxPayService")
 public class WXPayServiceImpl implements WXPayService {
     @Autowired
     private WXPayAppConfig wxPayAppConfig;
@@ -77,6 +76,7 @@ public class WXPayServiceImpl implements WXPayService {
         }
     }
 
+    @Override
     public String refund(Map<String, String> map) {
         Map<String, String> responseMap = new HashMap<>();
         Map<String, String> requestMap = new HashMap<>();

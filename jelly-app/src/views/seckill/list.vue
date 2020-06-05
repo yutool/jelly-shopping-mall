@@ -40,7 +40,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import GoodsCard from './components/GoodsCard.vue'
-import { getDateMenu, getGoodsList } from '@/api/seckill'
+import { getDateMenu, getGoodsList } from '@/api/seckill/seckill'
 
 @Component({
   components: {

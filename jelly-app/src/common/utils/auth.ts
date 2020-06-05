@@ -2,15 +2,14 @@ import Cookies from 'js-cookie';
 
 const tokenKey = 'token';
 
-// 不晓得存在Cookies怎么不能关闭浏览器了
-
 export function getToken() {
   return Cookies.get(tokenKey);
   // return localStorage.getItem(tokenKey);
 }
 
 export function setToken(token: string) {
-  Cookies.set(tokenKey, token);
+  const expires = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+  Cookies.set(tokenKey, token, { expires });
   // localStorage.setItem(tokenKey, token);
 }
 

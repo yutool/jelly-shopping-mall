@@ -1,9 +1,9 @@
 <template>
-  <nav class="navbar navbar-expand-sm bg-white border-bottom p-0">
+  <nav class="navbar navbar-expand-sm navbar-light shadow-sm">
     <div class="container">
       <!-- logo -->
-      <router-link to="/" class="navbar-brand">
-        <img src="@/assets/logo.png" width="30px" />
+      <router-link to="/" class="navbar-brand p-0">
+        <img src="@/assets/logo.png" width="90px" />
       </router-link>
       <!-- 导航菜单 -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">

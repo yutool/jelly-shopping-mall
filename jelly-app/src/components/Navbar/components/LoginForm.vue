@@ -33,7 +33,7 @@
     </div>
     <div class="login-btn pb-3">
       <el-button type="primary" @click="submitForm()">登录</el-button>
-      <el-button class="float-right" @click="register">注册</el-button>
+      <el-button class="float-right" @click="goRegister">注册</el-button>
     </div>
   </el-form>
 </template>
@@ -45,9 +45,10 @@ import { Form } from 'element-ui';
 
 @Component
 export default class LoginForm extends Vue {
-  @Ref('loginForm') private refLoginForm!: Form;
-  @Action('account/login') private login: any;
-  @Action('app/closeLoginDialog') private closeDialog: any;
+  @Ref('loginForm') private refLoginForm!: Form
+  @Action('account/login') private login: any
+  @Action('app/closeLoginDialog') private closeDialog: any
+  
   // data
   private loginType = 'PASSWORD';
   private remember = true;
@@ -76,16 +77,13 @@ export default class LoginForm extends Vue {
   private submitForm() {
     this.refLoginForm.validate((valid) => {
       if (valid) {
-        // this.login(this.loginForm).then((res: any) => {
-        //   this.$log.info('登录', res);
-        //   if (res.code === this.$resCode.SUCCESS) {
-        //     this.$message({type: 'success', message: res.msg});
-        //     this.closeDialog();
-        //     this.refLoginForm.resetFields();
-        //   } else {
-        //     this.$message({type: 'error', message: res.msg});
-        //   }
-        // });
+        this.$store.dispatch('account/login', {account: this.loginForm.account, password: this.loginForm.password})
+        .then((res: any) => {
+          this.$message({type: 'success', message: '登录成功'});
+          this.closeDialog();
+          this.refLoginForm.resetFields();
+          this.$store.dispatch('account/currentUser')
+        })
       } else {
         this.$log.info('登录', 'error submit!!');
         return false;
@@ -120,8 +118,8 @@ export default class LoginForm extends Vue {
     }, 1000);
   }
   // 事件
-  @Emit() 
-  private register() {
+  @Emit('switch')
+  private goRegister() {
     // ...
   }
 }

@@ -7,5 +7,5 @@ public interface AuthService {
     /**
      * 登录
      */
-    AuthToken login(String username, String password, String clientId, String clientSecret, String grantType);
+    AuthToken login(String username, String password, String grantType);
 }

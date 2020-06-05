@@ -20,7 +20,7 @@
       <span>
         注册即表示同意<a href="#">《用户协议》</a>和<a href="#">《隐私政策》</a>
       </span>
-      <a href="javascript:;" class="float-right" @click="login">已有账号去登陆&gt;</a>
+      <a href="javascript:;" class="float-right" @click="goLogin">已有账号去登陆&gt;</a>
     </div>
     <div class="login-btn pb-3">
       <el-button type="primary" @click="submitForm">注册</el-button>
@@ -30,14 +30,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref, Emit } from 'vue-property-decorator';
-import { Form } from 'element-ui';
+import { Component, Vue, Ref, Emit } from 'vue-property-decorator'
+import { Form } from 'element-ui'
+import { register } from '@/api/user/user'
+
 @Component
 export default class RegisterForm extends Vue {
-  @Ref('registerForm') private refRegisterForm!: Form;
+  @Ref('registerForm') private refRegisterForm!: Form
   // data
-  private verifyHint = '获取验证码';
-  private verifyCodeError = '';
+  private verifyHint = '获取验证码'
+  private verifyCodeError = ''
   private registerForm = {
     username: '',
     email: '',
@@ -62,26 +64,17 @@ export default class RegisterForm extends Vue {
   private submitForm() {
     this.refRegisterForm.validate((valid) => {
       if (valid) {
-        // register(JSON.stringify(this.registerForm)).then((res: any) => {
-        //   this.$log.info('注册用户', res);
-        //   if (res.code === this.$resCode.SUCCESS) {
-        //     this.$message({type: 'success', message: res.msg});
-        //     this.login(); // 切换到登录界面
-        //   } else if (res.code === this.$resCode.EMAIL_ERROR) {
-        //     // 解决错误提示只显示一次
-        //     this.verifyCodeError = String(Math.random());
-        //     this.$nextTick(() => {
-        //       this.verifyCodeError = '验证码错误';
-        //     });
-        //   } else {
-        //     this.$message({type: 'error', message: res.msg});
-        //   }
-        // });
+        console.log(this.registerForm)
+        register(this.registerForm).then((res: any) => {
+          this.$log.info('注册用户', res)
+          this.$message({type: 'success', message: res.message})
+          this.goLogin()  // 切换到登录界面
+        })
       } else {
         this.$log.error('注册用户', 'error submit!!');
         return false;
       }
-    });
+    })
   }
   private resetForm() {
     this.refRegisterForm.resetFields();
@@ -105,8 +98,8 @@ export default class RegisterForm extends Vue {
     // }, 1000);
   }
   // 事件
-  @Emit() 
-  private login() {
+  @Emit('switch') 
+  private goLogin() {
     // ...
   }
 }

@@ -51,8 +51,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { getOrder } from '@/api/order'
-import { weixinPay } from '@/api/pay'
+import { getOrder } from '@/api/order/order'
+import { weixinPay } from '@/api/pay/pay'
 import VueQrious from 'vue-qrious'
 
 @Component({

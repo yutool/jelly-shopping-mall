@@ -11,17 +11,22 @@
     <div class="pb-3">
       <div style="font-weight: 600" class="mb-2">选择收货地址</div>
       <el-row :gutter="20">
-        <el-col :md="6">
-          <div class="addr-card">
+        <el-col :md="6" v-for="addr in userAddress" :key="addr.id">
+          <div class="addr-card" :class="{'active': addr.isDefault}" @click="changeAddr(addr.id, $event)">
             <div class="addr-header">
-              username
+              {{ addr.consignee }}
             </div>
             <div class="addr-content">
-              <div>aa</div>
-              <div>aa</div>
-              <div>aa</div>
+              <div>{{ addr.address }}</div>
+              <div>{{ addr.detail }} {{ addr.postcode }}</div>
+              <div>{{ addr.telephone }}</div>
             </div>
           </div>
+        </el-col>
+        <el-col :md="6">
+          <el-button icon="el-icon-plus" class="add-btn" circle
+            @click="goAddAddr">
+          </el-button>
         </el-col>
       </el-row>
     </div>
@@ -91,20 +96,27 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { copyObj } from '@/common/utils/ObjectUtil'
-import { getPrepareOrder, checkPrepareOrder, createOrder } from '@/api/order'
+import { getPrepareOrder, checkPrepareOrder, createOrder } from '@/api/order/order'
+import { Getter } from 'vuex-class'
+import { getUserAddress } from '@/api/user/address'
 
 @Component
 export default class Buy extends Vue {
-  private addrForm: any = {} // 住址
+  @Getter('userId') private userId!: string
+  
+  private userAddress: any = [] // 收货地址
   private order: any = {} // 显示
-  private orderModel = {
+  private orderModel: any = {
     id: '',
-    addressId: 0
+    addressId: null
   }
 
-// 创建订单，在这之前需要添加收货地址
+  // 创建订单，在这之前需要添加收货地址
   private pay() {
+    if (!this.orderModel.addressId) {
+      this.$message({ type: 'info', message: '请添加收货地址' })
+      return
+    }
     // 创建订单
     createOrder(this.orderModel).then((res: any) => {
       this.$log.info('创建订单', res)
@@ -128,17 +140,44 @@ export default class Buy extends Vue {
     })
   }
   
-  // 删除预订单
-  private checkPrepareOrder() {
-    checkPrepareOrder(this.order.id)
+  // 获取用户收货地址
+  private getUserAddress() {
+    getUserAddress(this.userId).then((res: any) => {
+      this.$log.info('获取用户收货地址', res)
+      this.userAddress = res.data
+      // 设置默认地址
+      for (const addr of this.userAddress) {
+        if (addr.isDefault) {
+          this.orderModel.addressId = addr.id
+          break
+        }
+      }
+    })
+  }
+  
+  // 选择收货地址
+  private changeAddr(id: string, e: any) {
+    // 调整类
+    const $addr = $(e.currentTarget)
+    $('.addr-card').removeClass('active')
+    $addr.addClass('active')
+    // 设置收货地址
+    this.orderModel.addressId = id
+  }
+  
+  // 前往设置地址页
+  private goAddAddr() {
+    const routes = this.$router.resolve(`/user/${this.userId}/address`)
+    window.open(routes.href, '_blank')
   }
   
   private mounted() {
     this.getPrepareOrder()
+    this.getUserAddress()
   }
   private beforeDestroy() {
     // 判断预生产的订单是否需要删除
-    this.checkPrepareOrder()
+    checkPrepareOrder(this.order.id)
   }
 }
 </script>
@@ -182,5 +221,12 @@ export default class Buy extends Vue {
 }
 .buy-paybar {
   border: 1px solid rgb(212, 212, 212);
+}
+.add-btn {
+  margin: 50px 20px;
+  font-size: 30px;
+}
+.active {
+  background: pink
 }
 </style>

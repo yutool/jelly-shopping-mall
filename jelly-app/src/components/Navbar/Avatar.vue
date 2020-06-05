@@ -1,15 +1,14 @@
 <template>
   <div style="height: 36px;">
-    <el-dropdown class="pl-3" @command="handleCommand">
+    <el-dropdown class="pl-3" @command="handleCommand" @click.native="$router.push(`/user/${user.id}`)">
       <el-avatar class="user-avatar" :size="36">
         <img v-if="user" :src="user.avatar"/>
         <span v-else>游客</span>
       </el-avatar>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
-        <div v-if="user" class="text-center">
+        <div v-if="JSON.stringify(user) !== '{}'" class="text-center">
           <span>{{user.username}}</span>
-          <el-dropdown-item command="account">账号设置</el-dropdown-item>
-          <el-dropdown-item command="space">个人空间</el-dropdown-item>
+          <el-dropdown-item :command="'user/' + user.id">个人空间</el-dropdown-item>
           <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
         </div>
         <div v-else>
@@ -32,9 +31,9 @@ import LoginDialog from './components/LoginDialog.vue';
   },
 })
 export default class Avatar extends Vue {
-  @State((state: any) => state.account.user) private user: any;
-  @Action('app/openLoginDialog') private openLoginDialog: any;
-  @Action('account/logout') private logout: any;
+  @State((state: any) => state.account.user) private user: any
+  @Action('app/openLoginDialog') private openLoginDialog: any
+  
   // data
   private dialogVisible = false;
   // method
@@ -45,10 +44,9 @@ export default class Avatar extends Vue {
     this.$message('click on item ' + command);
     this.$router.push(`/${command}`);
   }
-  // private logout() {
-  //   // ...
-  //   this.$store.dispatch('account/logout');
-  // }
+  private logout() {
+    this.$store.dispatch('account/logout');
+  }
 }
 </script>
 

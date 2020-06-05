@@ -1,13 +1,14 @@
 <template>
   <div class="container">
+    <!-- 筛选 -->
     <div>
       <el-button>全部订单</el-button>
       <el-button>代付款</el-button>
       <el-button>待收货</el-button>
       <el-button>待评价</el-button>
     </div>
-
-    <div v-if="orderList" class="table-responsive-lg">
+    <!-- 订单列表 -->
+    <div v-if="orderList.length" class="table-responsive-lg">
       <table class="table">
         <thead>
           <tr>
@@ -53,12 +54,16 @@
         </tbody>
       </table>
     </div>
+    <!-- 无订单显示 -->
+    <div v-else class="text-center pt-5">
+      你还没有下过订单哦~~~
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { getUserOrder, deleteOrder } from '@/api/order'
+import { getUserOrder, deleteOrder } from '@/api/order/order'
 
 @Component
 export default class List extends Vue {
@@ -68,7 +73,7 @@ export default class List extends Vue {
     { value: '2', label: '近一年订单' },
   ]
   private value = '0'
-  private orderList: any = null
+  private orderList: any = []
   
   // 获取用户的订单
   private getUserOrder() {

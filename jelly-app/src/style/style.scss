@@ -1,3 +1,12 @@
+// 主题定制
+.m-theme {
+  background: #F4F5F7;
+  min-height: 100vh;
+  .m-content {
+    background: #fff;
+  }
+}
+
 // 购物车 tab样式 
 .cart-el-tab-pane {
   .el-tabs__nav-wrap::after {
@@ -11,5 +20,11 @@
 .order-el-tab-pane {
   .el-tabs__item {
     text-align: left !important;
+  }
+}
+// 弹窗padding设置
+.m-el-dialog {
+  .el-dialog__body {
+    padding: 10px 20px !important;
   }
 }

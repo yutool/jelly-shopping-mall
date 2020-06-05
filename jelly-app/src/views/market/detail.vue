@@ -67,10 +67,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
-import { getGoods } from '@/api/spu'
-import { addCart } from '@/api/cart'
-import { prepareOrder } from '@/api/order'
-import { copyObj } from '@/common/utils/ObjectUtil'
+import { getGoods } from '@/api/goods/spu'
+import { addCart } from '@/api/goods/cart'
+import { prepareOrder } from '@/api/order/order'
+import { copyOf } from '@/common/utils/ObjectUtil'
 
 @Component
 export default class GoodsDetail extends Vue {
@@ -177,7 +177,7 @@ export default class GoodsDetail extends Vue {
       for (const item of Object.keys(spu.skuTemplate)) {
         this.checkList[item] = spu.skuTemplate[item][0]
       }
-      this.checkList = copyObj(this.checkList)
+      this.checkList = copyOf(this.checkList)
       // 计算
       this.calculate()
       this.$log.info('查询成功', res)

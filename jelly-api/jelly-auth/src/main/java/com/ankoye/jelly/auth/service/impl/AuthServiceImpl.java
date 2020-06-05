@@ -2,7 +2,10 @@ package com.ankoye.jelly.auth.service.impl;
 
 import com.ankoye.jelly.auth.model.AuthToken;
 import com.ankoye.jelly.auth.service.AuthService;
+import com.ankoye.jelly.base.result.ResultCode;
+import com.ankoye.jelly.web.exception.CastException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpEntity;
@@ -22,14 +25,19 @@ import java.util.Map;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+
+    @Value("${auth.clientId}")
+    private String clientId;
+    @Value("${auth.clientSecret}")
+    private String clientSecret;
+
     @Autowired
     private RestTemplate restTemplate;
-
     @Autowired
     private LoadBalancerClient loadBalancerClient;
 
     @Override
-    public AuthToken login(String username, String password, String clientId, String clientSecret, String grantType) {
+    public AuthToken login(String username, String password, String grantType) {
         // 1.调用oauth2提供的授权接口
         ServiceInstance serviceInstance = loadBalancerClient.choose("jelly-auth");
         URI uri = serviceInstance.getUri();
@@ -59,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
         Map map = responseEntity.getBody();
         if (map == null || map.get("access_token") == null || map.get("refresh_token") == null || map.get("jti") == null){
             // 申请令牌失败
-            throw new RuntimeException("申请令牌失败");
+            CastException.cast(ResultCode.USER_LOGIN_ERROR);
         }
         // 6.封装结果数据
         AuthToken authToken = new AuthToken();

@@ -43,8 +43,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import GoodsCard from './components/GoodsCard.vue'
-import { getSpuList } from '@/api/spu'
-import { getMenu, getContentMenu, getContent } from '@/api/home'
+import { getSpuList } from '@/api/goods/spu'
+import { getMenu, getContentMenu, getContent } from '@/api/goods/home'
 
 @Component({
   components: {

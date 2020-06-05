@@ -6,9 +6,6 @@
       </router-link>
     </div>
     <el-dropdown-menu slot="dropdown">
-      <div>
-        lorem
-      </div>
       <el-dropdown-item>查看更多</el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>

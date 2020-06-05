@@ -100,7 +100,6 @@ public class GlobalExceptionHandler {
         return new Result(e.getCode(), e.getMessage());
     }
 
-
     /**
      * 邮件发送异常
      */

@@ -1,7 +1,7 @@
 package com.ankoye.jelly.auth.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.ankoye.jelly.auth.model.UserJwt;
+import com.ankoye.jelly.auth.model.JwtUser;
 import com.ankoye.jelly.base.result.Result;
 import com.ankoye.jelly.user.domain.User;
 import com.ankoye.jelly.user.feign.UserFeign;
@@ -23,7 +23,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private UserFeign userFeign;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
         // 客户端信息认证
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); // 密码登录这里不为空
 //        // 没有认证统一采用httpbasic认证，httpbasic中存储了client_id和client_secret，开始认证client_id和client_secret
@@ -40,13 +40,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 //        }
 
         // 用户信息认证
-        Result result = userFeign.findByUsername(username);
+        Result result = userFeign.findByAccount(account);
         if (result.getData() == null) {
             return null;
         }
         User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
 
-        return new UserJwt(user.getId(), user.getEmail(), username, user.getPassword(),
+        return new JwtUser(user.getId(), account, user.getPassword(),
                 AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRole()));
     }
 

@@ -1,6 +1,6 @@
 package com.ankoye.jelly.auth.config;
 
-import com.ankoye.jelly.auth.model.CustomUserAuthenticationConverter;
+import com.ankoye.jelly.auth.oauth.CustomUserAuthenticationConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.bootstrap.encrypt.KeyProperties;

@@ -16,10 +16,10 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config: any) => {
     store.dispatch('app/setLoading', true)
-    // const token = auth.getToken();
-    // if (token) { // 如果本地存在token，请求时带上
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    const token = auth.getToken();
+    if (token) { // 如果本地存在token，请求时带上
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     if (config.method === 'get' || config.method === 'post') {
       config.paramsSerializer = (params: any) => {
         return qs.stringify(params, { arrayFormat: 'repeat' })

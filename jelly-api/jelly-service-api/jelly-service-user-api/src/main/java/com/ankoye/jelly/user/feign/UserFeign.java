@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(value = "jelly-user-serve")
 @Component
 public interface UserFeign {
-    @GetMapping(value = "/user/load/{username}")
-    Result findByUsername(@PathVariable("username") String username);
-
+    @GetMapping(value = "/user/load/{account}")
+    Result findByAccount(@PathVariable("account") String account);
 }

@@ -1,3 +1,3 @@
-export function copyObj(obj: any) {
+export function copyOf(obj: any) {
   return JSON.parse(JSON.stringify(obj))
 }
