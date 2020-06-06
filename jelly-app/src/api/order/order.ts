@@ -7,9 +7,9 @@ export function getOrder(id: string) {
   })
 }
 
-export function getUserOrder(id: string) {
+export function getUserOrder(id: string, page: number, size: number) {
   return request({
-    url: `oApi/v1/order/user/${id}`,
+    url: `oApi/v1/order/user/${id}/${page}/${size}`,
     method: 'get'
   })
 }

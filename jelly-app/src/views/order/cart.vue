@@ -93,6 +93,7 @@ import { prepareOrder } from '@/api/order/order'
 export default class Cart extends Vue {
   @State((state: any) => state.app.loading) private loading: any
   @Getter('userId') private userId!: string
+  
   private cartList: any = []
   private all = false
   private checkObj: any = {
@@ -152,7 +153,7 @@ export default class Cart extends Vue {
         orderItem.push({ skuId: cart.skuId, num: cart.num })
       }
     }
-    prepareOrder({ userId: '0', orderItem }).then((res: any) => {
+    prepareOrder({ userId: this.userId, orderItem }).then((res: any) => {
       this.$router.push(`/order/buy/${res.data}`)
     })
   }

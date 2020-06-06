@@ -39,12 +39,12 @@ public class SeckillSku implements Serializable {
     /**
      * 原价格
      */
-    private BigDecimal price;
+    private BigDecimal originalPrice;
 
     /**
      * 秒杀价格
      */
-    private BigDecimal costPrice;
+    private BigDecimal price;
 
     /**
      * 添加日期

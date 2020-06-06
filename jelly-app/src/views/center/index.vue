@@ -1,13 +1,11 @@
 <template>
-  <div class="container mt-3" v-loading.fullscreen="loading">
-    <el-row>
-      <el-col :md="5" :sm="7" :xs="9">
-        <side-bar class="border" />
-      </el-col>
-      <el-col :md="19" :sm="17" :xs="15">
-        <router-view />
-      </el-col>
-    </el-row>
+  <div class="container mb-5" v-loading.fullscreen="loading">
+    <div class="sidebar">
+      <side-bar />
+    </div>
+    <div class="content">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -27,5 +25,14 @@ export default class Center extends Vue {
 </script>
 
 <style scoped lang="scss">
-
+.sidebar {
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  box-shadow: 6px 0 3px -6px rgba(0, 0, 0, 0.1);
+}
+.content {
+  float: left;
+  padding-left: 220px !important;
+}
 </style>

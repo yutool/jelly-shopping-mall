@@ -1,8 +1,7 @@
 package com.ankoye.jelly.order.service;
 
 import com.ankoye.jelly.order.model.OrderModel;
-
-import java.util.List;
+import com.github.pagehelper.PageInfo;
 
 public interface OrderService {
     /**
@@ -53,7 +52,7 @@ public interface OrderService {
      * 获取用户所有订单
      * @param id 用户id
      */
-    List<OrderModel> getByUserId(String id);
+    PageInfo<OrderModel> getByUserId(String id, Integer page, Integer size);
 
     /**
      * 删除订单

@@ -45,8 +45,8 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
      */
     @Override
     public boolean queueUp(OrderQueue orderQueue) {
-        String time = orderQueue.getTime();
-        if (!DateUtils.presentTime().equals(time)) {
+        String pressentTime = DateUtils.presentTime();
+        if (!pressentTime.equals(orderQueue.getTime())) {
             CastException.cast("该商品暂未开始秒杀");
         }
         String userId = orderQueue.getUserId();
@@ -99,13 +99,13 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
         orderModel.setUserId(userId);
         // 秒杀订单
         orderModel.setType(1);
-        orderModel.setMoney(sku.getCostPrice());
+        orderModel.setMoney(sku.getPrice());
         orderModel.setPayMoney(sku.getPrice());
 
         // sku
         OrderItem orderItem = new OrderItem(
-                orderId, sku.getId(), "0", sku.getTitle(), sku.getImage(), sku.getSku(),
-                sku.getPrice(), 1, sku.getPrice(), sku.getPrice()
+                orderId, sku.getSpuId(), sku.getId(), "0", sku.getTitle(), sku.getImage(),
+                sku.getSku(), sku.getOriginalPrice(), sku.getPrice(),  1, sku.getPrice()
         );
 
         // 添加到到 reids

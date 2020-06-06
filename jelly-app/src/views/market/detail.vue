@@ -158,7 +158,7 @@ export default class GoodsDetail extends Vue {
     // 获取选中的skuId
     const orderItem: any = []
     orderItem.push({ skuId: this.checkSku.id, num: this.checkSku.num })
-    prepareOrder({ userId: '0', orderItem }).then((res: any) => {
+    prepareOrder({ userId: this.userId, orderItem }).then((res: any) => {
       this.$router.push(`/order/buy/${res.data}`)
     })
   }

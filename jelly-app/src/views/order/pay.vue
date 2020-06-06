@@ -68,15 +68,7 @@ export default class Pay extends Vue {
     name: '',
     money: 0
   }
-  
-  // 申请微信支付
-  private weixinPay() {
-    weixinPay(this.order).then((res: any) => {
-      this.$log.info('申请支付', res)
-      this.wxCodeUrl = res.data.code_url
-    })
-  }
-  
+
   // 检查订单状态
   private checkPayStatus() {  
     this.payTimer = setInterval(() => {
@@ -102,12 +94,23 @@ export default class Pay extends Vue {
       this.order.id = data.id
       this.order.name = '果冻订单:' + data.id
       this.order.money = data.payMoney
+      // 申请微信支付
+      this.weixinPay()
+    })
+  }
+  
+   // 申请微信支付
+  private weixinPay() {
+    weixinPay(this.order).then((res: any) => {
+      this.$log.info('申请支付', res)
+      this.wxCodeUrl = res.data.code_url
     })
   }
  
   private mounted() {
     this.getOrder()
     this.checkPayStatus()
+    
   }
   private beforeDestroy() {
     if (this.payTimer) {

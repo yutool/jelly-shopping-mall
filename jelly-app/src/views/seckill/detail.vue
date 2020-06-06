@@ -20,7 +20,7 @@
             <span>
               秒杀价：<span class="price">￥{{ checkSku.price }}</span>
             </span>
-            <s>原价：￥{{ checkSku.costPrice }} </s>
+            <s>原价：￥{{ checkSku.originalPrice }} </s>
           </div>
           <div class="sku-sales">
             <small class="pr-3">累计评价: {{ spu.commentNum }}</small>
@@ -73,7 +73,7 @@ export default class GoodsDetail extends Vue {
   private checkSku: any = {
     id: '',
     image: '',
-    costPrice: '', // 原价
+    originalPrice: '', // 原价
     price: '',  // 显示的价格
     residue: 0, // 剩余库存个数
     num: 1      // 选择的个数，暂时只能一个
@@ -106,7 +106,7 @@ export default class GoodsDetail extends Vue {
           this.checkSku.id = item.id
           this.checkSku.image = item.image
           this.checkSku.price = item.price
-          this.checkSku.costPrice = item.costPrice
+          this.checkSku.originalPrice = item.originalPrice
           if (this.checkSku.num > item.num) {
             this.checkSku.num = item.num
           }
@@ -124,7 +124,7 @@ export default class GoodsDetail extends Vue {
     }
     const form = {  // 排队
       skuId:  this.checkSku.id,
-      userId: '0',
+      userId: this.userId,
       time: this.$route.params.time,
       spuId: this.$route.params.id
     }
@@ -141,7 +141,7 @@ export default class GoodsDetail extends Vue {
   // 排队成功
   private handlerQueue() {
     this.loading = true
-    this.queueTimer = setInterval(() => queryQueue('0', this.checkSku.id).then((res: any) => {
+    this.queueTimer = setInterval(() => queryQueue(this.userId, this.checkSku.id).then((res: any) => {
       console.log(res)
       if (res.data.status === 3) { // 预创建订单成功
         window.clearInterval(this.queueTimer)

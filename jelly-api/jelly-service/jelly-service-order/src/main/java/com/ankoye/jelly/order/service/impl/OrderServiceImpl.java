@@ -19,6 +19,8 @@ import com.ankoye.jelly.util.IdUtils;
 import com.ankoye.jelly.web.exception.CastException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -92,6 +94,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String prepare(OrderModel form) {
+        // form中仅包含userId、skuId和num
         String userId = form.getUserId();
         List<OrderItem> formItem = form.getOrderItem();
         // 创建预订单
@@ -104,8 +107,8 @@ public class OrderServiceImpl implements OrderService {
             Spu spu = spuService.getSpu(sku.getSpuId());
             BigDecimal subtotal = sku.getPrice().multiply(BigDecimal.valueOf(item.getNum())); // 小计
             OrderItem orderItem = new OrderItem(
-                    orderId, item.getSkuId(), spu.getMerchantId(), spu.getTitle(), sku.getImage(), sku.getSku(),
-                    sku.getPrice(), item.getNum(), sku.getPrice(), subtotal
+                    orderId, sku.getSpuId(), item.getSkuId(), spu.getMerchantId(), spu.getTitle(), sku.getImage(),
+                    sku.getSku(), sku.getPrice(), sku.getPrice(), item.getNum(), subtotal
             );
             orderModel.getOrderItem().add(orderItem);
             // 统计总金额
@@ -114,10 +117,10 @@ public class OrderServiceImpl implements OrderService {
         // 设置订单信息
         orderModel.setId(orderId);
         orderModel.setUserId(userId);
-        orderModel.setType(0);      // 普通订单
-        orderModel.setMoney(money);
+        orderModel.setType(0);              // 普通订单
+        orderModel.setMoney(money);         // 待修改
         orderModel.setPayMoney(money);
-        orderModel.setWeight(0);
+        orderModel.setWeight(0);            // 待修改
 
         // 暂存至redis
         redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).put(orderId, orderModel);
@@ -127,6 +130,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public String create(OrderModel form) {
+        // 重新到redis中获取订单，防止被修改
         OrderModel orderModel = (OrderModel) redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).get(form.getId());
         if (orderModel == null) {
             CastException.cast("订单不存在或已过期");
@@ -134,7 +138,7 @@ public class OrderServiceImpl implements OrderService {
         // 将订单入库
         Order order = orderModel.convertToOrder();
         Date now = new Date();
-        order.setAddressId(orderModel.getAddressId());
+        order.setAddressId(form.getAddressId());
         order.setCreateTime(now);
         order.setUpdateTime(now);
         order.setStatus(OrderStatus.WAIT_PAY);
@@ -227,8 +231,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderModel> getByUserId(String id) {
+    public PageInfo<OrderModel> getByUserId(String id, Integer page, Integer size) {
         List<OrderModel> result = new ArrayList<>();
+        PageHelper.startPage(page, size);
         // 获取用户所有订单
         List<Order> orders = orderMapper.selectList(new QueryWrapper<Order>()
                 .eq("user_id", id)
@@ -243,7 +248,9 @@ public class OrderServiceImpl implements OrderService {
             orderModel.setOrderItem(items);
             result.add(orderModel);
         }
-        return result;
+        PageInfo pageInfo = new PageInfo(orders);
+        pageInfo.setList(result);
+        return pageInfo;
     }
 
     @Override

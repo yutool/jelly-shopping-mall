@@ -5,11 +5,11 @@ import com.ankoye.jelly.order.model.OrderModel;
 import com.ankoye.jelly.order.service.OrderService;
 import com.ankoye.jelly.web.log.annotation.Logger;
 import com.ankoye.jelly.web.log.constant.LogType;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -54,9 +54,9 @@ public class OrderController {
     }
 
     @Logger(module = "订单模块", operation = "获取用户所有订单", exclude = {LogType.RESPONSE, LogType.REQUEST})
-    @GetMapping("/user/{id}")
-    public Result findByUserId(@PathVariable String id) {
-        List<OrderModel> orders = orderService.getByUserId(id);
+    @GetMapping("/user/{id}/{page}/{size}")
+    public Result findByUserId(@PathVariable String id, @PathVariable Integer page, @PathVariable Integer size) {
+        PageInfo<OrderModel> orders = orderService.getByUserId(id, page, size);
         return Result.success(orders);
     }
 

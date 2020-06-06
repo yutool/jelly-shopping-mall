@@ -37,7 +37,6 @@
         </li>
       </ul>
     </div>
-    
   </div>
 </template>
 
@@ -55,9 +54,7 @@ export default class SideBar extends Vue {
 .menu-wrap {
   ul {
     padding: 0;
-    li {
-      list-style: none;
-    }
+    li { list-style: none; }
   }
   .menu-title {
     font-size: 1.2rem;
@@ -68,9 +65,7 @@ export default class SideBar extends Vue {
       padding: 3px 0;
       cursor: pointer;
     }
-    li:hover {
-      background: #ccc;
-    }
+    li:hover { background: #ccc; }
   }
 }
 </style>

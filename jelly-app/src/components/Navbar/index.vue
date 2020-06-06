@@ -1,26 +1,29 @@
 <template>
-  <nav class="navbar navbar-expand-sm navbar-light shadow-sm">
-    <div class="container">
-      <!-- logo -->
-      <router-link to="/" class="navbar-brand p-0">
-        <img src="@/assets/logo.png" width="90px" />
-      </router-link>
-      <!-- 导航菜单 -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <NavMenu />
+  <div style="margin-bottom: 56px">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-white shadow-sm">
+      <div class="container">
+        <!-- logo -->
+        <router-link to="/" class="navbar-brand p-0">
+          <img src="@/assets/logo.png" width="90px" />
+        </router-link>
+        <!-- 导航菜单 -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <NavMenu />
+        </div>
+        <!-- 其他组件 -->
+        <SearchBox class="hidden-sm-and-down"/>
+        <Cart />
+        <Order />
+        <MessageDrawer />
+        <Avatar />
+        <!-- 导航菜单按钮 -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="el-icon-s-operation"></i>
+        </button>
       </div>
-      <!-- 其他组件 -->
-      <SearchBox class="hidden-sm-and-down"/>
-      <Cart />
-      <Order />
-      <MessageDrawer />
-      <Avatar />
-      <!-- 导航菜单按钮 -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="el-icon-s-operation"></i>
-      </button>
-    </div>
-  </nav>
+    </nav>
+  </div>
+  
 </template>
 
 <script lang="ts">

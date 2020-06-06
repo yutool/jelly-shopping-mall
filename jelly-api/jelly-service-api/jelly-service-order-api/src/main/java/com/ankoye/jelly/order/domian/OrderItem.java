@@ -20,6 +20,8 @@ public class OrderItem implements Serializable {
 
     private String merchantId;
 
+    private String spuId;
+
     private String skuId;
 
     private String name;
@@ -30,24 +32,25 @@ public class OrderItem implements Serializable {
 
     private Integer num;
 
+    private BigDecimal originalPrice;
+
     private BigDecimal price;
 
     private BigDecimal money;
 
-    private BigDecimal payMoney;
-
-    public OrderItem(String orderId, String skuId, String merchantId, String name, String image, String sku,
-                        BigDecimal price, Integer num, BigDecimal money, BigDecimal payMoney) {
+    public OrderItem(String orderId, String spuId, String skuId, String merchantId, String name, String image,
+                     String sku, BigDecimal originalPrice, BigDecimal price, Integer num,  BigDecimal money) {
         this.orderId = orderId;
+        this.spuId = spuId;
         this.skuId = skuId;
         this.merchantId = merchantId;
         this.name = name;
         this.image = image;
         this.sku = sku;
+        this.originalPrice = originalPrice;
         this.price = price;
         this.num = num;
         this.money = money;
-        this.payMoney = payMoney;
     }
 
 }

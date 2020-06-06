@@ -29,8 +29,7 @@ public class DateUtils {
      * 获取当前时间节点
      */
     public static String presentTime() {
-        Date date = new Date();
-        return menuFormat.format(date);
+        return getDateMenus().get(0);
     }
 
     /**
@@ -46,7 +45,6 @@ public class DateUtils {
         Date start = calendar.getTime();
         return start;
     }
-
 
     /**
      * 时间增加N分钟

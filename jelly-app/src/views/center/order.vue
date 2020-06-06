@@ -1,15 +1,23 @@
 <template>
-  <div class="container">
+  <div>
     <!-- 筛选 -->
-    <div>
-      <el-button>全部订单</el-button>
-      <el-button>代付款</el-button>
-      <el-button>待收货</el-button>
-      <el-button>待评价</el-button>
+    <div class="mb-3 mt-3">
+      <el-badge :value="12" class="mr-4">
+        <el-button size="medium" plain>全部订单</el-button>
+      </el-badge>
+      <el-badge :value="3" class="mr-4">
+        <el-button size="medium" plain>待付款</el-button>
+      </el-badge>
+      <el-badge :value="4" class="mr-4">
+        <el-button size="medium" plain>待收货</el-button>
+      </el-badge>
+      <el-badge :value="5" class="mr-4">
+        <el-button size="medium" plain>待评价</el-button>
+      </el-badge>
     </div>
     <!-- 订单列表 -->
     <div v-if="orderList.length" class="table-responsive-lg">
-      <table class="table">
+      <table class="table order-table">
         <thead>
           <tr>
             <th scope="col">
@@ -21,38 +29,83 @@
             </th>
             <th scope="col">订单详情</th>
             <th scope="col">单价</th>
-            <th scope="col">实付</th>
-            <th scope="col">收货人</th>
+            <th scope="col">数量</th>
+            <th scope="col">操作</th>
+            <th scope="col">实付款</th>
             <th scope="col">状态</th>
             <th scope="col">操作</th>
           </tr>
         </thead>
-        
+        <!-- 订单数据 -->
         <tbody v-for="order in orderList" :key="order.id" >
-          <div style="height: 30px"></div>
+          <div style="height: 10px"></div>
           <tr class="bg-light">
-            <td colspan="7">
+            <td colspan="8">
               <span>{{ order.createTime }} 订单编号：{{ order.id }}</span>
               <span class="float-right">
                 <el-popconfirm title="确认删除订单吗"  @onConfirm="deleteOrder(order.id)">
-                  <i class="el-icon-delete" slot="reference"></i>
+                  <i class="el-icon-delete pointer" slot="reference"></i>
                 </el-popconfirm>
               </span>
             </td>
           </tr>
           <tr v-for="(item, index) in order.orderItem" :key="item.skuId">
             <td colspan="2">
-              {{ item.image }}
-              {{ item.name }}
+              <el-col :span="9">
+                <img :src="item.image" alt="图片">
+              </el-col>
+              <el-col :span="15">
+                <router-link :to="'/market/detail/' + item.spuId">
+                  {{ item.name }}
+                </router-link>
+                <div class="item-sku" v-for="(val, key) in JSON.parse(item.sku)" :key="key">
+                  {{ key }}：{{ val }}
+                </div>
+              </el-col>
             </td>
-            <td> {{ item.money }} </td>
-            <td v-if="index == 0" :rowspan="item.length">{{ order.payMoney }}</td>
-            <td v-if="index == 0" :rowspan="item.length">{{ order.addressId }}</td>
-            <td v-if="index == 0" :rowspan="item.length">已完成</td>
-            <td v-if="index == 0" :rowspan="item.length">评论</td>
+            <td> 
+              <div>￥{{ item.price }}</div>
+              <div class="text-black-50"> <s>￥{{ item.originalPrice }}</s> </div>
+            </td>
+            <td v-if="index == 0" :rowspan="item.length">
+              {{ item.num }}
+            </td>
+            <td v-if="index == 0" :rowspan="item.length">
+              <a href="#">退款 / 换货</a> <br />
+              <a href="#">投诉卖家</a>
+            </td>
+            <td v-if="index == 0" :rowspan="item.length">
+              <span class="order-price">￥{{ order.payMoney }}</span>
+            </td>
+            <td v-if="index == 0" :rowspan="item.length">
+              <div>
+                <span v-if="order.status==2">待付款</span>
+                <span v-if="order.status==4">待发货</span>
+                <span v-if="order.status==0">交易关闭</span>
+              </div>
+              <div><a href="#">订单详情</a></div>
+              <div><a href="#">查看物流</a></div>
+            </td>
+            <td v-if="index == 0" :rowspan="item.length">
+              <el-button v-if="order.status==2" type="primary" size="mini">去付款</el-button>
+              <el-button v-if="order.status==4" type="primary" size="mini">提醒发货</el-button>
+              <el-button v-if="order.status==5" type="primary" size="mini">确认收货</el-button>
+              <el-button v-if="order.status==0" type="primary" size="mini">再来一单</el-button>
+            </td>
           </tr>
         </tbody>
       </table>
+      <!-- 分页 -->
+      <el-pagination
+        class="text-center"
+        @size-change="handleSizeChange"
+        @current-change="getUserOrder"
+        :current-page="pageInfo.pageNum"
+        :page-sizes="[10, 20, 30, 50]"
+        :page-size="pageInfo.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="pageInfo.total">
+      </el-pagination>
     </div>
     <!-- 无订单显示 -->
     <div v-else class="text-center pt-5">
@@ -72,16 +125,24 @@ export default class List extends Vue {
     { value: '1', label: '近半年订单' },
     { value: '2', label: '近一年订单' },
   ]
+  private pageInfo: any = { size: 10 }  // 分页信息
   private value = '0'
   private orderList: any = []
   
   // 获取用户的订单
-  private getUserOrder() {
+  private getUserOrder(page: number, size = this.pageInfo.pageSize) {
     const userId = this.$route.params.id
-    getUserOrder(userId).then((res: any) => {
+    getUserOrder(userId, page, size).then((res: any) => {
       this.$log.info('获取用户订单', res)
-      this.orderList = res.data
+      const {data} = res
+      this.pageInfo = data
+      this.orderList = data.list
     })
+  }
+  
+  // 切换显示条数
+  private handleSizeChange(size: number) {
+    this.getUserOrder(this.pageInfo.pageNum, size)
   }
   
   // 删除订单
@@ -93,7 +154,7 @@ export default class List extends Vue {
   }
   
   private mounted() {
-    this.getUserOrder()
+    this.getUserOrder(0, this.pageInfo.size)
   }
 }
 </script>
@@ -101,7 +162,25 @@ export default class List extends Vue {
 <style scoped lang="scss">
 .table-responsive-lg {
   th {
-    min-width: 100px;
+    min-width: 90px;
   }
 }
+.order-table {
+  font-size: 14px;
+  color: #666;
+  a {
+    color: #666;
+    text-decoration: none;
+  }
+  a:hover { color: #ff5777; }
+  .order-price {
+    color: #ff5777;
+    font-size: 16px;
+  }
+  .item-sku {
+    font-size: 12px;
+    color: #999;
+  }
+}
+
 </style>
