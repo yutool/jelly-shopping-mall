@@ -48,4 +48,5 @@ export default class NavBar extends Vue {
 .container {
   padding: 0 10px;
 }
+
 </style>

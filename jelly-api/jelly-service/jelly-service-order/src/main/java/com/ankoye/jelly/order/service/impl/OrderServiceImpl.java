@@ -18,7 +18,6 @@ import com.ankoye.jelly.pay.service.WXPayService;
 import com.ankoye.jelly.util.IdUtils;
 import com.ankoye.jelly.web.exception.CastException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
@@ -33,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -175,7 +175,7 @@ public class OrderServiceImpl implements OrderService {
     public int updateStatus(String id, String payTime, String transactionId){
         Order order = orderMapper.selectById(id);
         // 1- 设置订单新状态
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         try {
             order.setPayTime(format.parse(payTime));
         } catch (ParseException e) {
@@ -185,12 +185,12 @@ public class OrderServiceImpl implements OrderService {
         order.setTransactionId(transactionId);
         orderMapper.updateById(order);
 
-        // 2- 获取订单的商品，并扣减对应的库存
+        // 2 - 获取订单的商品，并扣减对应的库存，增加销售量
         List<OrderItem> orderItem = orderItemMapper.selectList(
                 new QueryWrapper<OrderItem>().eq("order_id", id)
         );
         for (OrderItem item : orderItem) {
-            skuService.decreaseScore(item.getSkuId(), item.getNum());
+            skuService.paySuccess(item.getSpuId(), item.getSkuId(), item.getNum());
         }
         return 0;
     }
@@ -237,6 +237,7 @@ public class OrderServiceImpl implements OrderService {
         // 获取用户所有订单
         List<Order> orders = orderMapper.selectList(new QueryWrapper<Order>()
                 .eq("user_id", id)
+                .lt("status", OrderStatus.DELETE)
                 .orderByDesc("create_time")
         );
         // 获取订单对应的商品
@@ -257,12 +258,15 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public int deleteById(String id) {
         // 删除订单项
-        orderItemMapper.delete(new UpdateWrapper<OrderItem>()
-            .eq("order_id", id)
-        );
+        //orderItemMapper.delete(new UpdateWrapper<OrderItem>()
+        //   .eq("order_id", id)
+        //);
         // 删除订单
-        orderMapper.deleteById(id);
-        return 0;
+        // orderMapper.deleteById(id);
+        Order order = new Order();
+        order.setId(id);
+        order.setStatus(OrderStatus.DELETE);
+        return orderMapper.updateById(order);
     }
 
     @Override

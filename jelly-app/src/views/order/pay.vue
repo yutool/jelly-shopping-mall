@@ -22,7 +22,8 @@
       </div>
       <el-row class="pay-content">
         <el-col :span="9">
-          <vue-qrious :value="wxCodeUrl" :padding="10" :size="200" />
+          <vue-qrious v-if="wxCodeUrl" :value="wxCodeUrl" :padding="10" :size="200" />
+          <div v-else class="mt-5">加载中...</div>
         </el-col>
         <el-col :span="15">
           <div>
@@ -62,7 +63,7 @@ import VueQrious from 'vue-qrious'
 })
 export default class Pay extends Vue {
   private payTimer: any
-  private wxCodeUrl = ''
+  private wxCodeUrl = null
   private order = {
     id: '',
     name: '',
@@ -73,11 +74,13 @@ export default class Pay extends Vue {
   private checkPayStatus() {  
     this.payTimer = setInterval(() => {
       getOrder(this.$route.params.id).then((res: any) => {
-        if (res.data.status === 3) {        // 3表示付款成功-待发货
+        if (res.data.status === 4) {
+          // 4表示付款成功-待发货        
           this.$log.info('订单状态：', '支付成功')
           window.clearInterval(this.payTimer)
           this.$router.push({name: 'pay_success', params: { order: res.data }})
-        } else if (res.data.status === 2) {  // 2表示支付失败了
+        } else if (res.data.status === 3 || res.data.status === 0) {
+          // 3-支付失败 0-订单关闭
           this.$log.info('订单状态：', '支付失败')
           window.clearInterval(this.payTimer)
           this.$router.push({name: 'pay_fail', params: { order: res.data }})

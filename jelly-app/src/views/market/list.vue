@@ -1,11 +1,14 @@
 <template>
   <div>
-    <div class="banner-wrapper">
+    <div class="banner-wrap">
       <!-- 轮播图 -->
       <div class="slideshow">
         <el-carousel trigger="click" height="450px">
-          <el-carousel-item v-for="item in 3" :key="item">
-            <h3 class="small">{{ item }}</h3>
+          <el-carousel-item>
+            <a href="#"> <img src="@/assets/2.jpg" alt=""> </a>
+          </el-carousel-item>
+          <el-carousel-item>
+            <a href="#"> <img src="@/assets/1.jpg" alt=""> </a>
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -22,19 +25,20 @@
     <div class="container">
       <div v-for="id in contentMenu.menus" :key="id">
         <!-- 推荐菜单 -->
-        <div>
-          <ul class="content-menu">
+        <div class="content-menu mt-3">
+          <div class="sideIcon" style="background-color: #FFA1B8"></div>
+          <ul>
             <li v-for="item in contentMenu.content[id]" :key="item">
               {{ item }}
             </li>
           </ul>
         </div>
         <!-- 商品 -->
-        <el-row :gutter="20">
-          <el-col :md="6" v-for="spu in content[id]" :key="spu.id">
+        <div class="row">
+          <div class="m-col" v-for="spu in content[id]" :key="spu.id">
             <goods-card :spu="spu" />
-          </el-col>
-        </el-row>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -82,8 +86,12 @@ export default class GoodsList extends Vue {
 </script>
 
 <style scoped lang="scss">
-.banner-wrapper {
+.banner-wrap {
   position: relative;
+  img {
+    width: 100%;
+    overflow: hidden;
+  }
 }
 .category {
   position: absolute;
@@ -93,7 +101,7 @@ export default class GoodsList extends Vue {
   margin-left: 100px;
   .category-list {
     height: 450px;
-    background: rgba(255, 255, 255, .1);
+    background: rgba(255, 255, 255, .6);
     padding: 0;
     li {
       list-style: none;
@@ -106,27 +114,29 @@ export default class GoodsList extends Vue {
   }
 }
 .content-menu {
-  padding: 0;
+  ul { padding: 0; }
   li {
     list-style: none;
     display: inline;
     padding: 0 5px;
+    font-size: 15px;
+    color: #666;
+  }
+  li:first-child {
+    font-size: 20px;
+  }
+  li:not(:first-child):before {
+    content: "|";
+    margin-right: 7px;
+    font-weight: 300;
+  }
+  .sideIcon {
+    width: 8px !important;
+    height: 20px !important;
+    float: left;
+    margin-top: 5px;
+    margin-right: 10px;
   }
 }
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 14px;
-  opacity: 0.75;
-  height: 100px;
-  line-height: 150px;
-  margin: 0;
-}
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n+1) {
-  background-color: #d3dce6;
-}
 </style>

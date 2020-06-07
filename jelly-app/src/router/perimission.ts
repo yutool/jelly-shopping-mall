@@ -1,7 +1,7 @@
 import router from '@/router'
 import store from '@/store'
 import { Message } from 'element-ui'
-import { getToken } from '@/common/utils/auth'
+import { getToken, removeToken } from '@/common/utils/auth'
 // import getPageTitle from '@/utils/get-page-title'
 
 
@@ -25,6 +25,7 @@ router.beforeEach(async (to, from, next) => {
     }).catch ((error: any) => {
       // remove token and go to login page to re-login
       // store.dispatch('user/resetToken');
+      removeToken()
       Message.error(error || 'Has Error')
     })
   } else {

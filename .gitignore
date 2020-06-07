@@ -1,4 +1,4 @@
-document/
+doc/
 **/target/
 **/node_modules/
 **/dist/

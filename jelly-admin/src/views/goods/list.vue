@@ -112,7 +112,7 @@ import { getSpuList } from '@/api/spu';
 @Component
 export default class GoodsList extends Vue {
   private spuStatus = ['审核通过', '审核中', '审核失败']
-  private pageInfo: any = { size: 2 }  // 初始化页面大小
+  private pageInfo: any = { size: 10 }  // 初始化页面大小
   private spuList: any = {}
   
   // test -------------------

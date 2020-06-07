@@ -4,7 +4,7 @@
       <!-- 照片墙 -->
       <el-col :md="12">
         <div class="sku-images">
-          <img :src="spu.picture" alt="">
+          <img :src="checkSku.image || spu.picture" alt="">
         </div>
       </el-col>
       <!-- 选择商品 -->

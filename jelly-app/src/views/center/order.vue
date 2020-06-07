@@ -2,16 +2,22 @@
   <div>
     <!-- 筛选 -->
     <div class="mb-3 mt-3">
-      <el-badge :value="12" class="mr-4">
+      <el-badge :value="orderList.length" class="mr-4">
         <el-button size="medium" plain>全部订单</el-button>
       </el-badge>
-      <el-badge :value="3" class="mr-4">
+      <el-badge :value="orderList.filter(i => i.status <= 1).length" class="mr-4">
+        <el-button size="medium" plain>已完成</el-button>
+      </el-badge>
+      <el-badge :value="orderList.filter(i => i.status == 2).length" class="mr-4">
         <el-button size="medium" plain>待付款</el-button>
       </el-badge>
-      <el-badge :value="4" class="mr-4">
+      <el-badge :value="orderList.filter(i => i.status == 4).length" class="mr-4">
+        <el-button size="medium" plain>待发货</el-button>
+      </el-badge>
+      <el-badge :value="orderList.filter(i => i.status == 5).length" class="mr-4">
         <el-button size="medium" plain>待收货</el-button>
       </el-badge>
-      <el-badge :value="5" class="mr-4">
+      <el-badge :value="orderList.filter(i => i.status == 6).length" class="mr-4">
         <el-button size="medium" plain>待评价</el-button>
       </el-badge>
     </div>
@@ -52,7 +58,7 @@
           <tr v-for="(item, index) in order.orderItem" :key="item.skuId">
             <td colspan="2">
               <el-col :span="9">
-                <img :src="item.image" alt="图片">
+                <img :src="item.image" alt="" width="70">
               </el-col>
               <el-col :span="15">
                 <router-link :to="'/market/detail/' + item.spuId">
@@ -67,7 +73,7 @@
               <div>￥{{ item.price }}</div>
               <div class="text-black-50"> <s>￥{{ item.originalPrice }}</s> </div>
             </td>
-            <td v-if="index == 0" :rowspan="item.length">
+            <td>
               {{ item.num }}
             </td>
             <td v-if="index == 0" :rowspan="item.length">
@@ -87,10 +93,10 @@
               <div><a href="#">查看物流</a></div>
             </td>
             <td v-if="index == 0" :rowspan="item.length">
-              <el-button v-if="order.status==2" type="primary" size="mini">去付款</el-button>
+              <el-button v-if="order.status==2" type="danger" size="mini">去付款</el-button>
               <el-button v-if="order.status==4" type="primary" size="mini">提醒发货</el-button>
               <el-button v-if="order.status==5" type="primary" size="mini">确认收货</el-button>
-              <el-button v-if="order.status==0" type="primary" size="mini">再来一单</el-button>
+              <el-button v-if="order.status==0" type="info" size="mini">再来一单</el-button>
             </td>
           </tr>
         </tbody>
@@ -109,7 +115,7 @@
     </div>
     <!-- 无订单显示 -->
     <div v-else class="text-center pt-5">
-      你还没有下过订单哦~~~
+      你还没有购买过商品哦~~~
     </div>
   </div>
 </template>

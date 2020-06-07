@@ -1,7 +1,7 @@
 <template>
   <div class="goodsCard" @click="goodsDetail(sku.spuId)">
     <div class="goods-img">
-      <img src="http://img12.360buyimg.com/n1/s450x450_jfs/t1/118864/39/1189/123780/5e958137E61771fd7/4530fe910bd14776.jpg" alt="">
+      <img :src="sku.image" alt="">
     </div>
     <div>{{ goods.title }}</div>
     <el-row>
@@ -40,6 +40,7 @@ export default class GoodsCard extends Vue {
   
   private mounted() {
     this.sku = this.goods.skuList[0]
+    console.log(this.sku)
   }
 }
 </script>

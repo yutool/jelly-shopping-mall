@@ -2,10 +2,13 @@ package com.ankoye.jelly.goods.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.ankoye.jelly.goods.dao.SkuMapper;
+import com.ankoye.jelly.goods.dao.SpuMapper;
 import com.ankoye.jelly.goods.domain.Sku;
 import com.ankoye.jelly.goods.service.SkuService;
 import org.dromara.hmily.annotation.Hmily;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.List;
 public class SkuServiceImpl implements SkuService {
     @Resource
     private SkuMapper skuMapper;
+    @Autowired
+    private SpuMapper spuMapper;
 
     @Override
     public Sku getSkuById(String id) {
@@ -34,6 +39,15 @@ public class SkuServiceImpl implements SkuService {
     @Override
     public int unfreezeScore(String id, Integer num) {
         return skuMapper.unfreezeScore(id, num);
+    }
+
+    @Override
+    @Transactional
+    public boolean paySuccess(String spuId, String skuId, Integer num) {
+        skuMapper.decreaseScore(skuId, num);
+        skuMapper.addSaleNum(skuId, num);
+        spuMapper.addSaleNum(spuId, num);
+        return true;
     }
 
     @Override

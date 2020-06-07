@@ -4,7 +4,7 @@
       <!-- 照片墙 -->
       <el-col :md="12">
         <div class="sku-images">
-          <img :src="spu.picture" alt="">
+          <img :src="checkSku.image || spu.picture" alt="">
         </div>
       </el-col>
       <!-- 选择商品 -->
@@ -140,7 +140,7 @@ export default class GoodsDetail extends Vue {
       userId: this.userId,
       name: this.spu.title,
       image: this.checkSku.image,
-      original: this.checkSku.price,  // 原价
+      originalPrice: this.checkSku.price,  // 原价
       num: this.checkSku.num
     }
     addCart(cartItem).then((res: any) => {
@@ -166,11 +166,13 @@ export default class GoodsDetail extends Vue {
   // 初始化商品信息
   private initGoods() {
     getGoods(this.$route.params.id).then((res: any) => {
+      this.$log.info('获取商品', res)
       const { spu, sku } = res.data
       this.spu = spu
       this.spu.skuTemplate = JSON.parse(spu.skuTemplate)
       this.skuList = sku
       for (const item of this.skuList) {
+        console.log(item.sku)
         item.sku = JSON.parse(item.sku)
       }
       // 默认选中，可优化 库存为0跳过

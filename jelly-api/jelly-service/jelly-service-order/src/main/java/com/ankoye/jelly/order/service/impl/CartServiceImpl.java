@@ -53,7 +53,6 @@ public class CartServiceImpl implements CartService {
             cartDto.setDiscount(sku.getDiscount());
             result.add(cartDto);
         }
-
         return result;
     }
 }

@@ -17,8 +17,9 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
 
     @Override
     public List<ShippingAddress> selectByUserId(String id) {
-        return addressMapper.selectList(
-                new QueryWrapper<ShippingAddress>().eq("user_id", id)
+        return addressMapper.selectList(new QueryWrapper<ShippingAddress>()
+                .eq("user_id", id)
+                .orderByDesc("is_default")
         );
     }
 

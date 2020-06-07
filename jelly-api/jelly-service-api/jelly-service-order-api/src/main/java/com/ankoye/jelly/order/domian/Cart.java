@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @TableName("tb_cart")
@@ -21,7 +22,7 @@ public class Cart implements Serializable {
 
     private String image;
 
-    private Long original;  // 原价
+    private BigDecimal originalPrice;  // 原价
 
     private Integer num;
 

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @TableName("tb_spu")
@@ -26,7 +27,7 @@ public class Spu implements Serializable {
 
     private String picture;
 
-    private String price;
+    private BigDecimal price;
 
     private String details;
 

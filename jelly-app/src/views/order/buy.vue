@@ -81,7 +81,10 @@
     <!-- 确认购买 -->
     <div class="buy-paybar clearfix">
       <div class="float-left">
-        <el-link style="line-height: 40px">返回购物车</el-link>
+        <el-link style="line-height: 40px">
+          <i class="el-icon-arrow-left pl-2"></i>
+          返回购物车
+        </el-link>
       </div>
       <div v-if="JSON.stringify(order) !== '{}'" class="float-right">
         <span class="pr-3">

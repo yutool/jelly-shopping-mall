@@ -28,6 +28,7 @@ instance.interceptors.request.use(
 
 // 拦截响应
 instance.interceptors.response.use((response: any) => {
+  store.dispatch('app/setLoading', false)
   // 全局统一处理 Session超时
   if (response.headers.session_time_out === 'timeout') {
     Message({ type: 'error', message: '会话超时：session_time_out' })
@@ -40,7 +41,6 @@ instance.interceptors.response.use((response: any) => {
     }
     return Promise.reject(message)
   }
-  store.dispatch('app/setLoading', false)
   return response.data
 }, (error: any) => {
   // 请求被拦截被跳到这里

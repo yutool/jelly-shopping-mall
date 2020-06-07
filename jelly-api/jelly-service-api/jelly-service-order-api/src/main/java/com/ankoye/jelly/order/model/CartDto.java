@@ -20,7 +20,7 @@ public class CartDto {
 
     private String image;
 
-    private BigDecimal original;    // 原价
+    private BigDecimal originalPrice;    // 原价
 
     private Integer num;
 

@@ -6,7 +6,30 @@
     background: #fff;
   }
 }
-
+// 自定义分栏
+@media (max-width: 1600px) {
+  .m-col {
+    max-width: 20%;
+    padding: 0;
+  }
+}
+@media (max-width: 1200px) {
+  .m-col {
+    max-width: 25%;
+    padding: 0;
+  }
+}
+@media (max-width: 960px) {
+  .m-col {
+    max-width: 33%;
+    padding: 0;
+  }
+}
+.text-over {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
 // 购物车 tab样式 
 .cart-el-tab-pane {
   .el-tabs__nav-wrap::after {
@@ -27,4 +50,8 @@
   .el-dialog__body {
     padding: 10px 20px !important;
   }
+}
+// 导航栏绝对固定导致的登录dialog无法选中
+.v-modal {
+  z-index: 1000 !important;
 }

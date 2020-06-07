@@ -2,7 +2,7 @@
   <nav class="navbar bg-white border-bottom p-0 fixed-top">
     <!-- logo -->
     <router-link to="/" class="navbar-brand ml-3">
-      <img src="@/assets/logo.png" width="30px" />
+      <img src="@/assets/logo.png" width="90px" />
     </router-link>
     <!-- 头像 -->
     <div class="ml-auto mr-5" style="height: 36px;">

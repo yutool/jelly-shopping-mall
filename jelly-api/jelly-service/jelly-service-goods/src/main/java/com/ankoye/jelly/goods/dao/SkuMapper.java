@@ -16,7 +16,7 @@ public interface SkuMapper extends BaseMapper<Sku> {
     int freezeScore(@Param("id") String id, @Param("num") Integer num);
 
     /**
-     * 付款成功，删除库存
+     * 付款成功，删除冻结库存
      */
     @Update("UPDATE tb_sku SET freeze_num = freeze_num-#{num} WHERE id = #{id}")
     int decreaseScore(@Param("id") String id, @Param("num") Integer num);
@@ -27,4 +27,10 @@ public interface SkuMapper extends BaseMapper<Sku> {
     @Update("UPDATE tb_sku SET num = num+#{num}, freeze_num=freeze_num-#{num} " +
             " WHERE id = #{id}")
     int unfreezeScore(@Param("id") String id, @Param("num") Integer num);
+
+    /**
+     * 增加销量
+     */
+    @Update("UPDATE tb_sku SET sale_num = sale_num + #{num} WHERE id = #{id}")
+    int addSaleNum(@Param("id") String id, @Param("num") Integer num);
 }

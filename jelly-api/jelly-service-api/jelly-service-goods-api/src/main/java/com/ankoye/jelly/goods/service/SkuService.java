@@ -27,8 +27,16 @@ public interface SkuService {
      */
     int unfreezeScore(String id, Integer num);
 
+    /**
+     * 下单成功调用
+     */
+    boolean paySuccess(String spuId, String skuId, Integer num);
+
+    /**
+     * test
+     */
+    List<Sku> findList();
     @Hmily
     Sku abc();
 
-    List<Sku> findList();
 }

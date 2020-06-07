@@ -33,4 +33,8 @@ public class OrderStatus {
      * 退款退货
      */
     public static final Integer REFUND  = 7;
+    /**
+     * 订单被删除
+     */
+    public static final Integer DELETE  = 99;
 }

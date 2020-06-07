@@ -58,7 +58,6 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">编号</th>
             <th scope="col">商品名称</th>
             <th scope="col">秒杀日期</th>
             <th scope="col">秒杀时间</th>
@@ -69,8 +68,10 @@
         </thead>
         <tbody>
           <tr v-for="item in goodsList" :key="item.id">
-            <td> {{ item.id }} </td>
-            <td> {{ item.title }} </td>
+            <td>
+              <img :src="item.image" alt="img" width="30">
+              {{ item.title }} 
+            </td>
             <td> {{ item.startTime}} - {{ item.endTime }} </td>
             <td> {{ item.region }}点 - {{ item.region+2 }}点 </td>
             <td> 审核成功 </td>
@@ -108,7 +109,7 @@ import { getSeckillGoods } from '@/api/seckill'
 @Component
 export default class SeckillList extends Vue {
   private goodsList: any = {}
-  private pageInfo: any = { size: 2 }
+  private pageInfo: any = { size: 10 }
   
   // test -----------------
   private restaurants = []

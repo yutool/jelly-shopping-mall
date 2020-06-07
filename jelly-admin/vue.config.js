@@ -30,7 +30,7 @@ module.exports = {
   devServer: {
     open: process.platform === 'darwin',
     host: '0.0.0.0',
-    port: 9001,
+    port: 9000,
     https: false,
     hotOnly: false,
     proxy: {

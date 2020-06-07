@@ -92,5 +92,4 @@ public class SeckillSku implements Serializable {
      * 审核状态
      */
     private Integer status;
-
 }

@@ -32,7 +32,7 @@
                 <el-checkbox v-model="checkObj.check[cart.id]" @change="handlerChange"></el-checkbox>
               </th>
               <td> 
-                <img :src="cart.image" width="30px" alt="图片"> 
+                <img :src="cart.image" width="60px" alt=""> 
                 {{ cart.name }}
               </td>
               <td>
@@ -41,14 +41,14 @@
                 </div>
               </td>
               <td>
-                <div> <s class="text-muted">{{ cart.price }}</s>  </div>
-                <div> {{ cart.price }} </div>
+                <div> ￥{{ cart.price }} </div>
+                <div> <s class="text-muted">￥{{ cart.originalPrice }}</s>  </div>
               </td>
               <td>
                 <el-input-number size="mini" v-model="cart.num" @input="numInput(cart, $event)"></el-input-number>
               </td>
               <td>
-                <span class="table-price"> {{ cart.num * cart.price }} </span>
+                <span class="table-price"> ￥{{ cart.num * cart.price }} </span>
               </td>
               <td>
                 <el-link type="danger">删除</el-link> <br/>
