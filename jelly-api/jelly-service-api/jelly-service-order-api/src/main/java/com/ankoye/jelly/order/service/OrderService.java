@@ -36,7 +36,7 @@ public interface OrderService {
     /**
      * 支付成功更改订单状态
      */
-    int updateStatus(String id, String payTime, String transactionId);
+    boolean updateStatus(String id, String payTime, String transactionId);
 
     /**
      * 订单支付失败
@@ -59,8 +59,5 @@ public interface OrderService {
      * @param id 订单id
      */
     int deleteById(String id);
-
-    //@Hmily
-    void test();
 
 }

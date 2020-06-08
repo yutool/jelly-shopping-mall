@@ -66,10 +66,4 @@ public class OrderController {
         orderService.deleteById(id);
         return Result.success();
     }
-
-    @GetMapping("/testT")
-    public Result testT() {
-        orderService.test();
-        return Result.success();
-    }
 }

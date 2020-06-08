@@ -171,8 +171,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional  // 换全局事务
-    public int updateStatus(String id, String payTime, String transactionId){
+    @Transactional
+    @Hmily(confirmMethod = "confirm", cancelMethod = "cancel")
+    public boolean updateStatus(String id, String payTime, String transactionId){
         Order order = orderMapper.selectById(id);
         // 1- 设置订单新状态
         DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -192,7 +193,7 @@ public class OrderServiceImpl implements OrderService {
         for (OrderItem item : orderItem) {
             skuService.paySuccess(item.getSpuId(), item.getSkuId(), item.getNum());
         }
-        return 0;
+        return true;
     }
 
     @Override
@@ -269,23 +270,14 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.updateById(order);
     }
 
-    @Override
-    @Hmily(confirmMethod = "confirm", cancelMethod = "cancel")
-    public void test() {
-        Sku sku = skuService.abc();
-        System.out.println(sku);
-        // CastException.cast("a");
-        // wxPayService.wxp();
-        // CastException.cast("a");
-        // spuService.bdc();
+
+    public boolean confirm(String id, String payTime, String transactionId) {
+        System.out.println("========= 下单 - 更新状态成功 ================");
+        return true;
     }
 
-    public void confirm() {
-        System.out.println("=========进行订单confirm操作完成================");
+    public boolean cancel(String id, String payTime, String transactionId) {
+        System.out.println("========= 下单 - 更新状态失败 ================");
+        return false;
     }
-
-    public void cancel() {
-        System.out.println("=========进行订单cancel操作完成================");
-    }
-
 }

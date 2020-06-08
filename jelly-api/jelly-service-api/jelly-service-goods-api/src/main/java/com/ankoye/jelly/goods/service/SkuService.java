@@ -30,13 +30,12 @@ public interface SkuService {
     /**
      * 下单成功调用
      */
+    @Hmily
     boolean paySuccess(String spuId, String skuId, Integer num);
 
     /**
      * test
      */
     List<Sku> findList();
-    @Hmily
-    Sku abc();
 
 }

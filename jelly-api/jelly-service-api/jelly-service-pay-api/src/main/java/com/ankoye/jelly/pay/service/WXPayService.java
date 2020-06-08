@@ -27,6 +27,9 @@ public interface WXPayService {
      */
     String refund(Map<String, String> map);
 
+    /**
+     * test
+     */
     @Hmily
     void wxp();
 }

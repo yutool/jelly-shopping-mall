@@ -10,13 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 @Component
 public class SkuServiceImpl implements SkuService {
-    @Resource
+    @Autowired
     private SkuMapper skuMapper;
     @Autowired
     private SpuMapper spuMapper;
@@ -43,6 +42,7 @@ public class SkuServiceImpl implements SkuService {
 
     @Override
     @Transactional
+    @Hmily(confirmMethod = "confirm", cancelMethod = "cancel")
     public boolean paySuccess(String spuId, String skuId, Integer num) {
         skuMapper.decreaseScore(skuId, num);
         skuMapper.addSaleNum(skuId, num);
@@ -55,20 +55,15 @@ public class SkuServiceImpl implements SkuService {
         return null;
     }
 
-    @Override
-    @Hmily(confirmMethod = "confirmNested", cancelMethod = "cancelNested")
-    public Sku abc() {
-        System.out.println("try abc");
-        //CastException.cast("a");
-        return skuMapper.selectById("5ea294f9b7405bdb68ab9c0a");
+
+    public boolean confirm(String spuId, String skuId, Integer num) {
+        System.out.println("商品状态更新成功");
+        return true;
     }
 
-    public void confirmNested() {
-        System.out.println("abc confirmNested");
-    }
-
-    public void cancelNested() {
-        System.out.println("abc cancelNested");
+    public boolean cancel(String spuId, String skuId, Integer num) {
+        System.out.println("商品状态更新失败");
+        return false;
     }
 
 }

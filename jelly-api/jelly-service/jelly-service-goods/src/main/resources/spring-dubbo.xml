@@ -17,6 +17,6 @@
                     queues="0" buffer="8192" accepts="0" payload="8388608" />
 
     <!-- 测试 -->
-    <dubbo:service interface="com.ankoye.jelly.goods.service.SkuService"
-                   ref="skuService" executes="20"/>
+<!--    <dubbo:service interface="com.ankoye.jelly.goods.service.SkuService"-->
+<!--                   ref="skuService" executes="20"/>-->
 </beans>
