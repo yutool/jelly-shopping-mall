@@ -47,7 +47,11 @@ public class OrderModel implements Serializable {
 
     private Integer status;
 
+    // 订单商品
     private List<OrderItem> orderItem;
+
+    // 购物车id - 进行删除购物车
+    private List<String> cartIds;
 
     public Order convertToOrder() {
         OrderDtoConvert orderDtoConvert = new OrderDtoConvert();

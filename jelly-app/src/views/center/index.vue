@@ -1,5 +1,5 @@
 <template>
-  <div class="container mb-5" v-loading.fullscreen="loading">
+  <div class="container" v-loading.fullscreen="loading">
     <div class="sidebar">
       <side-bar />
     </div>

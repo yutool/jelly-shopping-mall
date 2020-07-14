@@ -1,4 +1,4 @@
-package com.ankoye.jelly.seckill.service.impl;
+package com.ankoye.jelly.seckill.service.rest;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ALL")
-@Service
+@Service("restSeckillOrderService")
 public class SeckillOrderServiceImpl implements SeckillOrderService {
     @Value("${seckill-order-topic}")
     private String orderTopic;

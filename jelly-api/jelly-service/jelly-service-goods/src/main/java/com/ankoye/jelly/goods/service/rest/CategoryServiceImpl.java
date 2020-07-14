@@ -1,4 +1,4 @@
-package com.ankoye.jelly.goods.service.impl;
+package com.ankoye.jelly.goods.service.rest;
 
 import com.ankoye.jelly.goods.dao.CategoryMapper;
 import com.ankoye.jelly.goods.domain.Category;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Service
+@Service("restCategoryService")
 public class CategoryServiceImpl implements CategoryService {
     @Resource
     private CategoryMapper categoryMapper;

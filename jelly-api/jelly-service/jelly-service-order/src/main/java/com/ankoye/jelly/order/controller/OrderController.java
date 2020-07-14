@@ -7,9 +7,8 @@ import com.ankoye.jelly.web.log.annotation.Logger;
 import com.ankoye.jelly.web.log.constant.LogType;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 
 @CrossOrigin
 @RestController
@@ -17,7 +16,7 @@ import javax.annotation.Resource;
 @Slf4j
 public class OrderController {
 
-    @Resource
+    @Autowired
     private OrderService orderService;
 
     @GetMapping("/{id}")

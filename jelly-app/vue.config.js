@@ -28,6 +28,7 @@ module.exports = {
   // 在多核机器下会默认开启。
   parallel: require('os').cpus().length > 1,
   devServer: {
+    disableHostCheck: true,
     open: process.platform === 'darwin',
     host: '0.0.0.0',
     port: 9000,

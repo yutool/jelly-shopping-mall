@@ -1,4 +1,4 @@
-package com.ankoye.jelly.goods.service.impl;
+package com.ankoye.jelly.goods.service.rest;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.ankoye.jelly.goods.dao.SkuMapper;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Component
+@Component("restSkuService")
 public class SkuServiceImpl implements SkuService {
     @Autowired
     private SkuMapper skuMapper;

@@ -9,7 +9,7 @@
         <el-input v-model="loginForm.account" placeholder="邮箱 / 手机号" />
       </el-form-item>
       <el-form-item  prop="password">
-        <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"/>
+        <el-input type="password" v-model="loginForm.password" @keyup.enter.native="submitForm" placeholder="请输入密码"/>
       </el-form-item>  
     </div>
     <div v-if="loginType === 'MESSAGE'">
@@ -17,7 +17,7 @@
         <el-input v-model="loginForm.telephone" placeholder="请输入手机号" />
       </el-form-item>
       <el-form-item prop="smsCode">
-        <el-input v-model="loginForm.smsCode" placeholder="请获取验证码">
+        <el-input v-model="loginForm.smsCode" @keyup.enter.native="submitForm" placeholder="请获取验证码">
           <el-button id="verifyBtn" slot="append" type="primary" style="width: 115px;" @click="getSmsCode">
             {{verifyHint}}
           </el-button>
@@ -32,7 +32,7 @@
       <router-link to="/forget_password" target="_blank" class="float-right">忘记密码?</router-link>
     </div>
     <div class="login-btn pb-3">
-      <el-button type="primary" @click="submitForm()">登录</el-button>
+      <el-button type="primary" @click="submitForm">登录</el-button>
       <el-button class="float-right" @click="goRegister">注册</el-button>
     </div>
   </el-form>

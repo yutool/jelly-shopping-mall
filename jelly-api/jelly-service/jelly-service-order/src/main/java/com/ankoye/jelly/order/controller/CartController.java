@@ -1,15 +1,15 @@
 package com.ankoye.jelly.order.controller;
 
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.web.log.annotation.Logger;
-import com.ankoye.jelly.web.log.constant.LogType;
 import com.ankoye.jelly.order.domian.Cart;
 import com.ankoye.jelly.order.model.CartDto;
 import com.ankoye.jelly.order.service.CartService;
+import com.ankoye.jelly.web.log.annotation.Logger;
+import com.ankoye.jelly.web.log.constant.LogType;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -19,7 +19,9 @@ import java.util.List;
 @Slf4j
 public class CartController {
 
-    @Autowired
+//    @Autowired
+//    private CartService cartService;
+    @Resource(name = "restCartService")
     private CartService cartService;
 
     @Logger(module = "购物车", operation = "添加购物车")

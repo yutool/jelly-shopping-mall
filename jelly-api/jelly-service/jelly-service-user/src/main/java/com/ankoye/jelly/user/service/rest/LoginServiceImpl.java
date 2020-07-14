@@ -1,10 +1,10 @@
-package com.ankoye.jelly.user.service.impl;
+package com.ankoye.jelly.user.service.rest;
 
 import com.ankoye.jelly.user.domain.User;
 import com.ankoye.jelly.user.service.LoginService;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("restLoginService")
 public class LoginServiceImpl implements LoginService {
 
     @Override

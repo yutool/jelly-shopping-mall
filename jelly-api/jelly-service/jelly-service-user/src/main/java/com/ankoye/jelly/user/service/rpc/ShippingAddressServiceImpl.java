@@ -1,16 +1,18 @@
-package com.ankoye.jelly.user.service.impl;
+package com.ankoye.jelly.user.service.rpc;
 
 import com.ankoye.jelly.user.domain.ShippingAddress;
 import com.ankoye.jelly.user.mapper.ShippingAddressMapper;
 import com.ankoye.jelly.user.service.ShippingAddressService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Primary
 public class ShippingAddressServiceImpl implements ShippingAddressService {
     @Autowired
     private ShippingAddressMapper addressMapper;

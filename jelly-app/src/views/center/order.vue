@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-5">
     <!-- 筛选 -->
     <div class="mb-3 mt-3">
       <el-badge :value="orderList.length" class="mr-4">
@@ -93,10 +93,10 @@
               <div><a href="#">查看物流</a></div>
             </td>
             <td v-if="index == 0" :rowspan="item.length">
-              <el-button v-if="order.status==2" type="danger" size="mini">去付款</el-button>
+              <el-button v-if="order.status==2" type="danger" size="mini" @click="$router.push(`/order/pay/${order.id}`)">去付款</el-button>
               <el-button v-if="order.status==4" type="primary" size="mini">提醒发货</el-button>
               <el-button v-if="order.status==5" type="primary" size="mini">确认收货</el-button>
-              <el-button v-if="order.status==0" type="info" size="mini">再来一单</el-button>
+              <el-button v-if="order.status==0" type="info" size="mini" @click="$router.push(`/market/detail/${item.spuId}`)">再来一单</el-button>
             </td>
           </tr>
         </tbody>

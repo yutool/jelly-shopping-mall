@@ -1,4 +1,4 @@
-package com.ankoye.jelly.goods.service.impl;
+package com.ankoye.jelly.goods.service.rest;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.ankoye.jelly.base.constant.GoodsStatus;
@@ -23,7 +23,7 @@ import java.util.*;
 
 @Slf4j
 @Service
-@Component
+@Component("restSpuService")
 public class SpuServiceImpl implements SpuService {
     @Resource
     private SpuMapper spuMapper;

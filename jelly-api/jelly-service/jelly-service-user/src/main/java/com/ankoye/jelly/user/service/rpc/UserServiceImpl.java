@@ -1,4 +1,4 @@
-package com.ankoye.jelly.user.service.impl;
+package com.ankoye.jelly.user.service.rpc;
 
 import com.ankoye.jelly.base.constant.Role;
 import com.ankoye.jelly.user.domain.User;
@@ -7,12 +7,14 @@ import com.ankoye.jelly.user.service.UserService;
 import com.ankoye.jelly.util.IdUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
+@Primary
 public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;

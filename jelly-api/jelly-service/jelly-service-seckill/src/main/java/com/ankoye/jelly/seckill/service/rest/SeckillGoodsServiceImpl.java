@@ -1,4 +1,4 @@
-package com.ankoye.jelly.seckill.service.impl;
+package com.ankoye.jelly.seckill.service.rest;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ankoye.jelly.base.constant.GoodsStatus;
@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-@Service
+@Service("restSeckillGoodsService")
 public class SeckillGoodsServiceImpl implements SeckillGoodsService {
     @Reference
     private SkuService skuService;

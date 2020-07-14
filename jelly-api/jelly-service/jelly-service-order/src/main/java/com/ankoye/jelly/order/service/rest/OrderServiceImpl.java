@@ -1,4 +1,4 @@
-package com.ankoye.jelly.order.service.impl;
+package com.ankoye.jelly.order.service.rest;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
@@ -8,6 +8,7 @@ import com.ankoye.jelly.goods.domain.Spu;
 import com.ankoye.jelly.goods.service.SkuService;
 import com.ankoye.jelly.goods.service.SpuService;
 import com.ankoye.jelly.order.common.constant.RedisKey;
+import com.ankoye.jelly.order.dao.CartMapper;
 import com.ankoye.jelly.order.dao.OrderItemMapper;
 import com.ankoye.jelly.order.dao.OrderMapper;
 import com.ankoye.jelly.order.domian.Order;
@@ -40,7 +41,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@Component
+@Component("restOrderService")
 public class OrderServiceImpl implements OrderService {
     @Value("${user-order-topic}")
     private String orderTopic;
@@ -54,6 +55,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
     @Resource
     private OrderItemMapper orderItemMapper;
+    @Resource
+    private CartMapper cartMapper;
+
     /// Dubbo Reference
     @Resource
     private SkuService skuService;
@@ -95,7 +99,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String prepare(OrderModel form) {
         // form中仅包含userId、skuId和num
-        String userId = form.getUserId();
         List<OrderItem> formItem = form.getOrderItem();
         // 创建预订单
         OrderModel orderModel = new OrderModel();
@@ -116,7 +119,8 @@ public class OrderServiceImpl implements OrderService {
         }
         // 设置订单信息
         orderModel.setId(orderId);
-        orderModel.setUserId(userId);
+        orderModel.setUserId(form.getUserId());
+        orderModel.setCartIds(form.getCartIds());
         orderModel.setType(0);              // 普通订单
         orderModel.setMoney(money);         // 待修改
         orderModel.setPayMoney(money);
@@ -135,7 +139,8 @@ public class OrderServiceImpl implements OrderService {
         if (orderModel == null) {
             CastException.cast("订单不存在或已过期");
         }
-        // 将订单入库
+
+        // 1 - 将订单入库
         Order order = orderModel.convertToOrder();
         Date now = new Date();
         order.setAddressId(form.getAddressId());
@@ -165,7 +170,14 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // 从redis中删除，不能调用上面那函数
+
+        // 4 - 如果在购物车下单，则删除购物车商品
+        List<String> cartIds = orderModel.getCartIds();
+        if (cartIds != null && cartIds.size() != 0) {
+            cartMapper.deleteBatchIds(cartIds);
+        }
+
+        // 5 - 从redis中删除
         redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).delete(order.getId());
         return order.getId();
     }

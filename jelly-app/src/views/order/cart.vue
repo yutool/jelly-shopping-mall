@@ -148,12 +148,16 @@ export default class Cart extends Vue {
   private buy() {
     // 获取选中的skuId
     const orderItem: any = []
+    // 添加选中商品购物车id
+    const cartIds: any = []
     for (const cart of this.cartList) {
       if (this.checkObj.check[cart.id] === true) {
         orderItem.push({ skuId: cart.skuId, num: cart.num })
+        cartIds.push(cart.id)
       }
     }
-    prepareOrder({ userId: this.userId, orderItem }).then((res: any) => {
+    
+    prepareOrder({ userId: this.userId, orderItem, cartIds }).then((res: any) => {
       this.$router.push(`/order/buy/${res.data}`)
     })
   }
