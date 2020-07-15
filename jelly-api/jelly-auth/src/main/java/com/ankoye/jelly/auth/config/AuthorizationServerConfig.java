@@ -26,6 +26,9 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.security.KeyPair;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Configuration
 @EnableAuthorizationServer
 class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {

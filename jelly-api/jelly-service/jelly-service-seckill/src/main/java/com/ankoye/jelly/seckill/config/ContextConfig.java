@@ -9,6 +9,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Configuration
 public class ContextConfig {
 

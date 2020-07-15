@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.*;
 
+/**
+ * @author ankoye@qq.com
+ */
 @SuppressWarnings("all")
 @Component
 @Slf4j

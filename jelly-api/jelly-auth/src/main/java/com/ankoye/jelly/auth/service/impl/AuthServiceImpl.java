@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Service
 public class AuthServiceImpl implements AuthService {
 

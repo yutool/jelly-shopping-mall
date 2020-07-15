@@ -1,5 +1,8 @@
 package com.ankoye.jelly.web.log.constant;
 
+/**
+ * @author ankoye@qq.com
+ */
 public enum LogType {
     /**
      * 请求url

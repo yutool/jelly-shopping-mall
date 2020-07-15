@@ -4,6 +4,8 @@ import com.ankoye.jelly.base.result.ResultCode;
 
 /**
  * 异常抛出类
+ *
+ * @author ankoye@qq.com
  */
 public class CastException {
     public static void cast(Integer code, String message) {

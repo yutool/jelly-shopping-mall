@@ -5,6 +5,9 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 
 import java.util.Map;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class UserUtils {
 
     /**

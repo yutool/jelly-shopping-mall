@@ -18,6 +18,9 @@ import java.security.interfaces.RSAPrivateCrtKey;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class TokenUtils {
     // 证书
     private static final String JELLY_JKS = "jelly.jks";

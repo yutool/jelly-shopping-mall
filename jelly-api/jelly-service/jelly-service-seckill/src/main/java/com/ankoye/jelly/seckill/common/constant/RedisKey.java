@@ -1,5 +1,8 @@
 package com.ankoye.jelly.seckill.common.constant;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class RedisKey {
 
     /**

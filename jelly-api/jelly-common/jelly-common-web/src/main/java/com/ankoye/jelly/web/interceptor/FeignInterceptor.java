@@ -10,6 +10,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Component
 public class FeignInterceptor implements RequestInterceptor {
 

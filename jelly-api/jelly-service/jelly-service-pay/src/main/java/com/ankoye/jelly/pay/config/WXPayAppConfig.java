@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Component
 @ConfigurationProperties(prefix = "pay.wxpay")
 public class WXPayAppConfig extends WXPayConfig {
@@ -58,7 +61,6 @@ public class WXPayAppConfig extends WXPayConfig {
      *
      * @return 商户证书内容
      */
-    @Override
     public InputStream getCertStream() {
         InputStream certStream = getClass().getClassLoader().getResourceAsStream(certPath);
         return certStream;
@@ -96,6 +98,7 @@ public class WXPayAppConfig extends WXPayConfig {
         this.certPath = certPath;
     }
 
+    @Override
     public int getHttpConnectTimeoutMs() {
         return httpConnectTimeoutMs;
     }
@@ -104,6 +107,7 @@ public class WXPayAppConfig extends WXPayConfig {
         this.httpConnectTimeoutMs = httpConnectTimeoutMs;
     }
 
+    @Override
     public int getHttpReadTimeoutMs() {
         return httpReadTimeoutMs;
     }
@@ -131,9 +135,11 @@ public class WXPayAppConfig extends WXPayConfig {
 
     public IWXPayDomain getWXPayDomain() {
         IWXPayDomain iwxPayDomain = new IWXPayDomain() {
+            @Override
             public void report(String domain, long elapsedTimeMillis, Exception ex) {
             }
 
+            @Override
             public DomainInfo getDomain(WXPayConfig config) {
                 return new DomainInfo(WXPayConstants.DOMAIN_API, true);
             }

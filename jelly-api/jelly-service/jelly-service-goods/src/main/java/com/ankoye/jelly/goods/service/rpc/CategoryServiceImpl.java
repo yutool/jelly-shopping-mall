@@ -3,6 +3,7 @@ package com.ankoye.jelly.goods.service.rpc;
 import com.ankoye.jelly.goods.dao.CategoryMapper;
 import com.ankoye.jelly.goods.domain.Category;
 import com.ankoye.jelly.goods.service.CategoryService;
+import com.ankoye.jelly.web.support.BaseService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Service
 @Primary
-public class CategoryServiceImpl implements CategoryService {
+public class CategoryServiceImpl extends BaseService<Category> implements CategoryService {
     @Resource
     private CategoryMapper categoryMapper;
 

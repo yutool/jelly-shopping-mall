@@ -7,6 +7,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class DateUtils {
 
     private static SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");

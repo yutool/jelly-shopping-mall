@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 @TableName("tb_category")
 public class Category implements Serializable {

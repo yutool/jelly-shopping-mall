@@ -5,6 +5,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+/**
+ * 遗弃类
+ * 目前已被 MQ 取代
+ *
+ * @author ankoye@qq.com
+ */
 @Component
 public class MultiThreadingCreateOrder {
 

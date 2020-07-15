@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Configuration
 public class ApplicationContextConfig {
 

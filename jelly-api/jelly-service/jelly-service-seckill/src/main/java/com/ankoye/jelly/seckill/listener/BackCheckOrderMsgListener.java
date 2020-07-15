@@ -7,6 +7,10 @@ import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * 秒杀订单回查，待实现
+ * @author ankoye@qq.com
+ */
 @Slf4j
 //@Component
 @RocketMQMessageListener(

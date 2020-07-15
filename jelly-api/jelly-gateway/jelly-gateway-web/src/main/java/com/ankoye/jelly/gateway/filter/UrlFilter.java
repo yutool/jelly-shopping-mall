@@ -1,5 +1,8 @@
 package com.ankoye.jelly.gateway.filter;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class UrlFilter {
 
     // 所有不需要传递令牌的地址

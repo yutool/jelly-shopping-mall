@@ -11,10 +11,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Service
 @Component
 public class FileServiceImpl implements FileService {
 
+    @Override
     public String upload(MultipartFile file) {
         try {
             // 获取文件的完整名称
@@ -44,6 +48,7 @@ public class FileServiceImpl implements FileService {
         return null;
     }
 
+    @Override
     public List<String> upload(MultipartFile[] files) {
         List<String> urls = new LinkedList<>();
         for (MultipartFile file : files) {

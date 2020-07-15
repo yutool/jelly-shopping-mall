@@ -10,6 +10,7 @@ import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.SeckillGoods;
 import com.ankoye.jelly.seckill.service.SeckillGoodsService;
 import com.ankoye.jelly.web.exception.CastException;
+import com.ankoye.jelly.web.support.BaseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.context.annotation.Primary;
@@ -22,6 +23,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Service
 @Primary
 public class SeckillGoodsServiceImpl implements SeckillGoodsService {

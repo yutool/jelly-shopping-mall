@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 @TableName("tb_user")
 public class User implements Serializable {

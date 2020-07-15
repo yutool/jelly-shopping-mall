@@ -2,6 +2,9 @@ package com.ankoye.jelly.auth.service;
 
 import com.ankoye.jelly.auth.model.AuthToken;
 
+/**
+ * @author ankoye@qq.com
+ */
 public interface AuthService {
 
     /**

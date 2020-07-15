@@ -1,10 +1,14 @@
 package com.ankoye.jelly.user.service;
 
 import com.ankoye.jelly.user.domain.ShippingAddress;
+import com.ankoye.jelly.web.support.IService;
 
 import java.util.List;
 
-public interface ShippingAddressService {
+/**
+ * @author ankoye@qq.com
+ */
+public interface ShippingAddressService extends IService<ShippingAddress> {
 
     /**
      * 查询用户的收货地址

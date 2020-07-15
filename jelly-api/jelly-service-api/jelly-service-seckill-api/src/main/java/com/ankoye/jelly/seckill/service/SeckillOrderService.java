@@ -1,10 +1,16 @@
 package com.ankoye.jelly.seckill.service;
 
+import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.model.OrderModel;
+import com.ankoye.jelly.seckill.domain.SeckillOrder;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.OrderQueue;
+import com.ankoye.jelly.web.support.IService;
 
-public interface SeckillOrderService {
+/**
+ * @author ankoye@qq.com
+ */
+public interface SeckillOrderService  {
     /**
      * 开始排队
      */

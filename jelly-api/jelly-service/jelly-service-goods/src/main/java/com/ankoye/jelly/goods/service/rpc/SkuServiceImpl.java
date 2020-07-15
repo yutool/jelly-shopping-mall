@@ -5,21 +5,25 @@ import com.ankoye.jelly.goods.dao.SkuMapper;
 import com.ankoye.jelly.goods.dao.SpuMapper;
 import com.ankoye.jelly.goods.domain.Sku;
 import com.ankoye.jelly.goods.service.SkuService;
+import com.ankoye.jelly.web.support.BaseService;
 import org.dromara.hmily.annotation.Hmily;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Service
 @Component
 @Primary
-public class SkuServiceImpl implements SkuService {
-    @Autowired
+public class SkuServiceImpl extends BaseService<Sku> implements SkuService {
+    @Resource
     private SkuMapper skuMapper;
-    @Autowired
+    @Resource
     private SpuMapper spuMapper;
 
     @Override

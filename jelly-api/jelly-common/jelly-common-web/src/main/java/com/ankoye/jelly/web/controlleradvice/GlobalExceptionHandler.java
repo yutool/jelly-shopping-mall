@@ -23,6 +23,12 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * 全局异常捕获类
+ * 由服务类注册为 Bean
+ *
+ * @author ankoye@qq.com
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @Autowired

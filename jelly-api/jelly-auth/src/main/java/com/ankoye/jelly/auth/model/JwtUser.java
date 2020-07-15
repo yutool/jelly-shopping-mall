@@ -7,6 +7,9 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class JwtUser extends User {
 
     @Getter

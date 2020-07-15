@@ -1,5 +1,8 @@
 package com.ankoye.jelly.base.result;
 
+/**
+ * @author ankoye@qq.com
+ */
 public enum ResultCode {
 
     /* 成功状态码 */

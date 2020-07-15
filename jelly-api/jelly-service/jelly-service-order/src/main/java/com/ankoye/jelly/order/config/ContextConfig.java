@@ -9,6 +9,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Configuration
 public class ContextConfig {
 
@@ -22,7 +25,9 @@ public class ContextConfig {
         return new GlobalExceptionHandler();
     }
 
-    // 设置redistemplate的序列化
+    /**
+     * 设置redistemplate的序列化
+     */
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         // 1.创建 redisTemplate 模版

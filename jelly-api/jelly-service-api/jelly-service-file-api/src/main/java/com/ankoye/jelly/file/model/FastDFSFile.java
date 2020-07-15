@@ -3,6 +3,9 @@ package com.ankoye.jelly.file.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 @AllArgsConstructor
 public class FastDFSFile {

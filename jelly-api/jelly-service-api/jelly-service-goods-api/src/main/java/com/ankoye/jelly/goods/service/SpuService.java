@@ -2,13 +2,16 @@ package com.ankoye.jelly.goods.service;
 
 import com.ankoye.jelly.goods.domain.Spu;
 import com.ankoye.jelly.goods.model.Goods;
+import com.ankoye.jelly.web.support.IService;
 import com.github.pagehelper.PageInfo;
-import org.dromara.hmily.annotation.Hmily;
 
 import java.util.List;
 import java.util.Map;
 
-public interface SpuService {
+/**
+ * @author ankoye@qq.com
+ */
+public interface SpuService extends IService<Spu> {
     /**
      * 获取首页内容
      */
@@ -33,8 +36,5 @@ public interface SpuService {
      * 获取商品
      */
     Goods getGoodsById(String id);
-
-    @Hmily
-    void bdc();
 
 }

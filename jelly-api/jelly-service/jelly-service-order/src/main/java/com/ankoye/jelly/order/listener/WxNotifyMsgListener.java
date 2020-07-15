@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+
+/**
+ * @author ankoye@qq.com
+ */
 @RocketMQMessageListener(
         topic = "${user-pay-topic}",
         selectorExpression = "wx-notify",   // 微信支付普通订单

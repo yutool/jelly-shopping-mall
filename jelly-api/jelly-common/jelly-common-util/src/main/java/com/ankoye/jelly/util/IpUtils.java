@@ -4,6 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class IpUtils {
 
     /**

@@ -15,6 +15,8 @@ import java.util.Map;
 
 /**
  * 封装Token的信息
+ *
+ * @author ankoye@qq.com
  */
 @Component
 public class CustomUserAuthenticationConverter extends DefaultUserAuthenticationConverter {

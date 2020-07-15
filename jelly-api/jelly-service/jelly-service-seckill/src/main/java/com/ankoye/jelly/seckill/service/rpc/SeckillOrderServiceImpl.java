@@ -2,16 +2,19 @@ package com.ankoye.jelly.seckill.service.rpc;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
+import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.domian.OrderItem;
 import com.ankoye.jelly.order.model.OrderModel;
 import com.ankoye.jelly.order.service.OrderService;
 import com.ankoye.jelly.seckill.common.constant.RedisKey;
+import com.ankoye.jelly.seckill.domain.SeckillOrder;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.OrderQueue;
 import com.ankoye.jelly.seckill.service.SeckillOrderService;
 import com.ankoye.jelly.util.DateUtils;
 import com.ankoye.jelly.util.IdUtils;
 import com.ankoye.jelly.web.exception.CastException;
+import com.ankoye.jelly.web.support.BaseService;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +28,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author ankoye@qq.com
+ */
 @SuppressWarnings("ALL")
 @Service
 @Primary

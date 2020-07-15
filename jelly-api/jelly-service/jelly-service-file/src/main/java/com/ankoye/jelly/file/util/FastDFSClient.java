@@ -11,6 +11,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Slf4j
 public class FastDFSClient {
 

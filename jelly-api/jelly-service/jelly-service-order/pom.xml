@@ -70,6 +70,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.ankoye.jelly</groupId>
             <artifactId>jelly-service-goods-api</artifactId>

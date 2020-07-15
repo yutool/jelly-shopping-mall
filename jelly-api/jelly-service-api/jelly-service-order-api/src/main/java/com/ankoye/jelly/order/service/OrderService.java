@@ -1,9 +1,14 @@
 package com.ankoye.jelly.order.service;
 
+import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.model.OrderModel;
+import com.ankoye.jelly.web.support.IService;
 import com.github.pagehelper.PageInfo;
 
-public interface OrderService {
+/**
+ * @author ankoye@qq.com
+ */
+public interface OrderService extends IService<Order> {
     /**
      * 查询订单信息
      */

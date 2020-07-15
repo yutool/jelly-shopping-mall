@@ -1,11 +1,15 @@
 package com.ankoye.jelly.goods.service;
 
 import com.ankoye.jelly.goods.domain.Sku;
+import com.ankoye.jelly.web.support.IService;
 import org.dromara.hmily.annotation.Hmily;
 
 import java.util.List;
 
-public interface SkuService {
+/**
+ * @author ankoye@qq.com
+ */
+public interface SkuService extends IService<Sku> {
     /**
      * 获取 商品sku
      */

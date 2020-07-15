@@ -10,6 +10,9 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Slf4j
 @Component
 @RocketMQMessageListener(

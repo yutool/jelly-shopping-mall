@@ -5,6 +5,9 @@ import com.google.common.base.Converter;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 public class RegisterForm {
 

@@ -17,9 +17,12 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+/**
+ * @author ankoye@qq.com
+ */
 @CrossOrigin
 @RestController
-@RequestMapping("/v1/pay/wx")
+@RequestMapping("/pay/wx")
 public class WXPayController {
     @Value("${user-pay-topic}")
     private String payTopic;

@@ -2,6 +2,9 @@ package com.ankoye.jelly.util;
 
 import cn.hutool.core.util.IdUtil;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class IdUtils {
 
     /**

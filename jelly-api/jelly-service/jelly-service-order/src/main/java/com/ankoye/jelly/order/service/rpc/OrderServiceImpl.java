@@ -18,6 +18,7 @@ import com.ankoye.jelly.order.service.OrderService;
 import com.ankoye.jelly.pay.service.WXPayService;
 import com.ankoye.jelly.util.IdUtils;
 import com.ankoye.jelly.web.exception.CastException;
+import com.ankoye.jelly.web.support.BaseService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -41,10 +42,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Service
 @Primary
 @Component
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl extends BaseService<Order> implements OrderService {
     @Value("${user-order-topic}")
     private String orderTopic;
     @Value("${seckill-order-topic}")
@@ -185,7 +189,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Hmily(confirmMethod = "confirm", cancelMethod = "cancel")
     public boolean updateStatus(String id, String payTime, String transactionId){
         Order order = orderMapper.selectById(id);
@@ -221,7 +225,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public int checkOrder(String id) {
         Order order = orderMapper.selectById(id);
         // 如果为超时未支付
@@ -270,7 +274,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public int deleteById(String id) {
         // 删除订单项
         //orderItemMapper.delete(new UpdateWrapper<OrderItem>()

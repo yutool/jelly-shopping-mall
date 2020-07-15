@@ -5,6 +5,9 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Component
 public class FeignInterceptor implements RequestInterceptor {
 

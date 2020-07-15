@@ -1,11 +1,15 @@
 package com.ankoye.jelly.goods.service;
 
 import com.ankoye.jelly.goods.domain.Category;
+import com.ankoye.jelly.web.support.IService;
 
 import java.util.List;
 import java.util.Map;
 
-public interface CategoryService {
+/**
+ * @author ankoye@qq.com
+ */
+public interface CategoryService extends IService<Category> {
     /**
      * 获取首页菜单
      */

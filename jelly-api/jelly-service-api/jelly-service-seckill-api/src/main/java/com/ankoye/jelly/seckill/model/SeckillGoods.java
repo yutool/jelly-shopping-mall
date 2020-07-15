@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 public class SeckillGoods implements Serializable {
     private Spu spu;

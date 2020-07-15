@@ -2,10 +2,14 @@ package com.ankoye.jelly.seckill.service;
 
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.SeckillGoods;
+import com.ankoye.jelly.web.support.IService;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
+/**
+ * @author ankoye@qq.com
+ */
 public interface SeckillGoodsService {
 
     /**

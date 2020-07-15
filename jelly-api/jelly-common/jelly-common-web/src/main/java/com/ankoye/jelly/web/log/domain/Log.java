@@ -2,6 +2,9 @@ package com.ankoye.jelly.web.log.domain;
 
 import java.util.Date;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class Log {
     private String userId;
 

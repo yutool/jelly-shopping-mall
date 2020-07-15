@@ -4,6 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
+/**
+ * @author ankoye@qq.com
+ */
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.ankoye.jelly.user.feign")
 public class AuthApplication {

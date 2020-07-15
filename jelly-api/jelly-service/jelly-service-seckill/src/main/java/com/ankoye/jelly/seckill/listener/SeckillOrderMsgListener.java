@@ -17,6 +17,9 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Slf4j
 @Component
 @RocketMQMessageListener(

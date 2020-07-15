@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 @TableName("tb_seckill_order")
 public class SeckillOrder implements Serializable {

@@ -1,6 +1,8 @@
 package com.ankoye.jelly.base.constant;
 
-
+/**
+ * @author ankoye@qq.com
+ */
 public class GoodsStatus {
     /**
      * 审核成功，上架

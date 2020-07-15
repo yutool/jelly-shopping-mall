@@ -9,6 +9,7 @@ import com.ankoye.jelly.goods.domain.Spu;
 import com.ankoye.jelly.goods.model.Goods;
 import com.ankoye.jelly.goods.service.SpuService;
 import com.ankoye.jelly.util.IdUtils;
+import com.ankoye.jelly.web.support.BaseService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,11 +23,14 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Slf4j
 @Service
 @Component
 @Primary
-public class SpuServiceImpl implements SpuService {
+public class SpuServiceImpl extends BaseService<Spu> implements SpuService {
     @Resource
     private SpuMapper spuMapper;
     @Resource
@@ -51,7 +55,7 @@ public class SpuServiceImpl implements SpuService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean addGoods(Goods goods) {
         // 设置 SPU属性
         Spu spu = goods.getSpu();
@@ -99,19 +103,5 @@ public class SpuServiceImpl implements SpuService {
         Spu spu = spuMapper.selectById(id);
         List<Sku> skuList = skuMapper.selectList(new QueryWrapper<Sku>().eq("spu_id", id));
         return new Goods(spu, skuList);
-    }
-
-    @Override
-    @Hmily(confirmMethod = "confirmNested", cancelMethod = "cancelNested")
-    public void bdc() {
-        System.out.println("try bdc");
-        //CastException.cast("aa");
-    }
-    public void confirmNested() {
-        System.out.println("bdc confirmNested");
-    }
-
-    public void cancelNested() {
-        System.out.println("bdc cancelNested");
     }
 }

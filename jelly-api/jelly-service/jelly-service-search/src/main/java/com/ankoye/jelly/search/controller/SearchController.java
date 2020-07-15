@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author ankoye@qq.com
+ */
 @RestController
 @RequestMapping("/search")
 public class SearchController {

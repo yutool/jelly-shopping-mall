@@ -25,6 +25,16 @@
             <groupId>com.github.wxpay</groupId>
             <artifactId>wxpay-sdk</artifactId>
             <version>3.0.9</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- http 调用 -->

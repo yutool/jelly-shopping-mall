@@ -1,8 +1,7 @@
 package com.ankoye.jelly.auth.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.ankoye.jelly.auth.model.JwtUser;
-import com.ankoye.jelly.base.result.Result;
+import com.ankoye.jelly.base.result.Wrapper;
 import com.ankoye.jelly.user.domain.User;
 import com.ankoye.jelly.user.feign.UserFeign;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
@@ -40,14 +42,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
 //        }
 
         // 用户信息认证
-        Result result = userFeign.findByAccount(account);
-        if (result.getData() == null) {
-            return null;
-        }
-        User user = JSON.parseObject(JSON.toJSONString(result.getData()), User.class);
-
-        return new JwtUser(user.getId(), account, user.getPassword(),
-                AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRole()));
+        Wrapper<User> wrapper = userFeign.findByAccount(account);
+        User user = wrapper.getData();
+        return user == null
+                ? null
+                : new JwtUser(user.getId(), account, user.getPassword(),
+                                AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRole()));
     }
 
 }

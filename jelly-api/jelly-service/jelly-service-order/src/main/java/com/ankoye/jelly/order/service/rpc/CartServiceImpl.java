@@ -7,6 +7,7 @@ import com.ankoye.jelly.order.dao.CartMapper;
 import com.ankoye.jelly.order.domian.Cart;
 import com.ankoye.jelly.order.model.CartDto;
 import com.ankoye.jelly.order.service.CartService;
+import com.ankoye.jelly.web.support.BaseService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -16,10 +17,13 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Slf4j
 @Primary
 @Component
-public class CartServiceImpl implements CartService {
+public class CartServiceImpl extends BaseService<Cart> implements CartService {
     @Resource
     private CartMapper cartMapper;
 

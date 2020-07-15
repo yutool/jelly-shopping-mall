@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 @Accessors(chain = true)
 @AllArgsConstructor

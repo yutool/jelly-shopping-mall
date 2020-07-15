@@ -12,6 +12,9 @@ import java.security.interfaces.RSAPrivateCrtKey;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class FeignToken {
     private static final String RESOURCE = "jelly.jks";
     private static RSAPrivateCrtKey privateKey;

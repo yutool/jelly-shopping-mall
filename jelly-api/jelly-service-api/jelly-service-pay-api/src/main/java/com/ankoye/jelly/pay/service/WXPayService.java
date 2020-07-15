@@ -5,6 +5,9 @@ import org.dromara.hmily.annotation.Hmily;
 
 import java.util.Map;
 
+/**
+ * @author ankoye@qq.com
+ */
 public interface WXPayService {
 
     /**

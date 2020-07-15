@@ -1,5 +1,8 @@
 package com.ankoye.jelly.base.constant;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class OrderStatus {
     /**
      * 订单关闭

@@ -7,9 +7,10 @@ import java.util.Date;
 
 /**
  * 用户排队抢单信息
+ *
+ * @author ankoye@qq.com
  */
 @Data
-
 public class OrderQueue implements Serializable {
     public static final int BE_QUEUING = 1; // 排队中
     public static final int BE_FAIL = 2;    // 排队失败

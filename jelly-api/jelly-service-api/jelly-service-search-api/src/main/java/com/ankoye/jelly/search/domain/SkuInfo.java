@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 @Document(indexName = "skuinfo", type = "docs")
 public class SkuInfo implements Serializable {

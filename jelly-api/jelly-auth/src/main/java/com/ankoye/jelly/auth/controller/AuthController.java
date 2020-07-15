@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * @author ankoye@qq.com
+ */
 @RestController
 @RequestMapping("/oauth")
 public class AuthController {

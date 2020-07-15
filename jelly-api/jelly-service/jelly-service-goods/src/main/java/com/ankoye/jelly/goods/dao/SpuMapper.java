@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Mapper
 public interface SpuMapper extends BaseMapper<Spu> {
 

@@ -8,6 +8,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 @TableName("tb_cart")
 public class Cart implements Serializable {

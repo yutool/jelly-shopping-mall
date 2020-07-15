@@ -8,6 +8,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * @author ankoye@qq.com
+ */
 @WebFilter(urlPatterns = "/*", filterName = "RequestFilter")
 public class RequestFilter implements Filter {
 

@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+/**
+ * @author ankoye@qq.com
+ */
 @SpringBootApplication
 @EnableDubbo(scanBasePackages = "com.ankoye.jelly.seckill.service.impl")
 @EnableAsync

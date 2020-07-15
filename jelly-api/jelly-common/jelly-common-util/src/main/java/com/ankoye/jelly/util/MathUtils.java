@@ -2,7 +2,9 @@ package com.ankoye.jelly.util;
 
 
 /**
- * @Description: 随机数生成工具类
+ * 随机数生成工具类
+ *
+ * @author ankoye@qq.com
  */
 public class MathUtils {
 

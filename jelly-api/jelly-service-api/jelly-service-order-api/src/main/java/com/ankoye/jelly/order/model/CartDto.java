@@ -7,6 +7,9 @@ import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 public class CartDto {
 

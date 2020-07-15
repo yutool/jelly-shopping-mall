@@ -1,5 +1,8 @@
 package com.ankoye.jelly.order.common.constant;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class RedisKey {
     /**
      * 用户排队信息

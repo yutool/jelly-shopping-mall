@@ -5,6 +5,9 @@ import com.ankoye.jelly.web.log.constant.LogType;
 
 import java.lang.annotation.*;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

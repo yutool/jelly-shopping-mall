@@ -17,11 +17,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Configuration
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-    // 公钥
+    /** 公钥 */
     private static final String PUBLIC_KEY = "public.key";
 
     /**

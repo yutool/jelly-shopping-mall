@@ -1,5 +1,8 @@
 package com.ankoye.jelly.web.exception;
 
+/**
+ * @author ankoye@qq.com
+ */
 public class ServiceException extends RuntimeException {
     private Integer code;
 

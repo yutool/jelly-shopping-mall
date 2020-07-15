@@ -18,6 +18,8 @@ import java.util.Collection;
 
 /**
  * 自定义登录认证
+ *
+ * @author ankoye@qq.com
  */
 @Component
 public class UserAuthenticationProvider implements AuthenticationProvider {

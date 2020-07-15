@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Data
 public class OrderModel implements Serializable {
 

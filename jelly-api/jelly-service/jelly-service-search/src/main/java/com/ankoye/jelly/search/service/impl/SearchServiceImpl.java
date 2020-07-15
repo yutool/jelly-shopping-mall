@@ -29,6 +29,9 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Component
 public class SearchServiceImpl implements SearchService {
     @Autowired

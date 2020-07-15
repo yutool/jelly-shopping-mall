@@ -14,13 +14,15 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author ankoye@qq.com
+ */
 @Slf4j
 @Service
 @Component("wxPayService")
 public class WXPayServiceImpl implements WXPayService {
     @Autowired
     private WXPayAppConfig wxPayAppConfig;
-    // 生成预付款地址
     @Autowired
     private WXPay wxPay;
 
