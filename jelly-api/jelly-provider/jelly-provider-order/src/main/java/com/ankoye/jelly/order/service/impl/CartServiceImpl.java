@@ -45,7 +45,7 @@ public class CartServiceImpl extends BaseService<Cart> implements CartService {
     }
 
     @Override
-    public List<CartDto> getCartList(String id) {
+    public List<CartDto> getUserCart(String id) {
         List<Cart> carts = cartMapper.selectList(new QueryWrapper<Cart>().eq("user_id", id));
         List<CartDto> result = new ArrayList<>();
         CartDto cartDto = null;

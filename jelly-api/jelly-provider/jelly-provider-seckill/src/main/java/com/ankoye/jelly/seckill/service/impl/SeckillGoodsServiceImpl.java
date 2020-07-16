@@ -44,13 +44,13 @@ public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements 
 
     @Override
     @Transactional // 全局事务
-    public void add(SeckillSku goods) {
+    public boolean add(SeckillSku goods) {
         // 查看已经是秒杀商品
         if(seckillGoodsMapper.selectById(goods.getId()) != null) {
             CastException.cast("该商品已参加秒杀");
         }
         // 查询商品信息
-        Sku sku = skuService.getSkuById(goods.getId());
+        Sku sku = skuService.selectById(goods.getId());
         // 添加秒杀商品
         goods.setSpuId(sku.getSpuId());
         goods.setSku(sku.getSku());
@@ -62,6 +62,7 @@ public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements 
         seckillGoodsMapper.insert(goods);
         // 冻结商品库存
         skuService.freezeScore(goods.getId(), goods.getNum());
+        return true;
     }
 
     @Override

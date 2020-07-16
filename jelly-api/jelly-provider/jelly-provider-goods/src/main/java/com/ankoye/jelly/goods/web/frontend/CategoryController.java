@@ -16,7 +16,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @RequestMapping("/category")
-public class CategoryController extends BaseController<Category> {
+public class CategoryController extends BaseController {
     @Autowired
     private CategoryService categoryService;
 

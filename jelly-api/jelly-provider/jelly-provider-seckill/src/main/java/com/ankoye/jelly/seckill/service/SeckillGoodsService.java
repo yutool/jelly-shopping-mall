@@ -19,7 +19,7 @@ public interface SeckillGoodsService {
     /**
      * 增加秒杀商品
      */
-    void add(SeckillSku goods);
+    boolean add(SeckillSku goods);
 
     /**
      * 查询所有某时间段内所有商品

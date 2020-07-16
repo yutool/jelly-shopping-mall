@@ -6,6 +6,7 @@ import com.ankoye.jelly.seckill.model.SeckillGoods;
 import com.ankoye.jelly.seckill.service.SeckillGoodsService;
 import com.ankoye.jelly.util.DateUtils;
 import com.ankoye.jelly.web.log.annotation.Logger;
+import com.ankoye.jelly.web.support.BaseController;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,8 @@ import java.util.List;
  * @author ankoye@qq.com
  */
 @RestController
-@RequestMapping("/rpc/seckill/goods")
-public class SeckillGoodsController {
+@RequestMapping("/seckill/goods")
+public class SeckillGoodsController extends BaseController {
 
     @Autowired
     private SeckillGoodsService seckillGoodsService;
@@ -25,8 +26,7 @@ public class SeckillGoodsController {
     @PostMapping
     @Logger(module = "秒杀商品", operation = "增加秒杀商品")
     public Result add(@RequestBody SeckillSku goods) {
-        seckillGoodsService.add(goods);
-        return Result.success();
+        return handleResult(seckillGoodsService.add(goods));
     }
 
     /**

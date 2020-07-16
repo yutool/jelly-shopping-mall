@@ -4,6 +4,7 @@ import com.ankoye.jelly.base.result.Result;
 import com.ankoye.jelly.user.domain.ShippingAddress;
 import com.ankoye.jelly.user.service.ShippingAddressService;
 import com.ankoye.jelly.web.log.annotation.Logger;
+import com.ankoye.jelly.web.support.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,8 @@ import java.util.List;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/rpc/address")
-public class ShippingAddressController {
+@RequestMapping("/address")
+public class ShippingAddressController extends BaseController {
 
     @Autowired
     private ShippingAddressService addressService;

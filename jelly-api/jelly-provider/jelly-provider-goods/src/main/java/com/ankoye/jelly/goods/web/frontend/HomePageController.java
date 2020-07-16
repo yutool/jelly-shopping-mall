@@ -3,6 +3,7 @@ package com.ankoye.jelly.goods.web.frontend;
 import com.ankoye.jelly.base.result.Result;
 import com.ankoye.jelly.goods.service.CategoryService;
 import com.ankoye.jelly.goods.service.SpuService;
+import com.ankoye.jelly.web.support.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/home")
-public class HomePageController {
+public class HomePageController extends BaseController {
     @Autowired
     private CategoryService categoryService;
     @Autowired

@@ -19,5 +19,5 @@ public interface CartService extends IService<Cart> {
     /**
      * 获取购物车商品
      */
-    List<CartDto> getCartList(String id);
+    List<CartDto> getUserCart(String id);
 }

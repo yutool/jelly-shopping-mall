@@ -4,6 +4,7 @@ import com.ankoye.jelly.base.result.Result;
 import com.ankoye.jelly.user.model.RegisterForm;
 import com.ankoye.jelly.user.service.UserService;
 import com.ankoye.jelly.util.TokenUtils;
+import com.ankoye.jelly.web.support.BaseController;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,8 @@ import java.util.Map;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/rpc/user")
-public class UserController {
+@RequestMapping("/user")
+public class UserController extends BaseController {
     @Resource
     private UserService userService;
 
@@ -29,13 +30,6 @@ public class UserController {
 
     @PostMapping("/register")
     public Result register(@RequestBody RegisterForm from) {
-        userService.add(from.convertToUser());
-        return Result.success().setMessage("注册成功");
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("list")
-    public Result findByPage() {
-        return Result.success();
+        return handleResult(userService.add(from.convertToUser()), "注册成功", "注册失败");
     }
 }
