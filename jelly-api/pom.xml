@@ -14,7 +14,7 @@
         <module>jelly-common</module>
         <module>jelly-auth</module>
         <module>jelly-gateway</module>
-        <module>jelly-service-api/jelly-service-goods-api</module>
+        <module>jelly-provider</module>
     </modules>
 
     <!-- 版本管理 -->

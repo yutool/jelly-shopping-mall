@@ -2,7 +2,7 @@ import request from '@/common/utils/request'
 
 export function addCart(data: any) {
   return request({
-    url: 'oApi/v1/cart',
+    url: 'oApi/cart',
     method: 'post',
     data: JSON.stringify(data)
   })
@@ -10,7 +10,7 @@ export function addCart(data: any) {
 
 export function getCart(id: string) {
   return request({
-    url: `oApi/v1/cart/${id}`,
+    url: `oApi/cart/${id}`,
     method: 'get'
   })
 }

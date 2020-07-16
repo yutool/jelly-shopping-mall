@@ -11,6 +11,7 @@
 
 package com.ankoye.jelly.web.support;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,8 @@ public interface IService<T> {
 	 * @return the list
 	 */
 	List<T> selectList(T record);
+
+	List<T> selectList(Wrapper<T> wrapper);
 
 	/**
 	 * 根据主键字段进行查询, 方法参数必须包含完整的主键属性, 查询条件使用等号  @param key the key

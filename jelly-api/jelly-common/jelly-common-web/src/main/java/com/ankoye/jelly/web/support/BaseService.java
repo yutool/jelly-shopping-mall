@@ -12,6 +12,7 @@
 package com.ankoye.jelly.web.support;
 
 import com.ankoye.jelly.web.exception.CastException;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -86,6 +87,10 @@ public abstract class BaseService<T extends Serializable> implements IService<T>
 	@Override
 	public List<T> selectList(T record) {
 		return mapper.selectList(Wrappers.query(record));
+	}
+
+	public List<T> selectList(Wrapper<T> wrapper) {
+		return mapper.selectList(wrapper);
 	}
 
 	/**

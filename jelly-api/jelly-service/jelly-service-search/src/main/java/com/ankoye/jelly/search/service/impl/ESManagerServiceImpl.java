@@ -3,7 +3,7 @@ package com.ankoye.jelly.search.service.impl;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.ankoye.jelly.goods.domain.Sku;
-import com.ankoye.jelly.goods.service.SkuService;
+import com.ankoye.jelly.goods.reference.SkuReference;
 import com.ankoye.jelly.search.dao.ESManagerMapper;
 import com.ankoye.jelly.search.domain.SkuInfo;
 import com.ankoye.jelly.search.service.ESManagerService;
@@ -19,7 +19,7 @@ import java.util.Map;
 @Component
 public class ESManagerServiceImpl implements ESManagerService {
     @Reference
-    private SkuService skuService;
+    private SkuReference skuService;
 
     @Autowired
     private ESManagerMapper esManagerMapper;

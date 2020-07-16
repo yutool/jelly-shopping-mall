@@ -2,7 +2,7 @@ package com.ankoye.jelly.seckill.common.task;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ankoye.jelly.goods.domain.Spu;
-import com.ankoye.jelly.goods.service.SpuService;
+import com.ankoye.jelly.goods.reference.SpuReference;
 import com.ankoye.jelly.seckill.common.constant.RedisKey;
 import com.ankoye.jelly.seckill.dao.SeckillGoodsMapper;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
@@ -27,7 +27,7 @@ import java.util.*;
 public class SeckillGoodsPushTask {
 
     @Reference
-    private SpuService spuService;
+    private SpuReference spuReference;
 
     @Resource
     private SeckillGoodsMapper seckillGoodsMapper;
@@ -81,7 +81,7 @@ public class SeckillGoodsPushTask {
                 }
                 spuIdList.add(tmp.getSpuId());
                 // 查询商品Spu，并创建秒杀商品
-                Spu spu = spuService.getSpu(tmp.getSpuId());
+                Spu spu = spuReference.selectById(tmp.getSpuId());
                 SeckillGoods seckillGoods = new SeckillGoods();
                 seckillGoods.setSpu(spu);
                 // 查找到 当前 spu 对应的秒杀商品添加到

@@ -2,21 +2,21 @@ import request from '@/common/utils/request'
 
 export function getOrder(id: string) {
   return request({
-    url: `oApi/v1/order/${id}`,
+    url: `oApi/order/${id}`,
     method: 'get'
   })
 }
 
 export function getUserOrder(id: string, page: number, size: number) {
   return request({
-    url: `oApi/v1/order/user/${id}/${page}/${size}`,
+    url: `oApi/order/user/${id}/${page}/${size}`,
     method: 'get'
   })
 }
 
 export function prepareOrder(data: any) {
   return request({
-    url: 'oApi/v1/order/prepare',
+    url: 'oApi/order/prepare',
     method: 'post',
     data: JSON.stringify(data)
   })
@@ -24,21 +24,21 @@ export function prepareOrder(data: any) {
 
 export function getPrepareOrder(id: string) {
   return request({
-    url: `oApi/v1/order/prepare/${id}`,
+    url: `oApi/order/prepare/${id}`,
     method: 'get',
   })
 }
 
 export function checkPrepareOrder(id: string) {
   return request({
-    url: `oApi/v1/order/prepare/${id}`,
+    url: `oApi/order/prepare/${id}`,
     method: 'delete',
   })
 }
 
 export function createOrder(data: any) {
   return request({
-    url: 'oApi/v1/order/create',
+    url: 'oApi/order/create',
     method: 'post',
     data: JSON.stringify(data)
   })
@@ -47,7 +47,7 @@ export function createOrder(data: any) {
 
 export function deleteOrder(id: string) {
   return request({
-    url: `oApi/v1/order/${id}`,
+    url: `oApi/order/${id}`,
     method: 'delete',
   })
 }

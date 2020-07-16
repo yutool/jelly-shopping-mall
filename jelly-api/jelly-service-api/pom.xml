@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>jelly-service-order-api</module>
+        <module>jelly-service-goods-api</module>
         <module>jelly-service-pay-api</module>
         <module>jelly-service-user-api</module>
         <module>jelly-service-seckill-api</module>

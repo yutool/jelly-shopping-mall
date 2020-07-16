@@ -2,7 +2,7 @@ import request from '@/common/utils/request'
 
 export function addGoods(data: any) {
   return request({
-    url: 'gApi/v1/spu',
+    url: 'gApi/spu',
     method: 'post',
     data: JSON.stringify(data)
   })
@@ -10,14 +10,14 @@ export function addGoods(data: any) {
 
 export function getSpuList(page: number, size: number) {
   return request({
-    url: `gApi/v1/spu/list/${page}/${size}`,
+    url: `gApi/spu/list/${page}/${size}`,
     method: 'get'
   })
 }
 
 export function getGoods(id: string) {
   return request({
-    url: `gApi/v1/spu/${id}`,
+    url: `gApi/spu/${id}`,
     method: 'get'
   })
 }

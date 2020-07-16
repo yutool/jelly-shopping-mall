@@ -17,18 +17,13 @@
 <!--                    queues="0" buffer="8192" accepts="0" payload="8388608" />-->
 
     <dubbo:reference timeout="50000"
-                     interface="com.ankoye.jelly.goods.service.SkuService"
+                     interface="com.ankoye.jelly.goods.reference.SkuReference"
                      id="skuService"
                      retries="0" check="false" actives="20" loadbalance="hmily"/>
 
     <dubbo:reference timeout="50000"
-                     interface="com.ankoye.jelly.goods.service.SpuService"
+                     interface="com.ankoye.jelly.goods.reference.SpuReference"
                      id="spuService"
-                     retries="0" check="false" actives="20" loadbalance="hmily"/>
-
-    <dubbo:reference timeout="50000"
-                     interface="com.ankoye.jelly.pay.service.WXPayService"
-                     id="wxPayService"
                      retries="0" check="false" actives="20" loadbalance="hmily"/>
 
 </beans>
