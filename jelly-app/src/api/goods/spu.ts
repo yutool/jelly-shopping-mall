@@ -9,7 +9,7 @@ export function getSpuList() {
 
 export function getGoods(id: string) {
   return request({
-    url: `gApi/spu/${id}`,
+    url: `gApi/spu/detail/${id}`,
     method: 'get'
   })
 }

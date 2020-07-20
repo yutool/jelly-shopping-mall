@@ -1,6 +1,7 @@
 果冻商城-电商平台
 ====================
 
+![Spring Cloud Hoxton.SR1](https://img.shields.io/badge/Spring%20Cloud-Hoxton.SR1-9cf.svg)
 ![Dubbo 2.6](https://img.shields.io/badge/Dubbo-2.6-important.svg)
 ![Spring Boot 2](https://img.shields.io/badge/Spring%20Boot-2.2.6-blue.svg)
 ![JDK 1.8](https://img.shields.io/badge/JDK-1.8-brightgreen.svg)
@@ -12,7 +13,7 @@
 目标：
     模拟商城，完整的购物流程、后端运营平台对前端业务的支撑，和对项目的运维，有各项的监控指标和运维指标。
 技术点：
-    核心框架：Dubbo Spring Boot
+    核心框架：Spring Cloud、Dubbo、Spring Boot
     安全框架：Spring Security Oauth2
     网关框架：Spring Cloud Gateway
     持久层框架：MyBatis Plus、PageHelper
@@ -46,7 +47,23 @@
 │  │  │
 │  │  ├─jelly-common-web-----------------web层依赖
 │  │
-│  ├─jelly-service-----------------------微服务服务中心
+│  ├─jelly-provider-----------------------微服务服务中心 - Spring Cloud版本
+│  │  │
+│  │  ├─jelly-provider-file---------------文件服务
+│  │  │
+│  │  ├─jelly-provider-goods--------------商品服务
+│  │  │
+│  │  ├─jelly-provider-order--------------订单服务
+│  │  │
+│  │  ├─jelly-provider-pay----------------支付服务
+│  │  │
+│  │  ├─jelly-provider-search-------------搜索服务
+│  │  │
+│  │  ├─jelly-provider-seckill------------秒杀服务
+│  │  │
+│  │  ├─jelly-provider-user---------------用户服务
+│  │
+│  ├─jelly-service-----------------------微服务服务中心 - Dubbo版本
 │  │  │
 │  │  ├─jelly-service-file---------------文件服务
 │  │  │
@@ -94,3 +111,4 @@
 
 ##### 订单
 ![订单](./document/order.png)
+

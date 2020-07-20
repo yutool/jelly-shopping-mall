@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.util.List;
+
 /**
  * @author ankoye@qq.com
  */
@@ -24,6 +26,9 @@ public interface SkuFeign {
 
     @GetMapping("/sku/{id}")
     Wrapper<Sku> getSkuById(@PathVariable("id") String id);
+
+    @GetMapping("/sku/all")
+    Wrapper<List<Sku>> getAll();
 
     @PutMapping("/sku/freezeScore/{skuId}/{num}")
     Wrapper freezeScore(@PathVariable("skuId") String skuId, @PathVariable("num") Integer num);

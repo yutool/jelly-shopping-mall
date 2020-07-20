@@ -14,7 +14,7 @@ import java.util.Map;
  * @author ankoye@qq.com
  */
 @Data
-@Document(indexName = "skuinfo", type = "docs")
+@Document(indexName = "skuinfo", type = "sku")
 public class SkuInfo implements Serializable {
     /**
      * type：字段类型

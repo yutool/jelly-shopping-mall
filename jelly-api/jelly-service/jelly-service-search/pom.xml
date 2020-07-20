@@ -19,6 +19,7 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>com.ankoye.jelly</groupId>
             <artifactId>jelly-service-goods-api</artifactId>

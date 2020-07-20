@@ -8,6 +8,8 @@ import com.ankoye.jelly.goods.reference.SkuReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author ankoye@qq.com
  */
@@ -21,6 +23,11 @@ public class SkuFeignClient implements SkuFeign {
     public Wrapper<Sku> getSkuById(@PathVariable String id) {
         Sku sku = skuReference.selectById(id);
         return Wrappers.success(sku);
+    }
+
+    @Override
+    public Wrapper<List<Sku>> getAll() {
+        return Wrappers.success(skuReference.selectAll());
     }
 
     @Override

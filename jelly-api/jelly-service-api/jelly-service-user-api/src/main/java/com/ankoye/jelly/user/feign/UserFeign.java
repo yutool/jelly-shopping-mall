@@ -2,7 +2,7 @@ package com.ankoye.jelly.user.feign;
 
 import com.ankoye.jelly.base.result.Wrapper;
 import com.ankoye.jelly.user.domain.User;
-import com.ankoye.jelly.user.feign.hystrix.UserFeignHystrix;
+import com.ankoye.jelly.user.feign.fallback.UserFeignFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 /**
  * @author ankoye@qq.com
  */
-@FeignClient(value = "jelly-user-serve", fallback = UserFeignHystrix.class)
+@FeignClient(value = "jelly-user-serve", fallback = UserFeignFallback.class, contextId = "user")
 public interface UserFeign {
 
     /**

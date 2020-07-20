@@ -24,6 +24,7 @@ public class ESManagerServiceImpl implements ESManagerService {
     @Autowired
     private ESManagerMapper esManagerMapper;
 
+    @Override
     public void importData() {
         // 查询sku
         List<Sku> skuList = skuService.findList();

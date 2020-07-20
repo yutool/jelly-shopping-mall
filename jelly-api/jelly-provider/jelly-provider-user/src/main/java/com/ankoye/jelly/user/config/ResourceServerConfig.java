@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  */
 @Configuration
 @EnableResourceServer
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)//激活方法
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // 激活方法
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     /** 公钥 */
@@ -33,10 +33,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         // 所有请求必须认证通过
         http.authorizeRequests()
                 //下边的路径放行
-                .antMatchers("/com/ankoye/jelly/user/register"). //配置地址放行
-                permitAll()
-                .anyRequest().
-                authenticated();    //其他地址需要认证授权
+                .antMatchers("/user/register", "/**") //配置地址放行
+                .permitAll()
+                .anyRequest()
+                .authenticated();    //其他地址需要认证授权
     }
 
     /**

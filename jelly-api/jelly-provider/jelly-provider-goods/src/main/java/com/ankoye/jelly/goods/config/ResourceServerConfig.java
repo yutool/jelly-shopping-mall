@@ -33,10 +33,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         // 所有请求必须认证通过
         http.authorizeRequests()
                 // 下边的路径放行
-                .antMatchers("/**"). //配置地址放行
-                permitAll()
-                .anyRequest().
-                authenticated();    //其他地址需要认证授权
+                .antMatchers("/**") //配置地址放行
+                .permitAll()
+                .anyRequest()
+                .authenticated();    //其他地址需要认证授权
     }
 
     /**

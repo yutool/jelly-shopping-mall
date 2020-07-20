@@ -1,4 +1,4 @@
-package com.ankoye.jelly.pay;
+package com.ankoye.jelly.file;
 
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
@@ -8,12 +8,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 /**
  * @author ankoye@qq.com
  */
-@SpringBootApplication(exclude = {
-        DataSourceAutoConfiguration.class
-})
-@EnableDubbo(scanBasePackages = "com.ankoye.jelly.pay.service.impl")
-public class PayApplication {
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@EnableDubbo
+public class RPCFileApplication {
     public static void main(String[] args) {
-        SpringApplication.run(PayApplication.class, args);
+        SpringApplication.run(RPCFileApplication.class, args);
     }
 }

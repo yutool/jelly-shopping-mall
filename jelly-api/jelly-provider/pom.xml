@@ -16,6 +16,9 @@
         <module>jelly-provider-order</module>
         <module>jelly-provider-seckill</module>
         <module>jelly-provider-user</module>
+        <module>jelly-provider-search</module>
+        <module>jelly-provider-file</module>
+        <module>jelly-provider-pay</module>
     </modules>
 
     <dependencies>
