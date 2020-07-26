@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan
+@MapperScan("com.ankoye.jelly.dao")
 public class JellyApplication {
 
     public static void main(String[] args) {

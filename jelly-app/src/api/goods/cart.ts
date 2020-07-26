@@ -10,7 +10,7 @@ export function addCart(data: any) {
 
 export function getCart(id: string) {
   return request({
-    url: `oApi/cart/${id}`,
+    url: `oApi/cart/user/${id}`,
     method: 'get'
   })
 }

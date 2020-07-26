@@ -16,9 +16,6 @@ const actions = {
     return new Promise((resolve: any, reject: any) => {
       login(user).then((res: any) => {
         const { data } = res
-        if (data) {
-          console.log(data)
-        }
         setToken(data.accessToken)
         resolve(res)
       }).catch((error: any) => {

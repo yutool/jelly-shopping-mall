@@ -2,6 +2,7 @@ package com.ankoye.jelly.controller;
 
 import com.ankoye.jelly.common.result.Result;
 import com.ankoye.jelly.common.support.BaseController;
+import com.ankoye.jelly.common.util.TokenUtils;
 import com.ankoye.jelly.model.RegisterForm;
 import com.ankoye.jelly.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,12 @@ public class UserController extends BaseController {
     @Resource
     private UserService userService;
 
-//    @GetMapping("/current")
-//    public Result getCurrentUser(@RequestHeader("Authorization") String token) {
-//        Map<String, Object> claims = TokenUtils.parse(token.substring(7));
-//        String account = claims.get("account").toString();
-//        return Result.success(userService.findByAccount(account));
-//    }
+    @GetMapping("/current")
+    public Result getCurrentUser(@RequestHeader("Authorization") String token) {
+        Map<String, Object> claims = TokenUtils.parse(token.substring(7));
+        String userId = claims.get("userId").toString();
+        return Result.success(userService.selectById(userId));
+    }
 
     @PostMapping("/register")
     public Result register(@RequestBody RegisterForm from) {

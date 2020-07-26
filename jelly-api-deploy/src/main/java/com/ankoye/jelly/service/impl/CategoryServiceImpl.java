@@ -5,7 +5,7 @@ import com.ankoye.jelly.dao.CategoryMapper;
 import com.ankoye.jelly.domain.Category;
 import com.ankoye.jelly.service.CategoryService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * @author ankoye@qq.com
  */
-@Component
+@Service
 public class CategoryServiceImpl extends BaseService<Category> implements CategoryService {
     @Resource
     private CategoryMapper categoryMapper;
