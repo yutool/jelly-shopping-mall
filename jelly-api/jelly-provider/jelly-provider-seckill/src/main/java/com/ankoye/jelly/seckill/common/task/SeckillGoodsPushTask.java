@@ -1,7 +1,8 @@
 package com.ankoye.jelly.seckill.common.task;
 
 import com.ankoye.jelly.goods.domain.Spu;
-import com.ankoye.jelly.seckill.common.constant.RedisKey;
+import com.ankoye.jelly.goods.feign.SpuFeign;
+import com.ankoye.jelly.seckill.common.constant.SeckillKey;
 import com.ankoye.jelly.seckill.dao.SeckillGoodsMapper;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.SeckillGoods;
@@ -27,7 +28,7 @@ import java.util.Set;
 public class SeckillGoodsPushTask {
 
     //@Reference
-    private SpuService spuService;
+    private SpuFeign spuFeign;
 
     @Resource
     private SeckillGoodsMapper seckillGoodsMapper;
@@ -66,7 +67,7 @@ public class SeckillGoodsPushTask {
             wrapper.ge("end_time", day);
             wrapper.eq("region", dateMenu.substring(8));
 
-            Set keys = redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS + dateMenu).keys(); //key field value
+            Set keys = redisTemplate.boundHashOps(SeckillKey.GOODS_PRE + dateMenu).keys(); //key field value
             if (keys != null && keys.size() > 0){
                 wrapper.notIn("spu_id", keys);
             }
@@ -81,7 +82,7 @@ public class SeckillGoodsPushTask {
                 }
                 spuIdList.add(tmp.getSpuId());
                 // 查询商品Spu，并创建秒杀商品
-                Spu spu = spuService.getSpu(tmp.getSpuId());
+                Spu spu = spuFeign.getSpuById(tmp.getSpuId()).getData();
                 SeckillGoods seckillGoods = new SeckillGoods();
                 seckillGoods.setSpu(spu);
                 // 查找到 当前 spu 对应的秒杀商品添加到
@@ -90,10 +91,10 @@ public class SeckillGoodsPushTask {
                         // 添加秒杀商品 sku
                         seckillGoods.getSkuList().add(sku);
                         // 将库存保存一份至redis
-                        redisTemplate.opsForValue().set(RedisKey.SECKILL_SKU_COUNT_KEY + sku.getId(), sku.getResidue());
+                        redisTemplate.opsForValue().set(SeckillKey.SKU_COUNT_PRE + sku.getId(), sku.getResidue());
                     }
                 }
-                redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS + dateMenu).put(tmp.getSpuId(), seckillGoods);
+                redisTemplate.boundHashOps(SeckillKey.GOODS_PRE + dateMenu).put(tmp.getSpuId(), seckillGoods);
             }
         }
     }

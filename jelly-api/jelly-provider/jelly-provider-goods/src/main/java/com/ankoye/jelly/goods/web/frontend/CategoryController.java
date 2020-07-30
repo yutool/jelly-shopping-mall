@@ -3,6 +3,7 @@ package com.ankoye.jelly.goods.web.frontend;
 import com.ankoye.jelly.base.result.Result;
 import com.ankoye.jelly.goods.domain.Category;
 import com.ankoye.jelly.goods.service.CategoryService;
+import com.ankoye.jelly.util.RedisLock;
 import com.ankoye.jelly.web.support.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,4 +38,13 @@ public class CategoryController extends BaseController {
         List<Category> categoryMap = categoryService.getThreeCategory(id);
         return Result.success(categoryMap);
     }
+
+    @GetMapping("/lock")
+    public Result lock() {
+        String a = RedisLock.tryLock("test-lock", 100000);
+        RedisLock.unLock("test-lock", a);
+        System.out.println("stop");
+        return Result.success();
+    }
+
 }

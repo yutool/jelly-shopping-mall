@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
+ * 创建了预订单，未进行下一步
  * @author ankoye@qq.com
  */
 @Slf4j

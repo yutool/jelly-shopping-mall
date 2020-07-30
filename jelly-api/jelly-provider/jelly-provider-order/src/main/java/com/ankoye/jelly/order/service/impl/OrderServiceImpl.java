@@ -13,6 +13,7 @@ import com.ankoye.jelly.order.dao.OrderMapper;
 import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.domian.OrderItem;
 import com.ankoye.jelly.order.model.OrderModel;
+import com.ankoye.jelly.order.reference.OrderReference;
 import com.ankoye.jelly.order.service.OrderService;
 import com.ankoye.jelly.util.IdUtils;
 import com.ankoye.jelly.web.exception.CastException;
@@ -43,7 +44,7 @@ import java.util.List;
  * @author ankoye@qq.com
  */
 @Service
-public class OrderServiceImpl extends BaseService<Order> implements OrderService {
+public class OrderServiceImpl extends BaseService<Order> implements OrderService, OrderReference {
     @Value("${user-order-topic}")
     private String orderTopic;
     @Value("${seckill-order-topic}")
@@ -126,7 +127,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         orderModel.setPayMoney(money);
         orderModel.setWeight(0);            // 待修改
 
-        // 暂存至redis
+        // 将预订单存储到redis
         redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).put(orderId, orderModel);
         return orderId;
     }
@@ -139,16 +140,14 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         if (orderModel == null) {
             CastException.cast("订单不存在或已过期");
         }
-
         // 1 - 将订单入库
         Order order = orderModel.convertToOrder();
         Date now = new Date();
         order.setAddressId(form.getAddressId());
-        order.setCreateTime(now);
-        order.setUpdateTime(now);
+        order.setCreateTime(now); // 待删除
+        order.setUpdateTime(now); // 待删除
         order.setStatus(OrderStatus.WAIT_PAY);
         orderMapper.insert(order);
-
         // 2 - 处理订单商品，预扣库存
         List<OrderItem> orderItem = orderModel.getOrderItem();
         for (OrderItem item : orderItem) {
@@ -159,7 +158,6 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
                 skuFeign.freezeScore(item.getSkuId(), item.getNum());
             }
         }
-
         // 3 - 发送延迟消息，检查订单状态，发现超时未支付则取消这个订单
         try {
             DefaultMQProducer producer = rocketMQTemplate.getProducer();
@@ -170,14 +168,12 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         // 4 - 如果在购物车下单，则删除购物车商品
         List<String> cartIds = orderModel.getCartIds();
         if (cartIds != null && cartIds.size() != 0) {
             cartMapper.deleteBatchIds(cartIds);
         }
-
-        // 5 - 从redis中删除
+        // 5 - 删除预订单
         redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).delete(order.getId());
         return order.getId();
     }
@@ -223,20 +219,17 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         Order order = orderMapper.selectById(id);
         // 如果为超时未支付
         if(order.getStatus().equals(OrderStatus.WAIT_PAY)) {
-
             // 1 - 超时未支付，删除订单
             order.setStatus(OrderStatus.CLOSE);
-            order.setUpdateTime(new Date());
+            order.setUpdateTime(new Date()); // 待删除
             orderMapper.updateById(order);
-
-            // 2 - 获取订单的商品，解冻库存 - 秒杀订单处理
+            // 2 - 获取订单的商品，解冻库存
             List<OrderItem> orderItem = orderItemMapper.selectList(new QueryWrapper<OrderItem>()
                     .eq("order_id", id)
             );
             for (OrderItem item : orderItem) {
                 skuFeign.unfreezeScore(item.getSkuId(), item.getNum());
             }
-
             /** 3 - 如果交易已经开启则关闭 */
         }
         return 0;

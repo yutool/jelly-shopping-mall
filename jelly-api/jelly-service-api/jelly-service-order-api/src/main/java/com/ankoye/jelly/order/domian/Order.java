@@ -3,6 +3,7 @@ package com.ankoye.jelly.order.domian;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import java.util.Date;
  * @author ankoye@qq.com
  */
 @Data
+@Accessors(chain = true)
 @TableName("tb_order")
 public class Order implements Serializable {
     @TableId

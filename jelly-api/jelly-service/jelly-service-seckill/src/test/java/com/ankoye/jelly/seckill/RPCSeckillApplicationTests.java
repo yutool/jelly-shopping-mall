@@ -18,6 +18,5 @@ public class RPCSeckillApplicationTests {
 
     @Test
     public void test() {
-
     }
 }

@@ -2,8 +2,9 @@ package com.ankoye.jelly.seckill.service.impl;
 
 import com.ankoye.jelly.base.constant.GoodsStatus;
 import com.ankoye.jelly.goods.domain.Sku;
+import com.ankoye.jelly.goods.feign.SkuFeign;
 import com.ankoye.jelly.goods.reference.SkuReference;
-import com.ankoye.jelly.seckill.common.constant.RedisKey;
+import com.ankoye.jelly.seckill.common.constant.SeckillKey;
 import com.ankoye.jelly.seckill.dao.SeckillGoodsMapper;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.SeckillGoods;
@@ -12,6 +13,7 @@ import com.ankoye.jelly.web.exception.CastException;
 import com.ankoye.jelly.web.support.BaseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author ankoye@qq.com
@@ -28,8 +31,8 @@ import java.util.List;
 @Service
 @Primary
 public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements SeckillGoodsService {
-    //@Reference
-    private SkuReference skuService;
+    @Autowired
+    private SkuFeign skuFeign;
     @Resource
     private SeckillGoodsMapper seckillGoodsMapper;
     @Resource
@@ -43,14 +46,14 @@ public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements 
     }
 
     @Override
-    @Transactional // 全局事务
+    @Transactional(rollbackFor = Exception.class) // 替换全局事务
     public boolean add(SeckillSku goods) {
         // 查看已经是秒杀商品
         if(seckillGoodsMapper.selectById(goods.getId()) != null) {
             CastException.cast("该商品已参加秒杀");
         }
         // 查询商品信息
-        Sku sku = skuService.selectById(goods.getId());
+        Sku sku = skuFeign.getSkuById(goods.getId()).getData();
         // 添加秒杀商品
         goods.setSpuId(sku.getSpuId());
         goods.setSku(sku.getSku());
@@ -61,18 +64,23 @@ public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements 
         goods.setStatus(GoodsStatus.SUCCESS);
         seckillGoodsMapper.insert(goods);
         // 冻结商品库存
-        skuService.freezeScore(goods.getId(), goods.getNum());
+        skuFeign.freezeScore(goods.getId(), goods.getNum());
         return true;
     }
 
     @Override
     public List<SeckillGoods> timeList(String time) {
         List<SeckillGoods> goodsList = new LinkedList<>();
-        List<Object> list =  redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS + time).values();
+        // 替换商品库存
+        List<Object> list =  redisTemplate.boundHashOps(SeckillKey.GOODS_PRE + time).values();
+        if (list == null) {
+            CastException.cast("商品列表不存在");
+        }
         for (Object o : list) {
             SeckillGoods seckillGoods = (SeckillGoods) o;
             for (SeckillSku sku : seckillGoods.getSkuList()) {
-                Integer num = Integer.valueOf((String) redisTemplate.opsForValue().get(RedisKey.SECKILL_SKU_COUNT_KEY + sku.getId()));
+                String _num = (String) redisTemplate.opsForValue().get(SeckillKey.SKU_COUNT_PRE + sku.getId());
+                int num = _num == null ? 0 : Integer.parseInt(_num);
                 sku.setResidue(num);
             }
             goodsList.add(seckillGoods);
@@ -82,9 +90,13 @@ public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements 
 
     @Override
     public SeckillGoods detail(String time, String spuId) {
-        SeckillGoods seckillGoods = (SeckillGoods) redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS + time).get(spuId);
-        for (SeckillSku sku : seckillGoods.getSkuList()) {  // 获取库存
-            Integer num = Integer.valueOf((String) redisTemplate.opsForValue().get(RedisKey.SECKILL_SKU_COUNT_KEY + sku.getId()));
+        SeckillGoods seckillGoods = (SeckillGoods) redisTemplate.boundHashOps(SeckillKey.GOODS_PRE + time).get(spuId);
+        if (seckillGoods == null) {
+            CastException.cast("商品不存在");
+        }
+        for (SeckillSku sku : seckillGoods.getSkuList()) {
+            String _num = (String) redisTemplate.opsForValue().get(SeckillKey.SKU_COUNT_PRE + sku.getId());
+            int num = _num == null ? 0 : Integer.parseInt(_num);
             sku.setResidue(num);
         }
         return seckillGoods;
