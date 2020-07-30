@@ -33,7 +33,7 @@ public class CartController extends BaseController {
     }
 
     @Logger(module = "购物车", operation = "获取购物车", exclude = {LogType.RESPONSE, LogType.REQUEST})
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public Result findList(@PathVariable String id) {
         List<CartDto> carts = cartService.getUserCart(id);
         return Result.success(carts);

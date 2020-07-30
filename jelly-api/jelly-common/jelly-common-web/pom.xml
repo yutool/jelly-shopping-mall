@@ -17,14 +17,7 @@
         <!-- 公共包 -->
         <dependency>
             <groupId>com.ankoye.jelly</groupId>
-            <artifactId>jelly-common-util</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ankoye.jelly</groupId>
-            <artifactId>jelly-common-base</artifactId>
+            <artifactId>jelly-common-core</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -58,7 +51,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-
     </dependencies>
 
 </project>

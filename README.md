@@ -39,45 +39,29 @@
 │  │
 │  ├─jelly-common------------------------微服务依赖中心
 │  │  │
-│  │  ├─jelly-common-base----------------基础依赖
+│  │  ├─jelly-common-core----------------核心依赖
 │  │  │
 │  │  ├─jelly-common-mpdb----------------持久层依赖
 │  │  │
-│  │  ├─jelly-common-util----------------工具包
-│  │  │
 │  │  ├─jelly-common-web-----------------web层依赖
 │  │
-│  ├─jelly-provider-----------------------微服务服务中心 - Spring Cloud版本
+│  ├─jelly-provider----------------------微服务服务中心 - Spring Cloud版本
 │  │  │
-│  │  ├─jelly-provider-file---------------文件服务
+│  │  ├─jelly-provider-file--------------文件服务
 │  │  │
-│  │  ├─jelly-provider-goods--------------商品服务
+│  │  ├─jelly-provider-goods-------------商品服务
 │  │  │
-│  │  ├─jelly-provider-order--------------订单服务
+│  │  ├─jelly-provider-order-------------订单服务
 │  │  │
-│  │  ├─jelly-provider-pay----------------支付服务
+│  │  ├─jelly-provider-pay---------------支付服务
 │  │  │
-│  │  ├─jelly-provider-search-------------搜索服务
+│  │  ├─jelly-provider-search------------搜索服务
 │  │  │
-│  │  ├─jelly-provider-seckill------------秒杀服务
+│  │  ├─jelly-provider-seckill-----------秒杀服务
 │  │  │
-│  │  ├─jelly-provider-user---------------用户服务
+│  │  ├─jelly-provider-user--------------用户服务
 │  │
 │  ├─jelly-service-----------------------微服务服务中心 - Dubbo版本
-│  │  │
-│  │  ├─jelly-service-file---------------文件服务
-│  │  │
-│  │  ├─jelly-service-goods--------------商品服务
-│  │  │
-│  │  ├─jelly-service-order--------------订单服务
-│  │  │
-│  │  ├─jelly-service-pay----------------支付服务
-│  │  │
-│  │  ├─jelly-service-search-------------搜索服务
-│  │  │
-│  │  ├─jelly-service-seckill------------秒杀服务
-│  │  │
-│  │  ├─jelly-service-user---------------用户服务
 │  │
 │  ├─jelly-service-api-------------------微服务API依赖
 ```
@@ -112,3 +96,5 @@
 ##### 订单
 ![订单](./document/order.png)
 
+### 说明
+项目持续开发中...

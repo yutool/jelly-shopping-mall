@@ -45,7 +45,7 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
      */
     @Override
     public boolean queueUp(OrderQueue orderQueue) {
-        String pressentTime = DateUtils.presentTime();
+        String pressentTime = DateUtils.currentMenu();
         if (!pressentTime.equals(orderQueue.getTime())) {
             CastException.cast("该商品暂未开始秒杀");
         }
@@ -67,7 +67,7 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
 
         // 3.开始排队 - 排队中
         orderQueue.setCreateTime(new Date());
-        orderQueue.setStatus(OrderQueue.BE_QUEUING);
+        orderQueue.setStatus(OrderQueue.QUEUING);
 
         // 4. 异步处理订单，多线程  version 1
         // redisTemplate.boundListOps(RedisKey.SECKILL_QUEUE_UP).leftPush(orderQueue);

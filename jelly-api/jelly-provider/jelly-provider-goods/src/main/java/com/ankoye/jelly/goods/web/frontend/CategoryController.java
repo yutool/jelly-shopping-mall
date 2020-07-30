@@ -38,13 +38,4 @@ public class CategoryController extends BaseController {
         List<Category> categoryMap = categoryService.getThreeCategory(id);
         return Result.success(categoryMap);
     }
-
-    @GetMapping("/lock")
-    public Result lock() {
-        String a = RedisLock.tryLock("test-lock", 100000);
-        RedisLock.unLock("test-lock", a);
-        System.out.println("stop");
-        return Result.success();
-    }
-
 }

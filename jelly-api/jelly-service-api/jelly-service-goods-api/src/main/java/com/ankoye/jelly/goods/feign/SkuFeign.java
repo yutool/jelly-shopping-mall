@@ -3,7 +3,6 @@ package com.ankoye.jelly.goods.feign;
 import com.ankoye.jelly.base.result.Wrapper;
 import com.ankoye.jelly.goods.domain.Sku;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;

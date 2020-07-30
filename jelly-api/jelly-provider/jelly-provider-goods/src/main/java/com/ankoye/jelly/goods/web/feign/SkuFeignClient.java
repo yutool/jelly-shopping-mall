@@ -14,7 +14,7 @@ import java.util.List;
  * @author ankoye@qq.com
  */
 @RestController
-@RequestMapping("/sku")
+@RequestMapping
 public class SkuFeignClient implements SkuFeign {
     @Autowired
     private SkuReference skuReference;

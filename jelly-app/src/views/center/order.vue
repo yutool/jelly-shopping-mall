@@ -21,6 +21,7 @@
         <el-button size="medium" plain>待评价</el-button>
       </el-badge>
     </div>
+
     <!-- 订单列表 -->
     <div v-if="orderList.length" class="table-responsive-lg">
       <table class="table order-table">
@@ -49,7 +50,8 @@
             <td colspan="8">
               <span>{{ order.createTime }} 订单编号：{{ order.id }}</span>
               <span class="float-right">
-                <el-popconfirm title="确认删除订单吗"  @onConfirm="deleteOrder(order.id)">
+                <el-popconfirm v-if="order.status==0" 
+                    title="确认删除订单吗" @onConfirm="deleteOrder(order.id)">
                   <i class="el-icon-delete pointer" slot="reference"></i>
                 </el-popconfirm>
               </span>
@@ -113,6 +115,7 @@
         :total="pageInfo.total">
       </el-pagination>
     </div>
+    
     <!-- 无订单显示 -->
     <div v-else class="text-center pt-5">
       你还没有购买过商品哦~~~

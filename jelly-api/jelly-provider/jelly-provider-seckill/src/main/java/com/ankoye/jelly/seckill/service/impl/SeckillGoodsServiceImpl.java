@@ -3,7 +3,6 @@ package com.ankoye.jelly.seckill.service.impl;
 import com.ankoye.jelly.base.constant.GoodsStatus;
 import com.ankoye.jelly.goods.domain.Sku;
 import com.ankoye.jelly.goods.feign.SkuFeign;
-import com.ankoye.jelly.goods.reference.SkuReference;
 import com.ankoye.jelly.seckill.common.constant.SeckillKey;
 import com.ankoye.jelly.seckill.dao.SeckillGoodsMapper;
 import com.ankoye.jelly.seckill.domain.SeckillSku;

@@ -60,7 +60,6 @@ public class SeckillOrderMsgListener implements RocketMQListener<String> {
         String redisStock = (String) redisTemplate.opsForValue().get(RedisKey.SECKILL_SKU_COUNT_KEY + skuId);
         if (seckillGoods == null || StringUtils.isEmpty(redisStock) || Integer.parseInt(redisStock) <= 0) {
             // 无商品了，修改订单状态 - 排队失败
-            orderQueue.setStatus(OrderQueue.BE_FAIL);
             redisTemplate.boundHashOps(RedisKey.SECKILL_USER_QUEUE).put(userId + skuId, orderQueue);
             return ;
         }

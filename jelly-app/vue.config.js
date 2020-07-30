@@ -36,7 +36,7 @@ module.exports = {
     hotOnly: false,
     proxy: {
       '/gApi': {
-        target: 'http://localhost:9101/',  // 后台接口域名
+        target: 'http://localhost:10090/',  // 后台接口域名
         ws: true,        //如果要代理 websockets，配置这个参数
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
@@ -45,7 +45,7 @@ module.exports = {
         }
       },
       '/oApi': {
-        target: 'http://localhost:9101/',  // 后台接口域名
+        target: 'http://localhost:10190/',  // 后台接口域名
         ws: true,        //如果要代理 websockets，配置这个参数
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
@@ -54,7 +54,7 @@ module.exports = {
         }
       },
       '/uApi': {
-        target: 'http://localhost:9101/',  // 后台接口域名
+        target: 'http://localhost:10290/',  // 后台接口域名
         ws: true,        //如果要代理 websockets，配置这个参数
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
@@ -63,7 +63,7 @@ module.exports = {
         }
       },
       '/sApi': {
-        target: 'http://localhost:9101/',  // 后台接口域名
+        target: 'http://localhost:10390/',  // 后台接口域名
         ws: true,        //如果要代理 websockets，配置这个参数
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
@@ -72,7 +72,7 @@ module.exports = {
         }
       },
       '/pApi': {
-        target: 'http://localhost:9101/',  // 后台接口域名
+        target: 'http://localhost:10990/',  // 后台接口域名
         ws: true,        //如果要代理 websockets，配置这个参数
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
@@ -81,7 +81,7 @@ module.exports = {
         }
       },
       '/aApi': {
-        target: 'http://localhost:9101/',  // 后台接口域名
+        target: 'http://localhost:19990/',  // 后台接口域名
         ws: true,        //如果要代理 websockets，配置这个参数
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域

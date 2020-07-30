@@ -126,15 +126,13 @@ export default class GoodsDetail extends Vue {
       skuId:  this.checkSku.id,
       userId: this.userId,
       time: this.$route.params.time,
-      spuId: this.$route.params.id
+      spuId: this.$route.params.id,
+      num: 1
     }
     queueUp(form).then((res: any) => {
+      // 排队成功
       console.log(res)
-      if (res.code === 0) { // 排队成功
-        this.handlerQueue()
-      } else {
-        this.$message({ type: 'info', message: res.message })
-      }
+      this.handlerQueue()
     })
   }
   

@@ -7,7 +7,6 @@ import com.ankoye.jelly.order.domian.OrderItem;
 import com.ankoye.jelly.order.feign.OrderFeign;
 import com.ankoye.jelly.order.feign.OrderItemFeign;
 import com.ankoye.jelly.order.model.OrderModel;
-import com.ankoye.jelly.order.reference.OrderReference;
 import com.ankoye.jelly.seckill.common.constant.SeckillKey;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.OrderQueue;
