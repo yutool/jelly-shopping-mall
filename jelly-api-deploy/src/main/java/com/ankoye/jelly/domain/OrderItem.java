@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
  * @author ankoye@qq.com
  */
 @Data
+@Accessors(chain = true)
 @TableName("tb_order_item")
 @NoArgsConstructor
 public class OrderItem implements Serializable {

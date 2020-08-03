@@ -1,27 +1,28 @@
 package com.ankoye.jelly.common.util;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 /**
  * @author ankoye@qq.com
  */
 public class DateUtils {
-
-    private static SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static SimpleDateFormat menuFormat = new SimpleDateFormat("yyyyMMddHH");
+    private static final String DAY_PATTERN = "yyyy-MM-dd";
+    private static final String MENU_PATTERN = "yyyyMMddHH";
+    private static final FastDateFormat MENU_PARSE = FastDateFormat.getInstance(MENU_PATTERN);
 
     /**
-     * 获取当天时间
-     * yyyy-MM-dd
+     * 转换时间
      */
     public static String menuToDay(String menu) {
         try {
-            return dayFormat.format(menuFormat.parse(menu));
+            return DateFormatUtils.format(MENU_PARSE.parse(menu), DAY_PATTERN);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -31,9 +32,44 @@ public class DateUtils {
     /**
      * 获取当前时间节点
      */
-    public static String presentTime() {
+    public static String currentMenu() {
         return getDateMenus().get(0);
     }
+
+    /**
+     * 获取时间菜单
+     * yyyyMMddHH
+     */
+    public static List<String> getDateMenus(){
+
+        // 定义一个List<Date>集合，存储所有时间段
+        List<Date> dates = new ArrayList<>();
+
+        // 循环12次
+        Date date = toDayStartHour(new Date()); // 凌晨
+        for (int i = 0; i < 12 ; i++) {
+            // 每次递增2小时,将每次递增的时间存入到List<Date>集合中
+            dates.add(addDateHour(date,i << 1));
+        }
+
+        // 判断当前时间属于哪个时间范围
+        Date now = new Date();
+        for (Date cdate : dates) {
+            // 开始时间 <= 当前时间 < 开始时间+2小时
+            if (cdate.getTime() <= now.getTime() && now.getTime()<addDateHour(cdate,2).getTime()){
+                now = cdate;
+                break;
+            }
+        }
+
+        // 当前需要显示的时间菜单
+        List<String> dateMenus = new ArrayList<>();
+        for (int i = 0; i < 5 ; i++) {
+            dateMenus.add(DateFormatUtils.format(addDateHour(now,i << 1), MENU_PATTERN));
+        }
+        return dateMenus;
+    }
+
 
     /**
      * 获取指定日期的凌晨
@@ -55,7 +91,7 @@ public class DateUtils {
     public static Date addDateMinutes(Date date,int minutes){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.MINUTE, minutes);// 24小时制
+        calendar.add(Calendar.MINUTE, minutes); // 24小时制
         date = calendar.getTime();
         return date;
     }
@@ -71,39 +107,6 @@ public class DateUtils {
         return date;
     }
 
-    /**
-     * 获取时间菜单
-     * yyyyMMddHH
-     */
-    public static List<String> getDateMenus(){
-
-        // 定义一个List<Date>集合，存储所有时间段
-        List<Date> dates = new ArrayList<>();
-
-        // 循环12次
-        Date date = toDayStartHour(new Date()); // 凌晨
-        for (int i = 0; i < 12 ; i++) {
-            // 每次递增2小时,将每次递增的时间存入到List<Date>集合中
-            dates.add(addDateHour(date,i * 2));
-        }
-
-        // 判断当前时间属于哪个时间范围
-        Date now = new Date();
-        for (Date cdate : dates) {
-            //开始时间 <= 当前时间 < 开始时间+2小时
-            if(cdate.getTime() <= now.getTime() && now.getTime()<addDateHour(cdate,2).getTime()){
-                now = cdate;
-                break;
-            }
-        }
-
-        // 当前需要显示的时间菜单
-        List<String> dateMenus = new ArrayList<>();
-        for (int i = 0; i <5 ; i++) {
-            dateMenus.add(menuFormat.format(addDateHour(now,i*2)));
-        }
-        return dateMenus;
-    }
 
 
     public static void main(String[] args) {
@@ -125,6 +128,4 @@ public class DateUtils {
             System.out.println(format);
         }
     }
-
-
 }

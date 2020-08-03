@@ -52,7 +52,7 @@ public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements 
             CastException.cast("该商品已参加秒杀");
         }
         // 查询商品信息
-        Sku sku = skuFeign.getSkuById(goods.getId()).getData();
+        Sku sku = skuFeign.getById(goods.getId()).getData();
         // 添加秒杀商品
         goods.setSpuId(sku.getSpuId());
         goods.setSku(sku.getSku());

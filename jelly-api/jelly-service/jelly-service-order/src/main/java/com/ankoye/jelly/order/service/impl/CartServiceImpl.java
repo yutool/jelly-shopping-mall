@@ -1,6 +1,7 @@
 package com.ankoye.jelly.order.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.dubbo.config.annotation.Service;
 import com.ankoye.jelly.goods.domain.Sku;
 import com.ankoye.jelly.goods.reference.SkuReference;
 import com.ankoye.jelly.order.dao.CartMapper;
@@ -20,8 +21,8 @@ import java.util.List;
 /**
  * @author ankoye@qq.com
  */
-@Slf4j
 @Primary
+@Service
 @Component
 public class CartServiceImpl extends BaseService<Cart> implements CartService {
     @Resource

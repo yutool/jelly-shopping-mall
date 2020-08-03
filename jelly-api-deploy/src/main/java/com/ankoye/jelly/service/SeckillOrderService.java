@@ -33,5 +33,5 @@ public interface SeckillOrderService  {
      * @param orderId
      * @return
      */
-    int checkOrder(String orderId);
+    boolean checkOrder(String orderId);
 }

@@ -33,9 +33,4 @@ public interface SkuReference extends IService<Sku> {
     @Hmily
     boolean paySuccess(String spuId, String skuId, Integer num);
 
-    /**
-     * test
-     */
-    List<Sku> findList();
-
 }

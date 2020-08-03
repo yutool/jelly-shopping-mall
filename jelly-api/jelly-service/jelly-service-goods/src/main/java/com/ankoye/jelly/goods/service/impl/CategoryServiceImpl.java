@@ -1,5 +1,6 @@
 package com.ankoye.jelly.goods.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.ankoye.jelly.goods.dao.CategoryMapper;
 import com.ankoye.jelly.goods.domain.Category;
 import com.ankoye.jelly.goods.service.CategoryService;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 /**
  * @author ankoye@qq.com
  */
+@Service
 @Component
 public class CategoryServiceImpl extends BaseService<Category> implements CategoryService {
     @Resource

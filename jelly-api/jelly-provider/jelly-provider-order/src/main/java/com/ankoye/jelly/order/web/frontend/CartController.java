@@ -1,6 +1,7 @@
 package com.ankoye.jelly.order.web.frontend;
 
 import com.ankoye.jelly.base.result.Result;
+import com.ankoye.jelly.base.result.ResultUtils;
 import com.ankoye.jelly.order.domian.Cart;
 import com.ankoye.jelly.order.model.CartDto;
 import com.ankoye.jelly.order.service.CartService;
@@ -8,10 +9,12 @@ import com.ankoye.jelly.web.log.annotation.Logger;
 import com.ankoye.jelly.web.log.constant.LogType;
 import com.ankoye.jelly.web.support.BaseController;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -37,5 +40,20 @@ public class CartController extends BaseController {
     public Result findList(@PathVariable String id) {
         List<CartDto> carts = cartService.getUserCart(id);
         return Result.success(carts);
+    }
+
+    @PutMapping
+    public Result update(@RequestBody Cart cart) {
+        return handleResult(cartService.updateById(cart));
+    }
+
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable String id) {
+        return handleResult(cartService.deleteById(id));
+    }
+
+    @DeleteMapping("/batch")
+    public Result batchDelete(@RequestBody Map<String, List<Object>> map) {
+        return handleResult(cartService.batchDeleteById(map.get("ids")));
     }
 }

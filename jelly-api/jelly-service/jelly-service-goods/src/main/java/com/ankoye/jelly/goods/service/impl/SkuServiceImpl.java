@@ -5,6 +5,7 @@ import com.ankoye.jelly.goods.dao.SkuMapper;
 import com.ankoye.jelly.goods.dao.SpuMapper;
 import com.ankoye.jelly.goods.domain.Sku;
 import com.ankoye.jelly.goods.reference.SkuReference;
+import com.ankoye.jelly.goods.service.SkuService;
 import com.ankoye.jelly.web.support.BaseService;
 import org.dromara.hmily.annotation.Hmily;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 @Service
 @Component
-public class SkuServiceImpl extends BaseService<Sku> implements SkuReference {
+public class SkuServiceImpl extends BaseService<Sku> implements SkuService, SkuReference {
     @Resource
     private SkuMapper skuMapper;
     @Resource
@@ -40,29 +41,13 @@ public class SkuServiceImpl extends BaseService<Sku> implements SkuReference {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Hmily(confirmMethod = "confirm", cancelMethod = "cancel")
     public boolean paySuccess(String spuId, String skuId, Integer num) {
         skuMapper.decreaseScore(skuId, num);
         skuMapper.addSaleNum(skuId, num);
         spuMapper.addSaleNum(spuId, num);
         return true;
-    }
-
-    @Override
-    public List<Sku> findList() {
-        return null;
-    }
-
-
-    public boolean confirm(String spuId, String skuId, Integer num) {
-        System.out.println("商品状态更新成功");
-        return true;
-    }
-
-    public boolean cancel(String spuId, String skuId, Integer num) {
-        System.out.println("商品状态更新失败");
-        return false;
     }
 
 }

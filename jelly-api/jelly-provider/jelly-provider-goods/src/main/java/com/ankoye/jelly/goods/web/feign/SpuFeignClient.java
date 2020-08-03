@@ -5,7 +5,6 @@ import com.ankoye.jelly.base.result.Wrappers;
 import com.ankoye.jelly.goods.domain.Spu;
 import com.ankoye.jelly.goods.feign.SpuFeign;
 import com.ankoye.jelly.goods.reference.SpuReference;
-import com.ankoye.jelly.goods.service.SpuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Admin
  */
 @RestController
-@RequestMapping("/spu")
 public class SpuFeignClient implements SpuFeign {
 
     @Autowired

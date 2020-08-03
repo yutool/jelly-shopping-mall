@@ -62,9 +62,9 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
     @Resource
     private CartMapper cartMapper;
 
-    @Autowired
+    @Resource
     private SkuFeign skuFeign;
-    @Autowired
+    @Resource
     private SpuFeign spuFeign;
 
     @Override
@@ -107,7 +107,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         BigDecimal money = BigDecimal.valueOf(0);
         // 设置订单项
         for (OrderItem item : formItem) {
-            Sku sku = skuFeign.getSkuById(item.getSkuId()).getData();
+            Sku sku = skuFeign.getById(item.getSkuId()).getData();
             Spu spu = spuFeign.getSpuById(sku.getSpuId()).getData();
             BigDecimal subtotal = sku.getPrice().multiply(BigDecimal.valueOf(item.getNum())); // 小计
             OrderItem orderItem = new OrderItem(

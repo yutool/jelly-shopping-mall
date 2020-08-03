@@ -10,10 +10,6 @@ import java.util.List;
  * @author ankoye@qq.com
  */
 public interface SkuService extends IService<Sku> {
-    /**
-     * 获取 商品sku
-     */
-    Sku getSkuById(String id);
 
     /**
      * 扣减库存
@@ -34,12 +30,6 @@ public interface SkuService extends IService<Sku> {
     /**
      * 下单成功调用
      */
-    @Hmily
     boolean paySuccess(String spuId, String skuId, Integer num);
-
-    /**
-     * test
-     */
-    List<Sku> findList();
 
 }

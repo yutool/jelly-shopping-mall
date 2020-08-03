@@ -33,5 +33,4 @@ public class SeckillOrderController extends BaseController {
         OrderQueue order = seckillOrderService.queryQueue(userId, goodsId);
         return Result.success(order);
     }
-
 }

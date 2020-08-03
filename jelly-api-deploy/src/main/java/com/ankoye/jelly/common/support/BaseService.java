@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The class Base service.
@@ -231,8 +232,9 @@ public abstract class BaseService<T extends Serializable> implements IService<T>
 	 * @return the int
 	 */
 	@Override
-	public int batchDeleteById(List<Serializable> ids) {
-		return mapper.deleteBatchIds(ids);
+	public int batchDeleteById(List<Object> ids) {
+		List<Serializable> id = ids.stream().map(item -> (Serializable)item).collect(Collectors.toList());
+		return mapper.deleteBatchIds(id);
 	}
 
 }

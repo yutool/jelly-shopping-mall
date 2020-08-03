@@ -51,7 +51,7 @@ public class CartServiceImpl extends BaseService<Cart> implements CartService {
         CartDto cartDto = null;
         for (Cart cart : carts) {   // 查询sku详情信息
             cartDto = new CartDto().convertFor(cart);
-            Sku sku = skuFeign.getSkuById(cart.getSkuId()).getData();
+            Sku sku = skuFeign.getById(cart.getSkuId()).getData();
             cartDto.setSku(sku.getSku());
             cartDto.setPrice(sku.getPrice());
             cartDto.setDiscount(sku.getDiscount());

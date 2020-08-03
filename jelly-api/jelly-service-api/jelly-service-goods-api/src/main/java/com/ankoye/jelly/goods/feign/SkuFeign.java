@@ -2,6 +2,7 @@ package com.ankoye.jelly.goods.feign;
 
 import com.ankoye.jelly.base.result.Wrapper;
 import com.ankoye.jelly.goods.domain.Sku;
+import com.ankoye.jelly.goods.feign.fallback.SkuFeignFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * @author ankoye@qq.com
  */
-@FeignClient(value = "jelly-goods-serve", contextId = "sku")
+@FeignClient(value = "jelly-goods-serve", contextId = "sku", fallback = SkuFeignFallback.class)
 public interface SkuFeign {
 
     /**
@@ -23,18 +24,18 @@ public interface SkuFeign {
      * 需要给@PathVariable 添加参数
      */
 
-    @GetMapping("/sku/{id}")
-    Wrapper<Sku> getSkuById(@PathVariable("id") String id);
+    @GetMapping(value = "/api/sku/{id}")
+    Wrapper<Sku> getById(@PathVariable("id") String id);
 
-    @GetMapping("/sku/all")
+    @GetMapping("/api/sku/all")
     Wrapper<List<Sku>> getAll();
 
-    @PutMapping("/sku/freezeScore/{skuId}/{num}")
+    @PutMapping("/api/sku/freezeScore/{skuId}/{num}")
     Wrapper freezeScore(@PathVariable("skuId") String skuId, @PathVariable("num") Integer num);
 
-    @PutMapping("/sku/paySuccess/{spuId}/{skuId}/{num}")
+    @PutMapping("/api/sku/paySuccess/{spuId}/{skuId}/{num}")
     Wrapper paySuccess(@PathVariable("spuId") String spuId, @PathVariable("skuId") String skuId, @PathVariable("num") Integer num);
 
-    @PutMapping("/sku/unfreezeScore/{skuId}/{num}")
+    @PutMapping("/api/sku/unfreezeScore/{skuId}/{num}")
     Wrapper unfreezeScore(@PathVariable("skuId") String skuId, @PathVariable("num") Integer num);
 }

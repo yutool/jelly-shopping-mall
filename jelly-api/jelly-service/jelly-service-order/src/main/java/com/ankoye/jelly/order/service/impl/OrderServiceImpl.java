@@ -1,5 +1,6 @@
 package com.ankoye.jelly.order.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.ankoye.jelly.base.constant.OrderStatus;
@@ -15,7 +16,6 @@ import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.domian.OrderItem;
 import com.ankoye.jelly.order.model.OrderModel;
 import com.ankoye.jelly.order.service.OrderService;
-import com.ankoye.jelly.pay.service.WXPayService;
 import com.ankoye.jelly.util.IdUtils;
 import com.ankoye.jelly.web.exception.CastException;
 import com.ankoye.jelly.web.support.BaseService;
@@ -63,9 +63,9 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
     private CartMapper cartMapper;
 
     /// Dubbo Reference
-    @Resource
+    @Reference
     private SkuReference skuReference;
-    @Resource
+    @Reference
     private SpuReference spuReference;
 
     @Override

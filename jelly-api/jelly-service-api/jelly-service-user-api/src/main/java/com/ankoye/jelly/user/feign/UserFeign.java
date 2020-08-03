@@ -18,6 +18,6 @@ public interface UserFeign {
      * @param account email or telephone
      * @return user info
      */
-    @GetMapping(value = "/user/load/{account}")
+    @GetMapping(value = "/api/user/load/{account}")
     Wrapper<User> findByAccount(@PathVariable("account") String account);
 }

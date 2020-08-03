@@ -5,7 +5,6 @@ import com.ankoye.jelly.user.model.RegisterForm;
 import com.ankoye.jelly.user.service.UserService;
 import com.ankoye.jelly.util.TokenUtils;
 import com.ankoye.jelly.web.support.BaseController;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

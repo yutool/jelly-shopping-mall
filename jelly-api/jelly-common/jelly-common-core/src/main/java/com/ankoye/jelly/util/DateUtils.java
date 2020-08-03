@@ -126,6 +126,4 @@ public class DateUtils {
             System.out.println(format);
         }
     }
-
-
 }

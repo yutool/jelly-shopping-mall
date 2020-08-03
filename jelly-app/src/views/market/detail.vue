@@ -42,7 +42,8 @@
             <span class="sku-form-lable">
               数量：
             </span>
-            <el-input-number size="mini" v-model="checkSku.num" @input="numInput"></el-input-number>
+            <el-input-number :min="1" :max="999" :precision="0" size="mini" v-model="checkSku.num">
+            </el-input-number>
           </span>
           <small class="text-muted">剩余库存：{{ checkSku.residue }}</small>
         </div>
@@ -68,7 +69,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter } from 'vuex-class'
 import { getGoods } from '@/api/goods/spu'
-import { addCart } from '@/api/goods/cart'
+import { addCart } from '@/api/order/cart'
 import { prepareOrder } from '@/api/order/order'
 import { copyOf } from '@/common/utils/ObjectUtil'
 
@@ -121,14 +122,7 @@ export default class GoodsDetail extends Vue {
       }
     }
   }
-  // 修改商品数量
-  private numInput(num: any) {
-    if (num < 1) {
-      num = 1
-    }
-    this.$set(this.checkSku, 'num', Math.floor(num))
-  }
-  
+ 
   // 加入购物车
   private addCart() {
     if ( this.checkSku.id === '') {

@@ -1,7 +1,6 @@
 package com.ankoye.jelly.seckill.controller;
 
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.seckill.domain.SeckillOrder;
 import com.ankoye.jelly.seckill.model.OrderQueue;
 import com.ankoye.jelly.seckill.service.SeckillOrderService;
 import com.ankoye.jelly.web.support.BaseController;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/seckill/order")
-public class SeckillOrderController extends BaseController{
+public class SeckillOrderController extends BaseController {
 
     @Autowired
     private SeckillOrderService seckillOrderService;
@@ -34,5 +33,4 @@ public class SeckillOrderController extends BaseController{
         OrderQueue order = seckillOrderService.queryQueue(userId, goodsId);
         return Result.success(order);
     }
-
 }

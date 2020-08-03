@@ -45,13 +45,18 @@
                 <div> <s class="text-muted">￥{{ cart.originalPrice }}</s>  </div>
               </td>
               <td>
-                <el-input-number size="mini" v-model="cart.num" @input="numInput(cart, $event)"></el-input-number>
+                <el-input-number
+                  :min="1" :max="999" :precision="0"
+                  size="mini" 
+                  v-model="cart.num" 
+                  @change="changeNum(cart)">
+                </el-input-number>
               </td>
               <td>
                 <span class="table-price"> ￥{{ cart.num * cart.price }} </span>
               </td>
               <td>
-                <el-link type="danger">删除</el-link> <br/>
+                <el-link type="danger" @click="deleteCart(cart.id)">删除</el-link> <br/>
                 <el-link type="primary">移入收藏夹</el-link>
               </td>
             </tr>
@@ -63,7 +68,7 @@
         <div class="float-left">
           <el-checkbox v-model="all" @change="checkAll">全选</el-checkbox>
           <ul class="paybar-list">
-            <li><a href="#">删除选中</a></li>
+            <li><a href="#" @click="batchDelete">删除选中</a></li>
             <li><a href="#">清空售馨商品</a></li>
             <li><a href="#">移入收藏夹</a></li>
           </ul>
@@ -86,7 +91,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter, State } from 'vuex-class'
-import { getCart } from '@/api/goods/cart'
+import { getCart, updateNum, deleteCart, batchDelete } from '@/api/order/cart'
 import { prepareOrder } from '@/api/order/order'
 
 @Component
@@ -135,13 +140,37 @@ export default class Cart extends Vue {
     }
     this.handlerChange()
   }
+
   // 修改商品数量
-  private numInput(cart: any, num: number) {
-    if (num < 1) {
-      num = 1
+  private changeNum(cart: any) {
+    updateNum({id: cart.id, num: cart.num}).then((res: any) => {
+      this.$log.info('更新购物车数量', res)
+    })
+  }
+
+  // 删除购物车商品
+  private deleteCart(id: number) {
+    deleteCart(id).then((res: any) => {
+      for (let i = 0; i < this.cartList.length; i++) {
+        if (this.cartList[i].id === id) {
+          this.cartList.splice(i, 1);
+          break;
+        }
+      }
+    })
+  }
+
+  // 删除选择商品
+  private batchDelete() {
+    const cartIds: any = []
+    for (const cart of this.cartList) {
+      if (this.checkObj.check[cart.id] === true) {
+        cartIds.push(cart.id)
+      }
     }
-    cart.num = Math.floor(num)
-    return
+    batchDelete(cartIds).then((res: any) => {
+      this.getCart()
+    })
   }
   
   // 付款

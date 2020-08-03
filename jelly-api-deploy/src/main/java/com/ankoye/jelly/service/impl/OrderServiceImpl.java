@@ -2,7 +2,7 @@ package com.ankoye.jelly.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.ankoye.jelly.common.constant.OrderStatus;
-import com.ankoye.jelly.common.constant.RedisKey;
+import com.ankoye.jelly.common.constant.SeckillKey;
 import com.ankoye.jelly.common.exception.CastException;
 import com.ankoye.jelly.common.support.BaseService;
 import com.ankoye.jelly.common.util.IdUtils;
@@ -15,6 +15,7 @@ import com.ankoye.jelly.domain.Sku;
 import com.ankoye.jelly.domain.Spu;
 import com.ankoye.jelly.model.OrderModel;
 import com.ankoye.jelly.service.OrderService;
+import com.ankoye.jelly.service.reference.OrderReference;
 import com.ankoye.jelly.service.reference.SkuReference;
 import com.ankoye.jelly.service.reference.SpuReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -44,7 +45,7 @@ import java.util.List;
  */
 @Service
 @Component
-public class OrderServiceImpl extends BaseService<Order> implements OrderService {
+public class OrderServiceImpl extends BaseService<Order> implements OrderService, OrderReference {
     @Value("${user-order-topic}")
     private String orderTopic;
     @Value("${seckill-order-topic}")
@@ -79,7 +80,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 
     @Override
     public OrderModel getPrepareOrder(String id) {
-        return (OrderModel) redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).get(id);
+        return (OrderModel) redisTemplate.boundHashOps(SeckillKey.PREPARE_ORDER).get(id);
     }
 
     @Override
@@ -89,7 +90,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
             return ;
         }
         // 删除预订单
-        redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).delete(id);
+        redisTemplate.boundHashOps(SeckillKey.PREPARE_ORDER).delete(id);
         // 如果是秒杀订单，回滚库存
         if (order.getType() == 1) {
             rocketMQTemplate.convertAndSend(seckillTopic + ":rollback", JSON.toJSONString(order));
@@ -127,7 +128,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         orderModel.setWeight(0);            // 待修改
 
         // 暂存至redis
-        redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).put(orderId, orderModel);
+        redisTemplate.boundHashOps(SeckillKey.PREPARE_ORDER).put(orderId, orderModel);
         return orderId;
     }
 
@@ -135,7 +136,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
     @Transactional
     public String create(OrderModel form) {
         // 重新到redis中获取订单，防止被修改
-        OrderModel orderModel = (OrderModel) redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).get(form.getId());
+        OrderModel orderModel = (OrderModel) redisTemplate.boundHashOps(SeckillKey.PREPARE_ORDER).get(form.getId());
         if (orderModel == null) {
             CastException.cast("订单不存在或已过期");
         }
@@ -178,7 +179,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         }
 
         // 5 - 从redis中删除
-        redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).delete(order.getId());
+        redisTemplate.boundHashOps(SeckillKey.PREPARE_ORDER).delete(order.getId());
         return order.getId();
     }
 

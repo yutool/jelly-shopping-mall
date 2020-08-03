@@ -1,7 +1,6 @@
 package com.ankoye.jelly.user.controller;
 
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.user.domain.User;
 import com.ankoye.jelly.user.model.RegisterForm;
 import com.ankoye.jelly.user.service.UserService;
 import com.ankoye.jelly.util.TokenUtils;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
-import java.util.logging.Handler;
 
 /**
  * @author ankoye@qq.com

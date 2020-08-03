@@ -1,7 +1,7 @@
 package com.ankoye.jelly.service.impl;
 
 import com.ankoye.jelly.common.constant.GoodsStatus;
-import com.ankoye.jelly.common.constant.RedisKey;
+import com.ankoye.jelly.common.constant.SeckillKey;
 import com.ankoye.jelly.common.exception.CastException;
 import com.ankoye.jelly.common.support.BaseService;
 import com.ankoye.jelly.dao.SeckillGoodsMapper;
@@ -12,15 +12,15 @@ import com.ankoye.jelly.service.SeckillGoodsService;
 import com.ankoye.jelly.service.reference.SkuReference;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+
 
 /**
  * @author ankoye@qq.com
@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 @Primary
 public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements SeckillGoodsService {
-    @Resource
+    @Autowired
     private SkuReference skuReference;
     @Resource
     private SeckillGoodsMapper seckillGoodsMapper;
@@ -43,7 +43,7 @@ public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements 
     }
 
     @Override
-    @Transactional // 全局事务
+    @Transactional(rollbackFor = Exception.class) // 替换全局事务
     public boolean add(SeckillSku goods) {
         // 查看已经是秒杀商品
         if(seckillGoodsMapper.selectById(goods.getId()) != null) {
@@ -68,11 +68,16 @@ public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements 
     @Override
     public List<SeckillGoods> timeList(String time) {
         List<SeckillGoods> goodsList = new LinkedList<>();
-        List<Object> list =  redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS + time).values();
+        // 替换商品库存
+        List<Object> list =  redisTemplate.boundHashOps(SeckillKey.GOODS_PRE + time).values();
+        if (list == null) {
+            CastException.cast("商品列表不存在");
+        }
         for (Object o : list) {
             SeckillGoods seckillGoods = (SeckillGoods) o;
             for (SeckillSku sku : seckillGoods.getSkuList()) {
-                Integer num = Integer.valueOf((String) redisTemplate.opsForValue().get(RedisKey.SECKILL_SKU_COUNT_KEY + sku.getId()));
+                String _num = (String) redisTemplate.opsForValue().get(SeckillKey.SKU_COUNT_PRE + sku.getId());
+                int num = _num == null ? 0 : Integer.parseInt(_num);
                 sku.setResidue(num);
             }
             goodsList.add(seckillGoods);
@@ -82,9 +87,13 @@ public class SeckillGoodsServiceImpl extends BaseService<SeckillSku> implements 
 
     @Override
     public SeckillGoods detail(String time, String spuId) {
-        SeckillGoods seckillGoods = (SeckillGoods) redisTemplate.boundHashOps(RedisKey.SECKILL_GOODS + time).get(spuId);
-        for (SeckillSku sku : seckillGoods.getSkuList()) {  // 获取库存
-            Integer num = Integer.valueOf((String) redisTemplate.opsForValue().get(RedisKey.SECKILL_SKU_COUNT_KEY + sku.getId()));
+        SeckillGoods seckillGoods = (SeckillGoods) redisTemplate.boundHashOps(SeckillKey.GOODS_PRE + time).get(spuId);
+        if (seckillGoods == null) {
+            CastException.cast("商品不存在");
+        }
+        for (SeckillSku sku : seckillGoods.getSkuList()) {
+            String _num = (String) redisTemplate.opsForValue().get(SeckillKey.SKU_COUNT_PRE + sku.getId());
+            int num = _num == null ? 0 : Integer.parseInt(_num);
             sku.setResidue(num);
         }
         return seckillGoods;

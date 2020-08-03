@@ -146,6 +146,6 @@ public interface IService<T> {
 	 *
 	 * @return the int
 	 */
-	int batchDeleteById(List<Serializable> ids);
+	int batchDeleteById(List<Object> ids);
 
 }

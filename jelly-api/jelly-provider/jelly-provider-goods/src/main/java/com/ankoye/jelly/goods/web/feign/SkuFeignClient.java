@@ -5,8 +5,11 @@ import com.ankoye.jelly.base.result.Wrappers;
 import com.ankoye.jelly.goods.domain.Sku;
 import com.ankoye.jelly.goods.feign.SkuFeign;
 import com.ankoye.jelly.goods.reference.SkuReference;
+import com.ankoye.jelly.goods.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -14,13 +17,12 @@ import java.util.List;
  * @author ankoye@qq.com
  */
 @RestController
-@RequestMapping
 public class SkuFeignClient implements SkuFeign {
     @Autowired
     private SkuReference skuReference;
 
     @Override
-    public Wrapper<Sku> getSkuById(@PathVariable String id) {
+    public Wrapper<Sku> getById(@PathVariable String id) {
         Sku sku = skuReference.selectById(id);
         return Wrappers.success(sku);
     }

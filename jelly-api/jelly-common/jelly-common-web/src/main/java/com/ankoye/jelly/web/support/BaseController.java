@@ -1,7 +1,6 @@
 package com.ankoye.jelly.web.support;
 
 import com.ankoye.jelly.base.result.Result;
-import com.ankoye.jelly.base.result.ResultCode;
 
 /**
  * @author ankoye@qq.com

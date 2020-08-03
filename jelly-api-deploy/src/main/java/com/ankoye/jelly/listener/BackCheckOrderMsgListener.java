@@ -1,6 +1,7 @@
 package com.ankoye.jelly.listener;
 
 import com.ankoye.jelly.service.OrderService;
+import com.ankoye.jelly.service.SeckillOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.ConsumeMode;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -13,20 +14,21 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@RocketMQMessageListener( // 用户订单支付状态回查
+@RocketMQMessageListener(
         topic = "${user-order-topic}",
-        selectorExpression = "check",
+        selectorExpression = "seckill-check",
         consumerGroup = "order-check-group",
         consumeMode = ConsumeMode.CONCURRENTLY
 )
 public class BackCheckOrderMsgListener implements RocketMQListener<String> {
     @Autowired
-    private OrderService orderService;
+    private SeckillOrderService seckillOrderService;
 
     @Override
     public void onMessage(String orderId) {
-        log.info("订单支付状态回查：{}", orderId);
-        // 超时未支付，回差订单
-        orderService.checkOrder(orderId);
+        log.info("秒杀订单支付状态回查：{}", orderId);
+        // 超时未支付，删除订单
+        seckillOrderService.checkOrder(orderId);
     }
 }
+

@@ -3,7 +3,6 @@ package com.ankoye.jelly.goods.web.frontend;
 import com.ankoye.jelly.base.result.Result;
 import com.ankoye.jelly.goods.domain.Category;
 import com.ankoye.jelly.goods.service.CategoryService;
-import com.ankoye.jelly.util.RedisLock;
 import com.ankoye.jelly.web.support.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

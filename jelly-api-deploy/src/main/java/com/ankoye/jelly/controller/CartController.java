@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ankoye@qq.com
@@ -36,5 +37,20 @@ public class CartController extends BaseController {
     public Result findList(@PathVariable String id) {
         List<CartDto> carts = cartService.getUserCart(id);
         return Result.success(carts);
+    }
+
+    @PutMapping
+    public Result update(@RequestBody Cart cart) {
+        return handleResult(cartService.updateById(cart));
+    }
+
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable String id) {
+        return handleResult(cartService.deleteById(id));
+    }
+
+    @DeleteMapping("/batch")
+    public Result batchDelete(@RequestBody Map<String, List<Object>> map) {
+        return handleResult(cartService.batchDeleteById(map.get("ids")));
     }
 }
