@@ -13,7 +13,6 @@ import java.util.Map;
 /**
  * @author ankoye@qq.com
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {

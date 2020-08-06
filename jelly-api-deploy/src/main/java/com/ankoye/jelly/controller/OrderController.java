@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author ankoye@qq.com
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/order")
 @Slf4j

@@ -17,7 +17,6 @@ import java.util.Map;
 /**
  * @author ankoye@qq.com
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/cart")
 @Slf4j

@@ -14,7 +14,6 @@ import java.util.Map;
  * @author ankoye@qq.com
  */
 @RestController
-@CrossOrigin
 @RequestMapping("/category")
 public class CategoryController extends BaseController {
     @Autowired

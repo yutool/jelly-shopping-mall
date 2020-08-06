@@ -10,22 +10,16 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <div class="container">
+    <div class="container mb-5">
       <el-row :gutter="20">
         <el-col :md="16">
-          <el-card class="box-card">
-            购物商城
-            <div v-for="o in 4" :key="o" class="text item">
-              {{'列表内容 ' + o }}
-            </div>
+          <el-card class="box-card text-center pt-5 pb-5">
+            暂无推荐，去<router-link to="/market">商城</router-link>逛逛
           </el-card>
         </el-col>
         <el-col :md="8">
-          <el-card class="box-card">
-            限时快抢
-            <div v-for="o in 4" :key="o" class="text item">
-              {{'列表内容 ' + o }}
-            </div>
+          <el-card class="box-card text-center pt-5 pb-5">
+            广告位
           </el-card>
         </el-col>
       </el-row>

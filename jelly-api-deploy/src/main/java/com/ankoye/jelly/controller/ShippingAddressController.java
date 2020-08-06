@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * @author ankoye@qq.com
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/address")
 public class ShippingAddressController extends BaseController {

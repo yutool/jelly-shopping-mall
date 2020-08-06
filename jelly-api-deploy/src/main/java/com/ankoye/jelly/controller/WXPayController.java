@@ -20,7 +20,6 @@ import java.util.Map;
 /**
  * @author ankoye@qq.com
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/pay/wx")
 public class WXPayController {
