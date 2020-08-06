@@ -1,8 +1,9 @@
-package com.ankoye.jelly.order.listener;
+package com.ankoye.jelly.listener;
 
-import com.ankoye.jelly.order.service.OrderService;
+import com.ankoye.jelly.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.ConsumeMode;
+import org.apache.rocketmq.spring.annotation.MessageModel;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,10 @@ import org.springframework.stereotype.Component;
         topic = "${user-order-topic}",
         selectorExpression = "check",
         consumerGroup = "order-check-group",
-        consumeMode = ConsumeMode.CONCURRENTLY
+        consumeMode = ConsumeMode.CONCURRENTLY, // 并行处理，默认
+        messageModel = MessageModel.CLUSTERING  // 集群消费，默认
 )
-public class BackCheckOrderMsgListener implements RocketMQListener<String> {
+public class OrderBackCheckMsgListener implements RocketMQListener<String> {
     @Autowired
     private OrderService orderService;
 

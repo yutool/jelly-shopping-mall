@@ -1,6 +1,5 @@
 package com.ankoye.jelly.listener;
 
-import com.ankoye.jelly.service.OrderService;
 import com.ankoye.jelly.service.SeckillOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.ConsumeMode;
@@ -15,12 +14,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RocketMQMessageListener(
-        topic = "${user-order-topic}",
-        selectorExpression = "seckill-check",
-        consumerGroup = "order-check-group",
-        consumeMode = ConsumeMode.CONCURRENTLY
+        topic = "${seckill-order-topic}",
+        selectorExpression = "check",
+        consumerGroup = "seckill-order-check-group"
 )
-public class BackCheckOrderMsgListener implements RocketMQListener<String> {
+public class SeckillOrderBackCheckMsgListener implements RocketMQListener<String> {
     @Autowired
     private SeckillOrderService seckillOrderService;
 

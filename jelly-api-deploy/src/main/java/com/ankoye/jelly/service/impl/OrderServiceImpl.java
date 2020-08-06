@@ -164,8 +164,8 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         // 3 - 发送延迟消息，检查订单状态，发现超时未支付则取消这个订单
         try {
             DefaultMQProducer producer = rocketMQTemplate.getProducer();
-            String tag = order.getType() == 0 ? "check" : "seckill-check";
-            Message msg = new Message(orderTopic, tag, orderModel.getId().getBytes());
+            String topic = order.getType() == 0 ? orderTopic : seckillTopic;
+            Message msg = new Message(topic, "check", orderModel.getId().getBytes());
             msg.setDelayTimeLevel(16);  // 半小时
             producer.send(msg);
         } catch (Exception e) {

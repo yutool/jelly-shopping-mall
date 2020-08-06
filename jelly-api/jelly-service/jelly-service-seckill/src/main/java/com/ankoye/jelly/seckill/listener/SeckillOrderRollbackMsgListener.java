@@ -18,8 +18,7 @@ import org.springframework.stereotype.Component;
 @RocketMQMessageListener(
         topic = "${seckill-order-topic}",
         selectorExpression = "rollback",
-        consumerGroup = "seckill-rollback-group",
-        consumeMode = ConsumeMode.CONCURRENTLY
+        consumerGroup = "seckill-rollback-group"
 )
 public class SeckillOrderRollbackMsgListener implements RocketMQListener<String> {
     @Autowired

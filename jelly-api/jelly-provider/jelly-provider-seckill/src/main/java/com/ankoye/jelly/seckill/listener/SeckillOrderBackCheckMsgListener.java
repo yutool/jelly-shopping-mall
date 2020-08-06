@@ -15,12 +15,11 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RocketMQMessageListener(
-        topic = "${user-order-topic}",
-        selectorExpression = "seckill-check",
-        consumerGroup = "order-check-group",
-        consumeMode = ConsumeMode.CONCURRENTLY
+        topic = "${seckill-order-topic}",
+        selectorExpression = "check",
+        consumerGroup = "seckill-check-group"
 )
-public class BackCheckOrderMsgListener implements RocketMQListener<String> {
+public class SeckillOrderBackCheckMsgListener implements RocketMQListener<String> {
     @Autowired
     private SeckillOrderService seckillOrderService;
 

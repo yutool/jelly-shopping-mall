@@ -47,7 +47,7 @@ public class WXPayController {
      * 需要暴露给微信服务器
      */
     @Logger(module = "微信支付", operation = "支付回调")
-    @PostMapping("/notify")
+    @PostMapping("/payNotify")
     public String payNotify(HttpServletRequest request) {
         try(ServletInputStream is = request.getInputStream();
             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -59,7 +59,37 @@ public class WXPayController {
             String resultXml = new String(baos.toByteArray(), StandardCharsets.UTF_8);
             Map<String, String> resultMap = WXPayUtil.xmlToMap(resultXml);
             // 发送MQ，处理订单状态
-            rocketMQTemplate.convertAndSend(payTopic + ":wx-notify", JSON.toJSONString(resultMap));
+            rocketMQTemplate.convertAndSend(payTopic + ":wx-payNotify", JSON.toJSONString(resultMap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>";
+    }
+
+    /**
+     * 退款
+     * 1. 订单退款 - 支持
+     * 2. 单件商品退款
+     */
+    @PostMapping("/refund")
+    public Result refund(@RequestBody Order order) {
+        Map<String, String> resultMap = wxPayService.refund(order);
+        return Result.success(resultMap);
+    }
+
+    @PostMapping("/refundNotify")
+    public String refundNotify(HttpServletRequest request) {
+        try(ServletInputStream is = request.getInputStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while((len = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, len);
+            }
+            String resultXml = new String(baos.toByteArray(), StandardCharsets.UTF_8);
+            Map<String, String> resultMap = WXPayUtil.xmlToMap(resultXml);
+            // 发送MQ，处理订单状态
+            rocketMQTemplate.convertAndSend(payTopic + ":wx-refundNotify", JSON.toJSONString(resultMap));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,15 +118,6 @@ public class WXPayController {
     public Result closeOrder(@PathVariable String id) {
         Map<String, String> resultMap = wxPayService.closeOrder(id);
         return Result.success(resultMap);
-    }
-
-    /**
-     * 待修改
-     */
-    @PostMapping("/refund")
-    public Result refund(@RequestBody Map<String, String> map) {
-        wxPayService.refund(map);
-        return Result.success();
     }
 
 }

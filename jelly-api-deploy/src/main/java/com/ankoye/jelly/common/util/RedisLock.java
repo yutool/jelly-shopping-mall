@@ -2,6 +2,7 @@ package com.ankoye.jelly.common.util;
 
 
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import redis.clients.jedis.Jedis;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class RedisLock {
     private static final Jedis JEDIS;
 
     static  {
-        JEDIS = new RedisProperties.Jedis("jelly.com", 6379);
+        JEDIS = new Jedis("jelly.com", 6379);
         JEDIS.auth("redis.160123");
     }
 

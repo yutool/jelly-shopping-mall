@@ -27,8 +27,7 @@ import java.util.stream.Collectors;
 @RocketMQMessageListener(
         topic = "${seckill-order-topic}",
         selectorExpression = "create",
-        consumerGroup = "seckill-order-group",
-        consumeMode = ConsumeMode.ORDERLY
+        consumerGroup = "seckill-create-group"
 )
 public class SeckillOrderMsgListener implements RocketMQListener<String> {
     @Autowired

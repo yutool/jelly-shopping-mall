@@ -14,7 +14,6 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.stream.Collectors;
@@ -27,8 +26,7 @@ import java.util.stream.Collectors;
 @RocketMQMessageListener(
         topic = "${seckill-order-topic}",
         selectorExpression = "create",
-        consumerGroup = "seckill-order-group",
-        consumeMode = ConsumeMode.ORDERLY
+        consumerGroup = "seckill-order-group"
 )
 public class SeckillOrderMsgListener implements RocketMQListener<String> {
     @Autowired

@@ -17,8 +17,7 @@ import java.util.Map;
 @RocketMQMessageListener(
         topic = "${user-pay-topic}",
         selectorExpression = "wx-notify",   // 微信支付普通订单
-        consumerGroup = "pay-notify-group",
-        consumeMode = ConsumeMode.CONCURRENTLY
+        consumerGroup = "pay-notify-group"
 )
 @Component
 @Slf4j
