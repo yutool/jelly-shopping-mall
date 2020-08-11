@@ -1,6 +1,5 @@
 package com.ankoye.jelly.order.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.ankoye.jelly.base.constant.OrderStatus;
 import com.ankoye.jelly.goods.domain.Sku;
 import com.ankoye.jelly.goods.domain.Spu;
@@ -15,6 +14,7 @@ import com.ankoye.jelly.order.domian.OrderItem;
 import com.ankoye.jelly.order.model.OrderModel;
 import com.ankoye.jelly.order.reference.OrderReference;
 import com.ankoye.jelly.order.service.OrderService;
+import com.ankoye.jelly.seckill.feign.SeckillSkuFeign;
 import com.ankoye.jelly.util.IdUtils;
 import com.ankoye.jelly.web.exception.CastException;
 import com.ankoye.jelly.web.support.BaseService;
@@ -62,10 +62,13 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
     @Resource
     private CartMapper cartMapper;
 
-    @Resource
+    @Autowired
     private SkuFeign skuFeign;
-    @Resource
+    @Autowired
     private SpuFeign spuFeign;
+    @Autowired
+    private SeckillSkuFeign seckillSkuFeign;
+
 
     @Override
     public OrderModel getOrderById(String id) {
@@ -93,7 +96,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).delete(id);
         // 如果是秒杀订单，回滚库存
         if (order.getType() == 1) {
-            rocketMQTemplate.convertAndSend(seckillTopic + ":rollback", JSON.toJSONString(order));
+            seckillSkuFeign.rollback(order);
         }
     }
 
@@ -197,8 +200,16 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         List<OrderItem> orderItem = orderItemMapper.selectList(
                 new QueryWrapper<OrderItem>().eq("order_id", id)
         );
-        for (OrderItem item : orderItem) {
-            skuFeign.paySuccess(item.getSpuId(), item.getSkuId(), item.getNum());
+        // 普通订单
+        if (order.getType() == 0) {
+            // 2 - 获取订单的商品，并扣减对应的库存，增加销售量
+            for (OrderItem item : orderItem) {
+                skuFeign.paySuccess(item.getSpuId(), item.getSkuId(), item.getNum());
+            }
+        } else if (order.getType() == 1) {
+            for (OrderItem item : orderItem) {
+                seckillSkuFeign.updateStock(item.getSkuId(), item.getNum());
+            }
         }
         return true;
     }

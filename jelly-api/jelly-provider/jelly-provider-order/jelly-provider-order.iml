@@ -146,6 +146,7 @@
     <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.48.Final" level="project" />
     <orderEntry type="library" name="Maven: io.projectreactor:reactor-core:3.3.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.3" level="project" />
+    <orderEntry type="module" module-name="jelly-service-seckill-api" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter-zookeeper-discovery:2.2.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter-zookeeper:2.2.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-commons:2.2.1.RELEASE" level="project" />

@@ -1,5 +1,6 @@
 import { login, getCurrentUser } from '@/api/user/user'
 import { setToken, removeToken } from '@/common/utils/auth'
+import router from '@/router'
 
 const state = {
   user: {}
@@ -40,6 +41,7 @@ const actions = {
   logout(cxy: any) {
     cxy.commit('SET_USER', {})
     removeToken()
+    router.push('/')
   }
 };
 

@@ -1,7 +1,8 @@
-package com.ankoye.jelly.seckill.service;
+package com.ankoye.jelly.service;
 
-import com.ankoye.jelly.seckill.domain.SeckillSku;
-import com.ankoye.jelly.seckill.model.SeckillGoods;
+
+import com.ankoye.jelly.domain.SeckillSku;
+import com.ankoye.jelly.model.SeckillGoods;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * @author ankoye@qq.com
  */
-public interface SeckillGoodsService {
+public interface SeckillSkuService {
 
     /**
      * 获取商家所有秒杀商品

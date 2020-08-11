@@ -3,7 +3,7 @@ package com.ankoye.jelly.seckill.controller;
 import com.ankoye.jelly.base.result.Result;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.SeckillGoods;
-import com.ankoye.jelly.seckill.service.SeckillGoodsService;
+import com.ankoye.jelly.seckill.service.SeckillSkuService;
 import com.ankoye.jelly.util.DateUtils;
 import com.ankoye.jelly.web.log.annotation.Logger;
 import com.ankoye.jelly.web.support.BaseController;
@@ -21,12 +21,12 @@ import java.util.List;
 public class SeckillGoodsController extends BaseController {
 
     @Autowired
-    private SeckillGoodsService seckillGoodsService;
+    private SeckillSkuService seckillSkuService;
 
     @PostMapping
     @Logger(module = "秒杀商品", operation = "增加秒杀商品")
     public Result add(@RequestBody SeckillSku goods) {
-        return handleResult(seckillGoodsService.add(goods));
+        return handleResult(seckillSkuService.add(goods));
     }
 
     /**
@@ -34,7 +34,7 @@ public class SeckillGoodsController extends BaseController {
      */
     @GetMapping("/list/{page}/{size}")
     public Result findGoodsPage(@PathVariable Integer page, @PathVariable Integer size) {
-        PageInfo<SeckillSku> list = seckillGoodsService.list(page, size);
+        PageInfo<SeckillSku> list = seckillSkuService.list(page, size);
         return Result.success(list);
     }
 
@@ -53,7 +53,7 @@ public class SeckillGoodsController extends BaseController {
      */
     @GetMapping("/time_list/{time}")
     public Result list(@PathVariable String time){
-        List<SeckillGoods> goodsList = seckillGoodsService.timeList(time);
+        List<SeckillGoods> goodsList = seckillSkuService.timeList(time);
         return Result.success(goodsList);
     }
 
@@ -62,7 +62,7 @@ public class SeckillGoodsController extends BaseController {
      */
     @GetMapping("/{time}/{id}")
     public Result detail(@PathVariable String time, @PathVariable String id) {
-        SeckillGoods goods = seckillGoodsService.detail(time, id);
+        SeckillGoods goods = seckillSkuService.detail(time, id);
         return Result.success(goods);
     }
 }

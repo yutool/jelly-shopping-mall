@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author ankoye@qq.com
  */
-public interface SeckillGoodsService {
+public interface SeckillSkuService {
 
     /**
      * 获取商家所有秒杀商品

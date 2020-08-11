@@ -160,6 +160,7 @@
     <orderEntry type="library" name="Maven: com.lmax:disruptor:3.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.dromara:hmily-dubbo:2.0.6-RELEASE" level="project" />
     <orderEntry type="module" module-name="jelly-service-goods-api" />
+    <orderEntry type="module" module-name="jelly-service-seckill-api" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter-zookeeper-discovery:2.2.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter-zookeeper:2.2.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-commons:2.2.1.RELEASE" level="project" />

@@ -122,16 +122,6 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
     }
 
     @Override
-    public void rollback(OrderModel order) {
-        String userId = order.getUserId();
-        // 回滚库存，删除排队状态
-        for (OrderItem item : order.getOrderItem()) {
-            redisTemplate.opsForValue().increment(SeckillKey.SKU_COUNT_PRE + item.getSkuId(), item.getNum());
-            redisTemplate.boundHashOps(SeckillKey.USER_QUEUE).delete(userId + item.getSkuId());
-        }
-    }
-
-    @Override
     public boolean checkOrder(String orderId) {
         Order orderData = orderFeign.get(orderId).getData();
         if (orderData == null) {

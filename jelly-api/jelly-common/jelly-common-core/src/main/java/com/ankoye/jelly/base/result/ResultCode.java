@@ -18,12 +18,14 @@ public enum ResultCode {
 
     /* 用户错误：20001-29999*/
     USER_NOT_LOGGED_IN(20001, "用户未登录"),
-    USER_LOGIN_ERROR(20002, "账号或密码错误"),
-    USER_ACCOUNT_FORBIDDEN(20003, "账号已被禁用"),
-    USER_NOT_EXIST(20004, "用户不存在"),
-    USER_HAS_EXISTED(20005, "用户已存在"),
-    USER_REGISTER_ERROR(20006, "用户注册错误"),
-    USER_UPDATE_ERROR(20007, "修改用户信息错误"),
+    TOKEN_INVALID(20002, "无效Token"),
+    USER_LOGIN_ERROR(20003, "账号或密码错误"),
+    LOGIN_AUTHENTICATION_ERROR(20004, "登录认证失败"),
+    USER_ACCOUNT_FORBIDDEN(20005, "账号已被禁用"),
+    USER_NOT_EXIST(20006, "用户不存在"),
+    USER_HAS_EXISTED(20007, "用户已存在"),
+    USER_REGISTER_ERROR(20008, "用户注册错误"),
+    USER_UPDATE_ERROR(20009, "修改用户信息错误"),
 
     /* 业务错误：30001-39999 */
     SERVICE_ERROR(30001, "业务繁忙，请稍后重试"),

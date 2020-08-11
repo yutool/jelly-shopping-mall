@@ -16,6 +16,7 @@ import com.ankoye.jelly.order.domian.Order;
 import com.ankoye.jelly.order.domian.OrderItem;
 import com.ankoye.jelly.order.model.OrderModel;
 import com.ankoye.jelly.order.service.OrderService;
+import com.ankoye.jelly.seckill.reference.SeckillSkuReference;
 import com.ankoye.jelly.util.IdUtils;
 import com.ankoye.jelly.web.exception.CastException;
 import com.ankoye.jelly.web.support.BaseService;
@@ -67,6 +68,8 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
     private SkuReference skuReference;
     @Reference
     private SpuReference spuReference;
+    @Reference
+    private SeckillSkuReference seckillSkuReference;
 
     @Override
     public OrderModel getOrderById(String id) {
@@ -94,7 +97,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         redisTemplate.boundHashOps(RedisKey.PREPARE_ORDER).delete(id);
         // 如果是秒杀订单，回滚库存
         if (order.getType() == 1) {
-            rocketMQTemplate.convertAndSend(seckillTopic + ":rollback", JSON.toJSONString(order));
+            seckillSkuReference.rollback(order);
         }
     }
 
@@ -204,8 +207,16 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         List<OrderItem> orderItem = orderItemMapper.selectList(
                 new QueryWrapper<OrderItem>().eq("order_id", id)
         );
-        for (OrderItem item : orderItem) {
-            skuReference.paySuccess(item.getSpuId(), item.getSkuId(), item.getNum());
+        // 普通订单
+        if (order.getType() == 0) {
+            // 2 - 获取订单的商品，并扣减对应的库存，增加销售量
+            for (OrderItem item : orderItem) {
+                skuReference.paySuccess(item.getSpuId(), item.getSkuId(), item.getNum());
+            }
+        } else if (order.getType() == 1) {
+            for (OrderItem item : orderItem) {
+                seckillSkuReference.updateStock(item.getSkuId(), item.getNum());
+            }
         }
         return true;
     }

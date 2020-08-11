@@ -1,12 +1,12 @@
-package com.ankoye.jelly.seckill.common.task;
+package com.ankoye.jelly.common.task;
 
-import com.ankoye.jelly.goods.domain.Spu;
-import com.ankoye.jelly.goods.feign.SpuFeign;
-import com.ankoye.jelly.seckill.common.constant.SeckillKey;
-import com.ankoye.jelly.seckill.dao.SeckillSkuMapper;
-import com.ankoye.jelly.seckill.domain.SeckillSku;
-import com.ankoye.jelly.seckill.model.SeckillGoods;
-import com.ankoye.jelly.util.DateUtils;
+import com.ankoye.jelly.common.constant.SeckillKey;
+import com.ankoye.jelly.common.util.DateUtils;
+import com.ankoye.jelly.dao.SeckillSkuMapper;
+import com.ankoye.jelly.domain.SeckillSku;
+import com.ankoye.jelly.domain.Spu;
+import com.ankoye.jelly.model.SeckillGoods;
+import com.ankoye.jelly.service.reference.SpuReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,10 +26,10 @@ import java.util.Set;
 @Slf4j
 public class SeckillGoodsPushTask {
 
-    //@Reference
-    private SpuFeign spuFeign;
+    @Autowired
+    private SpuReference spuReference;
 
-    @Resource
+    @Autowired
     private SeckillSkuMapper seckillSkuMapper;
 
     @Autowired
@@ -82,7 +81,7 @@ public class SeckillGoodsPushTask {
                 }
                 spuIdList.add(tmp.getSpuId());
                 // 查询商品Spu，并创建秒杀商品
-                Spu spu = spuFeign.getSpuById(tmp.getSpuId()).getData();
+                Spu spu = spuReference.selectById(tmp.getSpuId());
                 SeckillGoods seckillGoods = new SeckillGoods();
                 seckillGoods.setSpu(spu);
                 // 查找到 当前 spu 对应的秒杀商品添加到
@@ -99,3 +98,4 @@ public class SeckillGoodsPushTask {
         }
     }
 }
+

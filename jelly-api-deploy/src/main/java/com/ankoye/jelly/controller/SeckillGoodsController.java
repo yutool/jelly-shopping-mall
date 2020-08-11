@@ -6,7 +6,7 @@ import com.ankoye.jelly.common.support.BaseController;
 import com.ankoye.jelly.common.util.DateUtils;
 import com.ankoye.jelly.domain.SeckillSku;
 import com.ankoye.jelly.model.SeckillGoods;
-import com.ankoye.jelly.service.SeckillGoodsService;
+import com.ankoye.jelly.service.SeckillSkuService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ import java.util.List;
 public class SeckillGoodsController extends BaseController {
 
     @Autowired
-    private SeckillGoodsService seckillGoodsService;
+    private SeckillSkuService seckillGoodsService;
 
     @PostMapping
     @Logger(module = "秒杀商品", operation = "增加秒杀商品")

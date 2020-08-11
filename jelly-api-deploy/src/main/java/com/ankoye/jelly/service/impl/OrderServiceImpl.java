@@ -16,6 +16,7 @@ import com.ankoye.jelly.domain.Spu;
 import com.ankoye.jelly.model.OrderModel;
 import com.ankoye.jelly.service.OrderService;
 import com.ankoye.jelly.service.reference.OrderReference;
+import com.ankoye.jelly.service.reference.SeckillSkuReference;
 import com.ankoye.jelly.service.reference.SkuReference;
 import com.ankoye.jelly.service.reference.SpuReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -66,6 +67,8 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
     private SkuReference skuReference;
     @Resource
     private SpuReference spuReference;
+    @Resource
+    private SeckillSkuReference seckillSkuReference;
 
     @Override
     public OrderModel getOrderById(String id) {
@@ -93,7 +96,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         redisTemplate.boundHashOps(SeckillKey.PREPARE_ORDER).delete(id);
         // 如果是秒杀订单，回滚库存
         if (order.getType() == 1) {
-            rocketMQTemplate.convertAndSend(seckillTopic + ":rollback", JSON.toJSONString(order));
+            seckillSkuReference.rollback(order);
         }
     }
 
@@ -198,13 +201,21 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         order.setTransactionId(transactionId);
         orderMapper.updateById(order);
 
-        // 2 - 获取订单的商品，并扣减对应的库存，增加销售量
         List<OrderItem> orderItem = orderItemMapper.selectList(
                 new QueryWrapper<OrderItem>().eq("order_id", id)
         );
-        for (OrderItem item : orderItem) {
-            skuReference.paySuccess(item.getSpuId(), item.getSkuId(), item.getNum());
+        // 普通订单
+        if (order.getType() == 0) {
+            // 2 - 获取订单的商品，并扣减对应的库存，增加销售量
+            for (OrderItem item : orderItem) {
+                skuReference.paySuccess(item.getSpuId(), item.getSkuId(), item.getNum());
+            }
+        } else if (order.getType() == 1) {
+            for (OrderItem item : orderItem) {
+                seckillSkuReference.updateStock(item.getSkuId(), item.getNum());
+            }
         }
+
         return true;
     }
 

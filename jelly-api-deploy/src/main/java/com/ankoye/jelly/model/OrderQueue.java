@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 public class OrderQueue implements Serializable {
     public static final int QUEUING = 1; // 排队中
-    public static final int CREATED = 2;    // 订单已创建
+    public static final int CREATED = 2; // 订单已创建
     // 用户
     private String userId;
 

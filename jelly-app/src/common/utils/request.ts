@@ -41,7 +41,9 @@ instance.interceptors.response.use((response: any) => {
   const { code, message } = response.data
   // 处理请求错误
   if (code !== 0) {
-    if (message) {
+    if (code === 20001 || code === 20002) {
+      store.dispatch('app/openLoginDialog')
+    } else if (message) {
       Message({ type: 'error', message: `错误请求：${message}` })
     }
     return Promise.reject(message)

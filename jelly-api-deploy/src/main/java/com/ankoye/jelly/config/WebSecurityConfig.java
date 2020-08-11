@@ -75,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // 过滤请求
             .and().authorizeRequests()
                 // 不需要认证的接口
-                .antMatchers("/oauth/login", "/**").permitAll()
+                .antMatchers("/oauth/login", "/oauth/logout", "/spu/**", "/home/**", "/seckill/goods/**").permitAll()
                 // 其他全部需要认证
                 .anyRequest().authenticated()
             // 设置登出处理

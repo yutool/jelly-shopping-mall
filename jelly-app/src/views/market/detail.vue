@@ -166,7 +166,6 @@ export default class GoodsDetail extends Vue {
       this.spu.skuTemplate = JSON.parse(spu.skuTemplate)
       this.skuList = sku
       for (const item of this.skuList) {
-        console.log(item.sku)
         item.sku = JSON.parse(item.sku)
       }
       // 默认选中，可优化 库存为0跳过

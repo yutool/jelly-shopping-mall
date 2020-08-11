@@ -24,11 +24,6 @@ public interface SeckillOrderService  {
     String prepare(String userId, SeckillSku sk);
 
     /**
-     * 回滚库存，删除排队状态
-     */
-    void rollback(OrderModel orderModel);
-
-    /**
      * 回查秒杀订单
      * @param orderId
      * @return

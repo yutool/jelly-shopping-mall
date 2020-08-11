@@ -140,15 +140,15 @@ export default class GoodsDetail extends Vue {
   private handlerQueue() {
     this.loading = true
     this.queueTimer = setInterval(() => queryQueue(this.userId, this.checkSku.id).then((res: any) => {
-      console.log(res)
-      if (res.data.status === 3) { // 预创建订单成功
+      if (!res) {
+        window.clearInterval(this.queueTimer)
+        this.$message({type: 'info', message: '商品已被秒杀完'})
+        return
+      }
+      if (res.data.status === 2) { // 预创建订单成功
         window.clearInterval(this.queueTimer)
         // 查询订单去付款
         this.$router.push(`/order/buy/${res.data.orderId}`)
-      } else if (res.data.status === 2) {
-        window.clearInterval(this.queueTimer)
-        this.loading = false
-        this.$message({ type: 'info', message: '哎呀，商品被抢空了' })
       }
     }), 1500)
   }

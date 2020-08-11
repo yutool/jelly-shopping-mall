@@ -4,7 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.ankoye.jelly.goods.domain.Spu;
 import com.ankoye.jelly.goods.reference.SpuReference;
 import com.ankoye.jelly.seckill.common.constant.SeckillKey;
-import com.ankoye.jelly.seckill.dao.SeckillGoodsMapper;
+import com.ankoye.jelly.seckill.dao.SeckillSkuMapper;
 import com.ankoye.jelly.seckill.domain.SeckillSku;
 import com.ankoye.jelly.seckill.model.SeckillGoods;
 import com.ankoye.jelly.util.DateUtils;
@@ -30,7 +30,7 @@ public class SeckillGoodsPushTask {
     private SpuReference spuReference;
 
     @Resource
-    private SeckillGoodsMapper seckillGoodsMapper;
+    private SeckillSkuMapper seckillSkuMapper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -71,7 +71,7 @@ public class SeckillGoodsPushTask {
                 wrapper.notIn("spu_id", keys);
             }
 
-            List<SeckillSku> seckillSkuList = seckillGoodsMapper.selectList(wrapper);
+            List<SeckillSku> seckillSkuList = seckillSkuMapper.selectList(wrapper);
 
             // version 2
             HashSet<String> spuIdList = new HashSet<>();

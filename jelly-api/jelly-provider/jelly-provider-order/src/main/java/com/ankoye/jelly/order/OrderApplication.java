@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author ankoye@qq.com
  */
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.ankoye.jelly.goods.feign")
+@EnableFeignClients(basePackages = {"com.ankoye.jelly.goods.feign", "com.ankoye.jelly.seckill.feign"})
 public class OrderApplication {
     public static void main(String[] args) {
         SpringApplication.run(OrderApplication.class, args);
