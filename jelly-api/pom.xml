@@ -36,7 +36,7 @@
         <pagehelper.version>1.2.5</pagehelper.version>
         <rocketmq.version>2.1.0</rocketmq.version>
         <hutool-all.version>5.1.0</hutool-all.version>
-        <fastjson.version>1.2.62</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <guava.version>20.0</guava.version>
         <jedis.version>2.9.0</jedis.version>
         <lang3-version>3.9</lang3-version>
